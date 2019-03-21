@@ -9,7 +9,7 @@ function createWindow() {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadURL('https://github.com');
+  mainWindow.loadURL('http://localhost:7979');
 
   mainWindow.setTitle('Beragi');
   // Open the DevTools.
