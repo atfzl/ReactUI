@@ -61,7 +61,6 @@ const config: webpack.Configuration = {
       template: './index.html',
     }),
   ],
-  // @ts-ignore
   devServer: {
     port: 7979,
     stats: 'errors-only',
