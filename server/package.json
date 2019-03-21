@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "ts-node fuse.server.ts"
+    "start": "ts-node fuse.ts"
   },
   "devDependencies": {
     "@types/node": "10",

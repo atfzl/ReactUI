@@ -6,9 +6,13 @@ import { ChildProcess, spawn } from 'child_process';
 import { FuseBox } from 'fuse-box';
 
 const fuse = FuseBox.init({
-  homeDir: 'src/',
+  homeDir: '@src/',
   output: 'dist/$name.js',
   sourceMaps: true,
+  automaticAlias: false,
+  alias: {
+    '@src': '.',
+  },
 });
 
 let electronProcess: ChildProcess;
