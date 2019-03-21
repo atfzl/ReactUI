@@ -6,9 +6,6 @@ function createWindow() {
   mainWindow = new electron.BrowserWindow({
     width: 1280,
     height: 800,
-    webPreferences: {
-      nodeIntegration: false,
-    },
   });
 
   // and load the index.html of the app.
