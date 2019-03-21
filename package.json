@@ -1,0 +1,15 @@
+{
+  "name": "beragi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:atfzl/beragi.git",
+  "author": "Atif Afzal <atif5801@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "concurrently --raw --kill-others 'cd server && yarn start' 'cd client && yarn start'"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  }
+}
