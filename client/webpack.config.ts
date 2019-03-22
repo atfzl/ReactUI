@@ -9,7 +9,7 @@ import * as webpack from 'webpack';
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
-const srcPath = path.resolve(__dirname, './@src');
+const srcPath = path.resolve(__dirname, './~');
 const distPath = path.resolve(__dirname, './dist');
 
 const mainFile = ['./index.tsx'];
