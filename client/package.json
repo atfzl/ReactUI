@@ -29,6 +29,8 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "electron": "^4.1.1",
+    "electron-better-ipc": "^0.1.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4"
   }

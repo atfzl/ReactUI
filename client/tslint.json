@@ -3,6 +3,7 @@
   "rules": {
     "object-literal-sort-keys": false,
     "no-submodule-imports": false,
-    "no-implicit-dependencies": false
+    "no-implicit-dependencies": false,
+    "interface-name": false
   }
 }
