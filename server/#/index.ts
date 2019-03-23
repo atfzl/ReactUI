@@ -1,5 +1,3 @@
-import DragDrop from '#/common/api/DragDrop';
-import GetPropsApi from '#/common/api/GetProps';
 import * as electron from 'electron';
 
 let mainWindow: electron.BrowserWindow | null;
@@ -14,29 +12,9 @@ function createWindow() {
   mainWindow.loadURL('http://localhost:7979');
 
   mainWindow.setTitle('Beragi');
+
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  DragDrop.answerRenderer(async a => {
-    // tslint:disable-next-line:no-console
-    console.log(a);
-
-    return Promise.reject({
-      val: 1,
-    });
-  });
-
-  setTimeout(() => {
-    // tslint:disable-next-line:no-console
-    console.log('timer fired');
-    GetPropsApi.callRenderer(mainWindow!, { id: 'foobar9000' })
-      .then(() => {
-        // tslint:disable-next-line:no-console
-        console.log('foo');
-      })
-      // tslint:disable-next-line:no-console
-      .catch(console.error);
-  }, 10000);
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
