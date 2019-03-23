@@ -1,3 +1,4 @@
+import DragDrop from '#/common/api/DragDrop';
 import GetPropsApi from '#/common/api/GetProps';
 import { IJSXSource } from '#/common/types';
 import { isInterinsicTag } from '#/common/utils';
@@ -27,6 +28,9 @@ const Foo = () => {
         times: 10,
       };
     });
+
+    // tslint:disable-next-line:no-console
+    DragDrop.callMain({ _id: '12' }).then(console.log);
   });
 
   return <div>foo</div>;

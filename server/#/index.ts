@@ -1,3 +1,4 @@
+import DragDrop from '#/common/api/DragDrop';
 import GetPropsApi from '#/common/api/GetProps';
 import * as electron from 'electron';
 
@@ -15,6 +16,14 @@ function createWindow() {
   mainWindow.setTitle('Beragi');
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
+
+  DragDrop.answerRenderer(async a => {
+    // tslint:disable-next-line:no-console
+    console.log(a);
+    return {
+      val: 1,
+    };
+  });
 
   setTimeout(() => {
     // tslint:disable-next-line:no-console
