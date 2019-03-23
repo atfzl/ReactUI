@@ -24,13 +24,17 @@ const Foo = () => {
       // tslint:disable-next-line:no-console
       console.log(f);
 
-      return {
-        times: 10,
-      };
+      throw new Error('909090');
+
+      // return {
+      //   times: 10,
+      // };
     });
 
-    // tslint:disable-next-line:no-console
-    DragDrop.callMain({ _id: '12' }).then(console.log);
+    // tslint:disable:no-console
+    DragDrop.callMain({ _id: '12' })
+      .then(console.log)
+      .catch(console.error);
   });
 
   return <div>foo</div>;

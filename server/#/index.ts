@@ -20,18 +20,22 @@ function createWindow() {
   DragDrop.answerRenderer(async a => {
     // tslint:disable-next-line:no-console
     console.log(a);
-    return {
+
+    return Promise.reject({
       val: 1,
-    };
+    });
   });
 
   setTimeout(() => {
     // tslint:disable-next-line:no-console
     console.log('timer fired');
-    GetPropsApi.callRenderer(mainWindow!, { id: 'foobar9000' }).then(
+    GetPropsApi.callRenderer(mainWindow!, { id: 'foobar9000' })
+      .then(() => {
+        // tslint:disable-next-line:no-console
+        console.log('foo');
+      })
       // tslint:disable-next-line:no-console
-      console.log,
-    );
+      .catch(console.error);
   }, 10000);
 
   mainWindow.on('closed', () => {
