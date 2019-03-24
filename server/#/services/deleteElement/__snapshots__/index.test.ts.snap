@@ -1,16 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`deletes element 1`] = `
-Array [
-  Replacement {
-    "end": 82,
-    "start": 57,
-    "text": "",
-  },
-  Replacement {
-    "end": 57,
-    "start": 57,
-    "text": "null",
-  },
-]
+exports[`deletes child element 1`] = `
+"import * as React from 'react';
+
+const Component = () => (
+  <div>
+    
+  </div>
+);
+
+export default Component;
+"
+`;
+
+exports[`deletes element with no parent 1`] = `
+"import * as React from 'react';
+
+const Component = () => null;
+
+export default Component;
+"
 `;
