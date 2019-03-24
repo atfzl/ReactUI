@@ -13,7 +13,7 @@ export const createSourceFileFromText = (fileName: string, text: string) => {
     _.endsWith(fileName, 'tsx') ? ts.ScriptKind.TSX : undefined,
   );
 
-  return { file, text };
+  return file;
 };
 
 export const createSourceFile$ = (fileName: string) =>

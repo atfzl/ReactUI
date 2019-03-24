@@ -1,4 +1,4 @@
-import { IJSXSource } from '#/common/models/file';
+import { TagCursor } from '#/common/models/file';
 import * as ts from 'typescript';
 
 export const getInfo = (node: ts.Node) => {
@@ -32,21 +32,12 @@ export const isAncestor = (a?: ts.Node, b?: ts.Node): boolean => {
 };
 
 export const findNode = <T extends ts.Node>(
-  rootNode: ts.Node,
-  target?: IJSXSource,
-  predicate?: (node: ts.Node) => boolean,
-): T | undefined => {
+  predicate: (node: ts.Node) => boolean,
+) => (rootNode: ts.Node): T | undefined => {
   let resolvedNode;
 
   function _traverse(node: ts.Node) {
-    const { lineNumber, columnNumber } = getInfo(node);
-
-    if (
-      (target &&
-        (lineNumber === target.lineNumber &&
-          columnNumber === target.columnNumber)) ||
-      (predicate && predicate(node))
-    ) {
+    if (predicate(node)) {
       resolvedNode = node;
       return;
     }
@@ -58,6 +49,15 @@ export const findNode = <T extends ts.Node>(
 
   return resolvedNode;
 };
+
+export const findNodeByTag = <T extends ts.Node>(cursor: TagCursor) =>
+  findNode<T>(node => {
+    const { lineNumber, columnNumber } = getInfo(node);
+
+    return (
+      lineNumber === cursor.lineNumber && columnNumber === cursor.columnNumber
+    );
+  });
 
 export const findAncestorNode = <T extends ts.Node>(
   rootNode: T,

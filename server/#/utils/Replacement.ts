@@ -10,6 +10,10 @@ export class Replacement {
     return new Replacement(start, end, '');
   }
 
+  public static deleteNode(node: ts.Node) {
+    return Replacement.delete(node.getStart(), node.getEnd());
+  }
+
   public static replaceNodeWithText<T extends ts.Node, Y extends ts.Node>(
     source: T,
     node: Y,
