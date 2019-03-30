@@ -6,7 +6,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "ts-node fuse.ts"
+    "start": "ts-node fuse.ts",
+    "test": "jest",
+    "test:dev": "jest --watch"
   },
   "devDependencies": {
     "@types/jest": "^24.0.11",

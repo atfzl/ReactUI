@@ -2,11 +2,12 @@ import { TagCursor } from '#/common/models/file';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import { findNodeByTag } from '#/utils/tsNode';
 import { createSourceFileFromText } from '#/utils/tsSourceFile';
+import * as R from 'ramda';
 import { EMPTY, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as ts from 'typescript';
 
-const deleteElement = (cursor: TagCursor) => (fileContent: string) => {
+const deleteElement = R.curry((cursor: TagCursor, fileContent: string) => {
   return of(createSourceFileFromText(cursor.fileName, fileContent)).pipe(
     map(sourceFileNode => {
       const elementNode = findNodeByTag<ts.JsxOpeningLikeElement>(cursor)(
@@ -30,6 +31,6 @@ const deleteElement = (cursor: TagCursor) => (fileContent: string) => {
       return replacementBuilder.applyReplacements();
     }),
   );
-};
+});
 
 export default deleteElement;
