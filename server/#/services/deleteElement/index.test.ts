@@ -34,9 +34,11 @@ it('throws Fault if element at cursor is not found', done => {
     .pipe(
       switchMap(deleteElement({ lineNumber: 3, columnNumber: 7, fileName })),
     )
-    .subscribe(x => {
-      expect(x instanceof Fault).toBeTruthy();
-      expect(x).toMatchSnapshot();
-      done();
+    .subscribe({
+      error: x => {
+        expect(x instanceof Fault).toBeTruthy();
+        expect(x).toMatchSnapshot();
+        done();
+      },
     });
 });

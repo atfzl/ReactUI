@@ -7,3 +7,12 @@ it('reads a file', done => {
     done();
   });
 });
+
+it('non existing file', done => {
+  createSourceFile$('').subscribe({
+    error: x => {
+      expect(x).toMatchSnapshot();
+      done();
+    },
+  });
+});

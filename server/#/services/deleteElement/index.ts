@@ -4,19 +4,21 @@ import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import { findNodeByTag } from '#/utils/tsNode';
 import { createSourceFileFromText } from '#/utils/tsSourceFile';
 import * as R from 'ramda';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const deleteElement = R.curry((cursor: TagCursor, fileContent: string) => {
   return of(createSourceFileFromText(cursor.fileName, fileContent)).pipe(
-    map(sourceFileNode => {
+    concatMap(sourceFileNode => {
       const elementNode = findNodeByTag<ts.JsxElement>(cursor)(sourceFileNode);
 
       if (!elementNode || !ts.isJsxElement(elementNode)) {
-        return new Fault('Element not found at cursor', {
-          cursorLocation: cursor,
-        });
+        return throwError(
+          new Fault('Element not found at cursor', {
+            cursorLocation: cursor,
+          }),
+        );
       }
 
       const replacementBuilder = new ReplacementBuilder(sourceFileNode);
@@ -29,7 +31,7 @@ const deleteElement = R.curry((cursor: TagCursor, fileContent: string) => {
         replacementBuilder.insert(elementNode.getStart(), 'null');
       }
 
-      return replacementBuilder.applyReplacements();
+      return of(replacementBuilder.applyReplacements());
     }),
   );
 });
