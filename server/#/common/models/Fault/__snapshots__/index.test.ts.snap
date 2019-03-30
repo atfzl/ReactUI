@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should show stack trace on Error 1`] = `
+Fault {
+  "data": Object {
+    "meta": "foobar",
+  },
+  "level": 1,
+  "message": "error!!!",
+  "stack": "Error
+    at new Fault (/Users/I0459/scratch/personal/beragi/server/#/common/models/Fault/index.ts:11:18)
+    at Object.<anonymous>.it (/Users/I0459/scratch/personal/beragi/server/#/common/models/Fault/index.test.ts:4:17)
+    at Object.asyncJestTest (/Users/I0459/scratch/personal/beragi/server/node_modules/jest-jasmine2/build/jasmineAsyncInstall.js:102:37)
+    at resolve (/Users/I0459/scratch/personal/beragi/server/node_modules/jest-jasmine2/build/queueRunner.js:43:12)
+    at new Promise (<anonymous>)
+    at mapper (/Users/I0459/scratch/personal/beragi/server/node_modules/jest-jasmine2/build/queueRunner.js:26:19)
+    at promise.then (/Users/I0459/scratch/personal/beragi/server/node_modules/jest-jasmine2/build/queueRunner.js:73:41)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:189:7)",
+}
+`;

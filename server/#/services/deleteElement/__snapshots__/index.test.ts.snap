@@ -21,3 +21,28 @@ const Component = () => null;
 export default Component;
 "
 `;
+
+exports[`throws Fault if element at cursor is not found 1`] = `
+Fault {
+  "data": Object {
+    "cursorLocation": Object {
+      "columnNumber": 7,
+      "fileName": "/Users/I0459/scratch/personal/beragi/server/#/services/deleteElement/__fixtures__/1.tsx",
+      "lineNumber": 3,
+    },
+  },
+  "level": 0,
+  "message": "Element not found at cursor",
+  "stack": "Error
+    at new Fault (/Users/I0459/scratch/personal/beragi/server/#/common/models/Fault/index.ts:11:18)
+    at MapSubscriber.rxjs_1.of.pipe.operators_1.map.sourceFileNode [as project] (/Users/I0459/scratch/personal/beragi/server/#/services/deleteElement/index.ts:17:16)
+    at MapSubscriber.Object.<anonymous>.MapSubscriber._next (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/map.ts:84:29)
+    at MapSubscriber.Object.<anonymous>.Subscriber.next (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Subscriber.ts:99:12)
+    at Observable._subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/observable/scalar.ts:5:16)
+    at Observable.Object.<anonymous>.Observable._trySubscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:231:19)
+    at Observable.Object.<anonymous>.Observable.subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:212:14)
+    at MapOperator.Object.<anonymous>.MapOperator.call (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/map.ts:59:19)
+    at Observable.Object.<anonymous>.Observable.subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:207:25)
+    at /Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/util/subscribeTo.ts:22:23",
+}
+`;

@@ -1,21 +1,22 @@
+import { Fault } from '#/common/models/Fault';
 import { TagCursor } from '#/common/models/file';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import { findNodeByTag } from '#/utils/tsNode';
 import { createSourceFileFromText } from '#/utils/tsSourceFile';
 import * as R from 'ramda';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const deleteElement = R.curry((cursor: TagCursor, fileContent: string) => {
   return of(createSourceFileFromText(cursor.fileName, fileContent)).pipe(
     map(sourceFileNode => {
-      const elementNode = findNodeByTag<ts.JsxOpeningLikeElement>(cursor)(
-        sourceFileNode,
-      );
+      const elementNode = findNodeByTag<ts.JsxElement>(cursor)(sourceFileNode);
 
-      if (!elementNode) {
-        return EMPTY;
+      if (!elementNode || !ts.isJsxElement(elementNode)) {
+        return new Fault('Element not found at cursor', {
+          cursorLocation: cursor,
+        });
       }
 
       const replacementBuilder = new ReplacementBuilder(sourceFileNode);

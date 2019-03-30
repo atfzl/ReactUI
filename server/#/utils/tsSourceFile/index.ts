@@ -18,5 +18,7 @@ export const createSourceFileFromText = (fileName: string, text: string) => {
 
 export const createSourceFile$ = (fileName: string) =>
   readFileToString$(fileName).pipe(
-    switchMap(text => of(createSourceFileFromText(fileName, text))),
+    switchMap(text =>
+      of({ file: createSourceFileFromText(fileName, text), text }),
+    ),
   );
