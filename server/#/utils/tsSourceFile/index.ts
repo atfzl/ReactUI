@@ -1,7 +1,6 @@
 import { readFileToString$ } from '#/utils/file';
 import * as _ from 'lodash';
-import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 export const createSourceFileFromText = (fileName: string, text: string) => {
@@ -18,7 +17,5 @@ export const createSourceFileFromText = (fileName: string, text: string) => {
 
 export const createSourceFile$ = (fileName: string) =>
   readFileToString$(fileName).pipe(
-    switchMap(text =>
-      of({ file: createSourceFileFromText(fileName, text), text }),
-    ),
+    map(text => ({ file: createSourceFileFromText(fileName, text), text })),
   );
