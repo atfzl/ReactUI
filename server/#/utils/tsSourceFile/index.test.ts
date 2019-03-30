@@ -1,3 +1,4 @@
+import { verifyFault } from '#/utils/test';
 import * as ts from 'typescript';
 import { createSourceFile$ } from './index';
 
@@ -11,7 +12,7 @@ it('reads a file', done => {
 it('non existing file', done => {
   createSourceFile$('').subscribe({
     error: x => {
-      expect(x).toMatchSnapshot();
+      verifyFault(x);
       done();
     },
   });

@@ -1,5 +1,5 @@
-import { Fault } from '#/common/models/Fault';
 import { readFileToString$ } from '#/utils/file';
+import { verifyFault } from '#/utils/test';
 import { switchMap } from 'rxjs/operators';
 import deleteElement from './index';
 
@@ -36,8 +36,7 @@ it('throws Fault if element at cursor is not found', done => {
     )
     .subscribe({
       error: x => {
-        expect(x instanceof Fault).toBeTruthy();
-        expect(x).toMatchSnapshot();
+        verifyFault(x);
         done();
       },
     });

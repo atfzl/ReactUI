@@ -1,3 +1,4 @@
+import { verifyFault } from '#/utils/test';
 import { readFileToString$ } from './index';
 
 it('should give string of a text file', done => {
@@ -10,7 +11,7 @@ it('should give string of a text file', done => {
 it('should not work with something which is not a file', done => {
   readFileToString$(__dirname).subscribe({
     error: x => {
-      expect(x).toMatchSnapshot();
+      verifyFault(x);
       done();
     },
   });

@@ -1,20 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should not work with something which is not a file 1`] = `
-Fault {
+Object {
   "data": Object {
     "error": "{\\"errno\\":-21,\\"code\\":\\"EISDIR\\",\\"syscall\\":\\"read\\"}",
     "fileName": "/Users/I0459/scratch/personal/beragi/server/#/utils/file",
   },
   "level": 0,
   "message": "Cannot read file",
-  "stack": "Error
-    at new Fault (/Users/I0459/scratch/personal/beragi/server/#/common/models/Fault/index.ts:11:18)
-    at CatchSubscriber.exports.readFile$.pipe.operators_1.catchError.err [as selector] (/Users/I0459/scratch/personal/beragi/server/#/utils/file/index.ts:13:9)
-    at CatchSubscriber.Object.<anonymous>.CatchSubscriber.error (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/catchError.ts:132:23)
-    at AsyncSubject.Object.<anonymous>.Subject.error (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Subject.ts:86:15)
-    at AsyncSubject.Object.<anonymous>.AsyncSubject.error (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/AsyncSubject.ts:38:18)
-    at handler (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/observable/bindNodeCallback.ts:191:23)
-    at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:495:12)",
+  "stack": undefined,
 }
 `;

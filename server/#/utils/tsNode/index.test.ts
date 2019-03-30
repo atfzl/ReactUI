@@ -1,3 +1,4 @@
+import { verifyFault } from '#/utils/test';
 import { createSourceFile$ } from '#/utils/tsSourceFile';
 import { pluck, switchMap } from 'rxjs/operators';
 import * as ts from 'typescript';
@@ -19,7 +20,7 @@ describe('findNode', () => {
   it('fail', done => {
     getRootNode$.pipe(switchMap(findNode$(ts.isJsxFragment))).subscribe({
       error: x => {
-        expect(x).toMatchSnapshot();
+        verifyFault(x);
         done();
       },
     });
