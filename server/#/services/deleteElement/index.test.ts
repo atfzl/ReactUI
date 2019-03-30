@@ -1,5 +1,6 @@
 import { readFileToString$ } from '#/utils/file';
 import { verifyFault } from '#/utils/test';
+import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import deleteElement from './index';
 
@@ -33,6 +34,25 @@ it('throws Fault if element at cursor is not found', done => {
   readFileToString$(fileName)
     .pipe(
       switchMap(deleteElement({ lineNumber: 3, columnNumber: 7, fileName })),
+    )
+    .subscribe({
+      error: x => {
+        verifyFault(x);
+        done();
+      },
+    });
+});
+
+it('throws if given invalid file', done => {
+  of('fake file string')
+    .pipe(
+      switchMap(
+        deleteElement({
+          lineNumber: 3,
+          columnNumber: 7,
+          fileName: 'fake file name',
+        }),
+      ),
     )
     .subscribe({
       error: x => {

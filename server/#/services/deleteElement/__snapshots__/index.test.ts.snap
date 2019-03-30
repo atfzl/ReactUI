@@ -404,3 +404,144 @@ export default Component;
   "stack": undefined,
 }
 `;
+
+exports[`throws if given invalid file 1`] = `
+Object {
+  "data": Object {
+    "baseError": Fault {
+      "data": Object {
+        "rootNode": SourceFileObject {
+          "amdDependencies": Array [],
+          "bindDiagnostics": Array [],
+          "bindSuggestionDiagnostics": undefined,
+          "checkJsDirective": undefined,
+          "end": 16,
+          "endOfFileToken": TokenObject {
+            "end": 16,
+            "flags": 0,
+            "kind": 1,
+            "parent": [Circular],
+            "pos": 16,
+          },
+          "externalModuleIndicator": undefined,
+          "fileName": "fake file name",
+          "flags": 0,
+          "hasNoDefaultLib": false,
+          "identifierCount": 3,
+          "identifiers": Map {
+            "fake" => "fake",
+            "file" => "file",
+            "string" => "string",
+          },
+          "isDeclarationFile": false,
+          "kind": 279,
+          "languageVariant": 0,
+          "languageVersion": 6,
+          "libReferenceDirectives": Array [],
+          "nodeCount": 8,
+          "parent": undefined,
+          "parseDiagnostics": Array [
+            Object {
+              "category": 1,
+              "code": 1005,
+              "file": [Circular],
+              "length": 4,
+              "messageText": "';' expected.",
+              "reportsUnnecessary": undefined,
+              "start": 5,
+            },
+            Object {
+              "category": 1,
+              "code": 1005,
+              "file": [Circular],
+              "length": 6,
+              "messageText": "';' expected.",
+              "reportsUnnecessary": undefined,
+              "start": 10,
+            },
+          ],
+          "pos": 0,
+          "pragmas": Map {},
+          "referencedFiles": Array [],
+          "scriptKind": 3,
+          "statements": Array [
+            NodeObject {
+              "end": 4,
+              "expression": IdentifierObject {
+                "end": 4,
+                "escapedText": "fake",
+                "flags": 0,
+                "parent": [Circular],
+                "pos": 0,
+              },
+              "flags": 32768,
+              "kind": 221,
+              "modifierFlagsCache": 536870912,
+              "parent": [Circular],
+              "pos": 0,
+              "transformFlags": undefined,
+            },
+            NodeObject {
+              "end": 9,
+              "expression": IdentifierObject {
+                "end": 9,
+                "escapedText": "file",
+                "flags": 0,
+                "parent": [Circular],
+                "pos": 4,
+              },
+              "flags": 32768,
+              "kind": 221,
+              "modifierFlagsCache": 536870912,
+              "parent": [Circular],
+              "pos": 4,
+              "transformFlags": undefined,
+            },
+            NodeObject {
+              "end": 16,
+              "expression": IdentifierObject {
+                "end": 16,
+                "escapedText": "string",
+                "flags": 0,
+                "originalKeywordKind": 138,
+                "parent": [Circular],
+                "pos": 9,
+              },
+              "flags": 0,
+              "kind": 221,
+              "modifierFlagsCache": 536870912,
+              "parent": [Circular],
+              "pos": 9,
+              "transformFlags": undefined,
+            },
+          ],
+          "text": "fake file string",
+          "transformFlags": undefined,
+          "typeReferenceDirectives": Array [],
+        },
+      },
+      "level": 0,
+      "message": "Node not found",
+      "stack": "Error
+    at new Fault (/Users/I0459/scratch/personal/beragi/server/#/common/models/Fault/index.ts:15:18)
+    at Observable.rxjs_1.Observable.subscriber [as _subscribe] (/Users/I0459/scratch/personal/beragi/server/#/utils/tsNode/index.ts:55:22)
+    at Observable.Object.<anonymous>.Observable._trySubscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:231:19)
+    at Observable.Object.<anonymous>.Observable.subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:212:14)
+    at Observable.rxjs_1.Observable.observer [as _subscribe] (/Users/I0459/scratch/personal/beragi/server/#/operators/catchThrowError/index.ts:8:19)
+    at Observable.Object.<anonymous>.Observable._trySubscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:231:19)
+    at Observable.Object.<anonymous>.Observable.subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:212:14)
+    at MapOperator.Object.<anonymous>.MapOperator.call (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/map.ts:59:19)
+    at Observable.Object.<anonymous>.Observable.subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:207:25)
+    at /Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/util/subscribeTo.ts:22:23",
+    },
+    "cursorLocation": Object {
+      "columnNumber": 7,
+      "fileName": "fake file name",
+      "lineNumber": 3,
+    },
+  },
+  "level": 0,
+  "message": "Element not found at cursor",
+  "stack": undefined,
+}
+`;
