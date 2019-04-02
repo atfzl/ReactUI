@@ -2,14 +2,14 @@ import { TagCursor } from '#/common/models/file';
 import { catchThrowFault } from '#/operators/catchThrowError';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import { findNode$, isAtCursor } from '#/utils/tsNode';
-import { createSourceFileFromText } from '#/utils/tsSourceFile';
+import { createSourceFile$ } from '#/utils/tsSourceFile';
 import * as R from 'ramda';
-import { of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, pluck, switchMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 
-const deleteElement$ = R.curry((cursor: TagCursor, fileContent: string) => {
-  return of(createSourceFileFromText(cursor.fileName, fileContent)).pipe(
+const deleteElement$ = (cursor: TagCursor) =>
+  createSourceFile$(cursor.fileName).pipe(
+    pluck('file'),
     switchMap(sourceFileNode =>
       findNode$<ts.JsxElement>(R.both(ts.isJsxElement, isAtCursor(cursor)))(
         sourceFileNode,
@@ -33,6 +33,5 @@ const deleteElement$ = R.curry((cursor: TagCursor, fileContent: string) => {
       ),
     ),
   );
-});
 
 export default deleteElement$;
