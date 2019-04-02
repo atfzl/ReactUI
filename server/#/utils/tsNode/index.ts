@@ -54,9 +54,7 @@ export const findNodeAtCursor$ = <T extends ts.Node>(
   createSourceFile$(cursor.fileName).pipe(
     pluck('file'),
     switchMap(findNode$<T>(R.both(isAtCursor(cursor), predicate))),
-    catchThrowFault('Node not found at cursor', {
-      cursorLocation: cursor,
-    }),
+    catchThrowFault('Node not found at cursor', { cursor }),
   );
 
 export const findElementAtCursor$ = findNodeAtCursor$<ts.JsxElement>(

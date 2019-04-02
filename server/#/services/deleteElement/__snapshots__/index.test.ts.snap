@@ -25,7 +25,7 @@ export default Component;
 exports[`throws Fault if element at cursor is not found 1`] = `
 Object {
   "data": Object {
-    "cursorLocation": Object {
+    "cursor": Object {
       "columnNumber": 7,
       "fileName": "/Users/I0459/scratch/personal/beragi/server/#/services/deleteElement/__fixtures__/1.tsx",
       "lineNumber": 3,
@@ -397,7 +397,7 @@ export default Component;
 exports[`throws if given invalid file 1`] = `
 Object {
   "data": Object {
-    "cursorLocation": Object {
+    "cursor": Object {
       "columnNumber": 7,
       "fileName": "fake file name",
       "lineNumber": 3,
