@@ -1,9 +1,9 @@
-import { TagCursor } from '#/common/models/file';
 import { StyleObject } from '#/common/models/Style';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import { findTemplateStringAtCursor$ } from '#/utils/tsNode';
 import * as _ from 'lodash/fp';
 import * as R from 'ramda';
+import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as ts from 'typescript';
 
@@ -15,8 +15,9 @@ const stringifyStyles = (styleObject: StyleObject) => {
   )(styleObject);
 };
 
-const flushStyles$ = (cursor: TagCursor, styleObject: StyleObject) => {
-  return findTemplateStringAtCursor$(cursor).pipe(
+const flushStyles$ = (styleObject: StyleObject) =>
+  pipe(
+    findTemplateStringAtCursor$,
     map(cursorNode => {
       const replacementBuilder = new ReplacementBuilder(
         cursorNode.getSourceFile(),
@@ -61,6 +62,5 @@ const flushStyles$ = (cursor: TagCursor, styleObject: StyleObject) => {
       return replacementBuilder.applyReplacements();
     }),
   );
-};
 
 export default flushStyles$;
