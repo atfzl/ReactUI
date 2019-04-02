@@ -11,15 +11,13 @@ export default Foo;
 "
 `;
 
-exports[`substitution template literal success 1`] = `
+exports[`substitution template literal should override static string in tail of last template 1`] = `
 "import * as styled from 'styled';
 
-const Foo = styled.div\`
-  color: red;
+const Foo = styled.div\`  color: red;
   display: \${props => (props.foo ? 'flex' : 'block' && true)};
   \${props => props.bar && 'cursor: pointer;'}
-  background-color: red;
-display: flex;
+  display: flex;
 \`;
 
 export default Foo;

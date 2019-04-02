@@ -37,9 +37,26 @@ const flushStyles$ = R.curry((cursor: TagCursor, styleObject: StyleObject) => {
           '`\n' + styleString + '\n`',
         );
       } else {
+        const templateSpansLength = cursorNode.template.templateSpans.length;
+        const tail =
+          cursorNode.template.templateSpans[templateSpansLength - 1].literal;
+        const tailStaticStringMatch = tail.getText().match(/([\w-]*:.*)/);
+        const tailStaticStringStartIndex =
+          tailStaticStringMatch && tailStaticStringMatch.index
+            ? tailStaticStringMatch.index
+            : 0;
+
+        const totalLengthWithoutTail =
+          cursorNode.template.getText().length - tail.getText().length;
+
+        const tailStaticStringIndexInTemplate =
+          totalLengthWithoutTail + tailStaticStringStartIndex;
+
         const originalTemplateString = _.trimChars(
-          '`',
-          cursorNode.template.getText(),
+          '`\n',
+          R.slice(0, tailStaticStringIndexInTemplate)(
+            cursorNode.template.getText(),
+          ),
         );
 
         replacementBuilder.replaceNodeWithText(

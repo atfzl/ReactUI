@@ -21,7 +21,7 @@ describe('no substitution template literal', () => {
 describe('substitution template literal', () => {
   const fileSubstitutionTemplate1 = `${__dirname}/__fixtures__/substitutionTemplate1.tsx`;
 
-  it('success', done => {
+  it('should override static string in tail of last template', done => {
     flushStyles$(
       {
         fileName: fileSubstitutionTemplate1,
