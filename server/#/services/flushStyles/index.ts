@@ -1,11 +1,10 @@
 import { TagCursor } from '#/common/models/file';
 import { StyleObject } from '#/common/models/Style';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
-import { findNode$, isAtCursor } from '#/utils/tsNode';
-import { createSourceFile$ } from '#/utils/tsSourceFile';
+import { findNodeAtCursor$ } from '#/utils/tsNode';
 import * as _ from 'lodash/fp';
 import * as R from 'ramda';
-import { map, pluck, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const stringifyStyles = (styleObject: StyleObject) => {
@@ -17,13 +16,10 @@ const stringifyStyles = (styleObject: StyleObject) => {
 };
 
 const flushStyles$ = R.curry((cursor: TagCursor, styleObject: StyleObject) => {
-  return createSourceFile$(cursor.fileName).pipe(
-    pluck('file'),
-    switchMap(
-      findNode$<ts.TaggedTemplateExpression>(
-        R.both(isAtCursor(cursor), ts.isTaggedTemplateExpression),
-      ),
-    ),
+  return findNodeAtCursor$<ts.TaggedTemplateExpression>(
+    cursor,
+    ts.isTaggedTemplateExpression,
+  ).pipe(
     map(cursorNode => {
       const replacementBuilder = new ReplacementBuilder(
         cursorNode.getSourceFile(),

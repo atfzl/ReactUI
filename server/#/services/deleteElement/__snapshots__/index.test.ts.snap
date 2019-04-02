@@ -383,15 +383,15 @@ export default Component;
       "message": "Node not found",
       "stack": "Error
     at new Fault (/Users/I0459/scratch/personal/beragi/server/#/common/models/Fault/index.ts:15:18)
-    at Observable.rxjs_1.Observable.subscriber [as _subscribe] (/Users/I0459/scratch/personal/beragi/server/#/utils/tsNode/index.ts:55:22)
+    at Observable.rxjs_1.Observable.subscriber [as _subscribe] (/Users/I0459/scratch/personal/beragi/server/#/utils/tsNode/index.ts:59:22)
     at Observable.Object.<anonymous>.Observable._trySubscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:231:19)
     at Observable.Object.<anonymous>.Observable.subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:212:14)
-    at Observable.rxjs_1.Observable.observer [as _subscribe] (/Users/I0459/scratch/personal/beragi/server/#/operators/catchThrowError/index.ts:8:19)
-    at Observable.Object.<anonymous>.Observable._trySubscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:231:19)
-    at Observable.Object.<anonymous>.Observable.subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:212:14)
-    at MapOperator.Object.<anonymous>.MapOperator.call (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/map.ts:59:19)
-    at Observable.Object.<anonymous>.Observable.subscribe (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Observable.ts:207:25)
-    at /Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/util/subscribeTo.ts:22:23",
+    at /Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/util/subscribeTo.ts:22:23
+    at Object.subscribeToResult (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/util/subscribeToResult.ts:25:29)
+    at SwitchMapSubscriber.Object.<anonymous>.SwitchMapSubscriber._innerSub (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/switchMap.ts:122:30)
+    at SwitchMapSubscriber.Object.<anonymous>.SwitchMapSubscriber._next (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/switchMap.ts:111:10)
+    at SwitchMapSubscriber.Object.<anonymous>.Subscriber.next (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Subscriber.ts:99:12)
+    at MapSubscriber.Object.<anonymous>.MapSubscriber._next (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/map.ts:89:22)",
     },
     "cursorLocation": Object {
       "columnNumber": 7,
@@ -408,11 +408,30 @@ export default Component;
 exports[`throws if given invalid file 1`] = `
 Object {
   "data": Object {
-    "error": "{\\"errno\\":-2,\\"code\\":\\"ENOENT\\",\\"syscall\\":\\"open\\",\\"path\\":\\"fake file name\\"}",
-    "fileName": "fake file name",
+    "baseError": Fault {
+      "data": Object {
+        "error": "{\\"errno\\":-2,\\"code\\":\\"ENOENT\\",\\"syscall\\":\\"open\\",\\"path\\":\\"fake file name\\"}",
+        "fileName": "fake file name",
+      },
+      "level": 0,
+      "message": "Cannot read file",
+      "stack": "Error
+    at new Fault (/Users/I0459/scratch/personal/beragi/server/#/common/models/Fault/index.ts:15:18)
+    at CatchSubscriber.exports.readFile$.pipe.operators_1.catchError.err [as selector] (/Users/I0459/scratch/personal/beragi/server/#/utils/file/index.ts:13:9)
+    at CatchSubscriber.Object.<anonymous>.CatchSubscriber.error (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/operators/catchError.ts:132:23)
+    at AsyncSubject.Object.<anonymous>.Subject.error (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/Subject.ts:86:15)
+    at AsyncSubject.Object.<anonymous>.AsyncSubject.error (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/AsyncSubject.ts:38:18)
+    at ReadFileContext.handler [as callback] (/Users/I0459/scratch/personal/beragi/server/node_modules/rxjs/src/internal/observable/bindNodeCallback.ts:191:23)
+    at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:420:13)",
+    },
+    "cursorLocation": Object {
+      "columnNumber": 7,
+      "fileName": "fake file name",
+      "lineNumber": 3,
+    },
   },
   "level": 0,
-  "message": "Cannot read file",
+  "message": "Element not found at cursor",
   "stack": undefined,
 }
 `;

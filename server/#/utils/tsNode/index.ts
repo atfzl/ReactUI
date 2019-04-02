@@ -1,7 +1,11 @@
 import { Fault } from '#/common/models/Fault';
 import { TagCursor } from '#/common/models/file';
+import { catchThrowFault } from '#/operators/catchThrowError';
+import * as R from 'ramda';
 import { Observable } from 'rxjs';
+import { pluck, switchMap } from 'rxjs/operators';
 import * as ts from 'typescript';
+import { createSourceFile$ } from '../tsSourceFile';
 
 export const getInfo = (node: ts.Node) => {
   const file = node.getSourceFile();
@@ -55,6 +59,18 @@ export const findNode$ = <T extends ts.Node>(
     subscriber.error(new Fault('Node not found', { rootNode }));
   });
 };
+
+export const findNodeAtCursor$ = <T extends ts.Node>(
+  cursor: TagCursor,
+  predicate: (node: ts.Node) => boolean = () => true,
+) =>
+  createSourceFile$(cursor.fileName).pipe(
+    pluck('file'),
+    switchMap(findNode$<T>(R.both(isAtCursor(cursor), predicate))),
+    catchThrowFault('Element not found at cursor', {
+      cursorLocation: cursor,
+    }),
+  );
 
 export const isAtCursor = (cursor: TagCursor) => (node: ts.Node) => {
   const { lineNumber, columnNumber } = getInfo(node);
