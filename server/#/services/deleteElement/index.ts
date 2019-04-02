@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 
-const deleteElement = R.curry((cursor: TagCursor, fileContent: string) => {
+const deleteElement$ = R.curry((cursor: TagCursor, fileContent: string) => {
   return of(createSourceFileFromText(cursor.fileName, fileContent)).pipe(
     switchMap(sourceFileNode =>
       findNode$<ts.JsxElement>(R.both(ts.isJsxElement, isAtCursor(cursor)))(
@@ -17,15 +17,15 @@ const deleteElement = R.curry((cursor: TagCursor, fileContent: string) => {
         catchThrowFault('Element not found at cursor', {
           cursorLocation: cursor,
         }),
-        map(elementNode => {
+        map(cursorNode => {
           const replacementBuilder = new ReplacementBuilder(sourceFileNode);
-          replacementBuilder.deleteNode(elementNode);
+          replacementBuilder.deleteNode(cursorNode);
 
           if (
-            !ts.isJsxElement(elementNode.parent) &&
-            !ts.isJsxFragment(elementNode.parent)
+            !ts.isJsxElement(cursorNode.parent) &&
+            !ts.isJsxFragment(cursorNode.parent)
           ) {
-            replacementBuilder.insert(elementNode.getStart(), 'null');
+            replacementBuilder.insert(cursorNode.getStart(), 'null');
           }
 
           return replacementBuilder.applyReplacements();
@@ -35,4 +35,4 @@ const deleteElement = R.curry((cursor: TagCursor, fileContent: string) => {
   );
 });
 
-export default deleteElement;
+export default deleteElement$;
