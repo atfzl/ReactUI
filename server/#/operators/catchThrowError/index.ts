@@ -11,7 +11,7 @@ export const catchThrowFault = <T>(...args: FaultArguments<any>) => (
       },
       error(err) {
         observer.error(
-          new Fault(args[0], { ...args[1], baseError: err }, args[2]),
+          new Fault(args[0], { ...args[1], parent: err }, args[2]),
         );
       },
       complete() {
