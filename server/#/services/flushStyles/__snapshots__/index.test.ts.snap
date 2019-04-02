@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`no substitution template literal success 1`] = `
+"import * as styled from 'styled';
+
+const Foo = styled.div\`
+display: flex;
+\`;
+
+export default Foo;
+"
+`;
+
+exports[`substitution template literal success 1`] = `
+"import * as styled from 'styled';
+
+const Foo = styled.div\`
+  color: red;
+  display: \${props => (props.foo ? 'flex' : 'block' && true)};
+  \${props => props.bar && 'cursor: pointer;'}
+  background-color: red;
+display: flex;
+\`;
+
+export default Foo;
+"
+`;
