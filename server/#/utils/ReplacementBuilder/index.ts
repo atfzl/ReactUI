@@ -3,11 +3,11 @@ import * as ts from 'typescript';
 
 export class ReplacementBuilder {
   private replacements: Replacement[];
-  private sourceNode: ts.Node;
+  private sourceFile: ts.SourceFile;
 
-  constructor(sourceNode: ts.Node, replacements: Replacement[] = []) {
+  constructor(sourceFile: ts.SourceFile, replacements: Replacement[] = []) {
+    this.sourceFile = sourceFile;
     this.replacements = replacements;
-    this.sourceNode = sourceNode;
   }
 
   public insert(pos: number, text: string) {
@@ -23,20 +23,15 @@ export class ReplacementBuilder {
   }
 
   public replaceNodeWithText(node: ts.Node, text: string) {
-    const sourceNodeStart = this.sourceNode.getStart();
-
     this.replacements = this.replacements.concat([
-      Replacement.delete(
-        node.getStart() - sourceNodeStart,
-        node.getEnd() - sourceNodeStart,
-      ),
-      Replacement.insert(node.getStart() - sourceNodeStart, text),
+      Replacement.delete(node.getStart(), node.getEnd()),
+      Replacement.insert(node.getStart(), text),
     ]);
   }
 
   public applyReplacements() {
     return Replacement.applyReplacements(
-      this.sourceNode.getText(),
+      this.sourceFile.getText(),
       this.replacements,
     );
   }
