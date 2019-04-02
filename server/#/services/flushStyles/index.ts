@@ -1,7 +1,7 @@
 import { TagCursor } from '#/common/models/file';
 import { StyleObject } from '#/common/models/Style';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
-import { findNodeAtCursor$ } from '#/utils/tsNode';
+import { findTemplateStringAtCursor$ } from '#/utils/tsNode';
 import * as _ from 'lodash/fp';
 import * as R from 'ramda';
 import { map } from 'rxjs/operators';
@@ -15,11 +15,8 @@ const stringifyStyles = (styleObject: StyleObject) => {
   )(styleObject);
 };
 
-const flushStyles$ = R.curry((cursor: TagCursor, styleObject: StyleObject) => {
-  return findNodeAtCursor$<ts.TaggedTemplateExpression>(
-    cursor,
-    ts.isTaggedTemplateExpression,
-  ).pipe(
+const flushStyles$ = (cursor: TagCursor, styleObject: StyleObject) => {
+  return findTemplateStringAtCursor$(cursor).pipe(
     map(cursorNode => {
       const replacementBuilder = new ReplacementBuilder(
         cursorNode.getSourceFile(),
@@ -64,6 +61,6 @@ const flushStyles$ = R.curry((cursor: TagCursor, styleObject: StyleObject) => {
       return replacementBuilder.applyReplacements();
     }),
   );
-});
+};
 
 export default flushStyles$;

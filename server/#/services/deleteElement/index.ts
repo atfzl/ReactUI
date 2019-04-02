@@ -1,11 +1,11 @@
 import { TagCursor } from '#/common/models/file';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
-import { findNodeAtCursor$ } from '#/utils/tsNode';
+import { findElementAtCursor$ } from '#/utils/tsNode';
 import { map } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const deleteElement$ = (cursor: TagCursor) =>
-  findNodeAtCursor$<ts.JsxElement>(cursor, ts.isJsxElement).pipe(
+  findElementAtCursor$(cursor).pipe(
     map(cursorNode => {
       const replacementBuilder = new ReplacementBuilder(
         cursorNode.getSourceFile(),

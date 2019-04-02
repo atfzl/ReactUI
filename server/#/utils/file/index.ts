@@ -15,7 +15,3 @@ export const readFileToString$ = (fileName: string) =>
     ),
     map(R.toString),
   );
-
-// export const removeExt = (str: string) => {
-//   return str.slice(0, -path.extname(str).length);
-// };
