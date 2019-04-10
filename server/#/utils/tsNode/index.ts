@@ -7,7 +7,7 @@ import { pluck, switchMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 import { createSourceFile$ } from '../tsSourceFile';
 
-export const getInfo = (node: ts.Node) => {
+export const getCursor = (node: ts.Node): TagCursor => {
   const file = node.getSourceFile();
 
   const { line, character: column } = file.getLineAndCharacterOfPosition(
@@ -25,16 +25,31 @@ export const getInfo = (node: ts.Node) => {
   };
 };
 
+export const findAllNodes$ = <T extends ts.Node>(
+  predicate: (node: ts.Node) => boolean,
+) => (rootNode: ts.Node): Observable<T> => {
+  return new Observable(subscriber => {
+    function _traverse(node: ts.Node) {
+      if (predicate(node)) {
+        subscriber.next(node as T);
+      }
+
+      ts.forEachChild(node, _traverse);
+    }
+
+    _traverse(rootNode);
+
+    subscriber.complete();
+  });
+};
+
 export const findNode$ = <T extends ts.Node>(
   predicate: (node: ts.Node) => boolean,
 ) => (rootNode: ts.Node): Observable<T> => {
   return new Observable(subscriber => {
-    let resolvedNode;
-
     function _traverse(node: ts.Node) {
       if (predicate(node)) {
-        resolvedNode = node as T;
-        subscriber.next(resolvedNode);
+        subscriber.next(node as T);
         subscriber.complete();
         return;
       }
@@ -66,7 +81,7 @@ export const findTemplateStringAtCursor$ = findNodeAtCursor$<
 >(ts.isTaggedTemplateExpression);
 
 export const isAtCursor = (cursor: TagCursor) => (node: ts.Node) => {
-  const { lineNumber, columnNumber } = getInfo(node);
+  const { lineNumber, columnNumber } = getCursor(node);
 
   return (
     lineNumber === cursor.lineNumber && columnNumber === cursor.columnNumber

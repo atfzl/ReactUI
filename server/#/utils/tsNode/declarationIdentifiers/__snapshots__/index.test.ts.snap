@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`all declarations success 1`] = `"of"`;
+
+exports[`all declarations success 2`] = `"serializeError"`;
+
+exports[`all declarations success 3`] = `"ts"`;
+
+exports[`all declarations success 4`] = `"a"`;
+
+exports[`all declarations success 5`] = `"b"`;
+
+exports[`all declarations success 6`] = `"f"`;
+
+exports[`all declarations success 7`] = `"g"`;
