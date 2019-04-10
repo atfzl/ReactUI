@@ -4,7 +4,7 @@ import { pipe } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 
-const getDeclarationIdentifiersAtNode = (
+export const getDeclarationIdentifiersAtNode = (
   node: ts.VariableDeclaration | ts.FunctionDeclaration | ts.ImportDeclaration,
 ) => {
   if (ts.isVariableDeclaration(node)) {
