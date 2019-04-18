@@ -12,7 +12,7 @@ const incrementName = (name: string) => {
   return `${name.slice(0, index)}_$${n + 1}`;
 };
 
-const getNewIdentifierNameCreator = (declarationIdentifierNodes: string[]) => {
+const incrementIdentifierNameFrom = (declarationIdentifierNodes: string[]) => {
   const newNames: Record<string, string> = {};
 
   return (name: string) => {
@@ -32,4 +32,4 @@ const getNewIdentifierNameCreator = (declarationIdentifierNodes: string[]) => {
   };
 };
 
-export default getNewIdentifierNameCreator;
+export default incrementIdentifierNameFrom;

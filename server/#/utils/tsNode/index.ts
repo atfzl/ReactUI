@@ -87,3 +87,7 @@ export const isAtCursor = (cursor: TagCursor) => (node: ts.Node) => {
     lineNumber === cursor.lineNumber && columnNumber === cursor.columnNumber
   );
 };
+
+export const isJsxLikeElement = R.unary(
+  R.anyPass([ts.isJsxElement, ts.isJsxOpeningElement]),
+);
