@@ -89,5 +89,5 @@ export const isAtCursor = (cursor: TagCursor) => (node: ts.Node) => {
 };
 
 export const isJsxLikeElement = R.unary(
-  R.anyPass([ts.isJsxElement, ts.isJsxOpeningElement]),
+  R.anyPass([ts.isJsxElement, ts.isJsxSelfClosingElement]),
 );
