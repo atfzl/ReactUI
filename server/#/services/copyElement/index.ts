@@ -5,11 +5,12 @@ import {
   findElementAtCursor$,
   getTagName,
   traverseElement,
+  traverseNodeReferences,
 } from '#/utils/tsNode';
 import { getDeclarationIdentifiersAtSourceFile } from '#/utils/tsNode/getDeclarationIdentifiers';
 import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameFrom';
-import { forkJoin } from 'rxjs';
-import { map, switchMap, tap, toArray } from 'rxjs/operators';
+import { EMPTY, forkJoin } from 'rxjs';
+import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
@@ -18,40 +19,60 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
     findElementAtCursor$(targetCursor),
   ).pipe(
     switchMap(([sourceCursorNode, targetCursorNode]) =>
-      getDeclarationIdentifiersAtSourceFile(
-        targetCursorNode.getSourceFile(),
+      forkJoin(
+        getDeclarationIdentifiersAtSourceFile(sourceCursorNode.getSourceFile()),
+        getDeclarationIdentifiersAtSourceFile(targetCursorNode.getSourceFile()),
       ).pipe(
-        switchMap(targetFileDeclarationIdentifiers => {
-          const incrementIdentifierName = incrementIdentifierNameFrom(
-            targetFileDeclarationIdentifiers.map(x => x.getText()),
-          );
+        switchMap(
+          ([
+            sourceFileDeclarationIdentifiers,
+            targetFileDeclarationIdentifiers,
+          ]) => {
+            const incrementIdentifierName = incrementIdentifierNameFrom(
+              targetFileDeclarationIdentifiers.map(x => x.getText()),
+            );
 
-          const rb = new ReplacementBuilder(sourceCursorNode);
+            const rb = new ReplacementBuilder(sourceCursorNode);
 
-          return traverseElement(sourceCursorNode).pipe(
-            tap(elementNode => {
-              if (
-                ts.isJsxElement(elementNode) ||
-                ts.isJsxSelfClosingElement(elementNode)
-              ) {
-                const tags = getTagName(elementNode);
+            return traverseElement(sourceCursorNode).pipe(
+              concatMap(elementNode => {
+                if (
+                  ts.isJsxElement(elementNode) ||
+                  ts.isJsxSelfClosingElement(elementNode)
+                ) {
+                  const tags = getTagName(elementNode);
+                  const openingTag = tags[0];
 
-                if (!isInterinsicTag(tags[0].getText())) {
-                  tags.forEach(tag => {
-                    rb.replaceNodeWithText(
-                      tag,
-                      incrementIdentifierName(tag.getText()),
+                  if (!isInterinsicTag(openingTag.getText())) {
+                    tags.forEach(tag => {
+                      rb.replaceNodeWithText(
+                        tag,
+                        incrementIdentifierName(tag.getText()),
+                      );
+                    });
+
+                    return traverseNodeReferences(
+                      openingTag,
+                      sourceFileDeclarationIdentifiers,
                     );
-                  });
+                  }
                 }
-              }
 
-              // handle PROPS
-            }),
-            toArray(),
-            map(() => rb.applyReplacements()),
-          );
-        }),
+                return EMPTY;
+              }),
+              tap(x => {
+                console.log(
+                  x.node.parent.getText(),
+                  x.definition.parent.getText(),
+                );
+              }),
+              toArray(),
+              map(() => {
+                return rb.applyReplacements();
+              }),
+            );
+          },
+        ),
       ),
     ),
   );

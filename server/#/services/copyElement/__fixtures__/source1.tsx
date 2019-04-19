@@ -1,8 +1,10 @@
 import * as React from 'react';
 import * as styled from 'styled';
 
+const color = 'blue';
+
 const Button = styled.button`
-  color: blue;
+  color: ${color};
 `;
 
 const SourceComponent = () => (
