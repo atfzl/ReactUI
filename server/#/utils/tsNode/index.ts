@@ -2,7 +2,7 @@ import { Fault } from '#/common/models/Fault';
 import { TagCursor } from '#/common/models/file';
 import { catchThrowFault } from '#/operators/catchThrowError';
 import * as R from 'ramda';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { pluck, switchMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 import { createSourceFile$ } from '../tsSourceFile';
@@ -65,9 +65,11 @@ export const findNode$ = <T extends ts.Node>(
 
 export const findNodeAtCursor$ = <T extends ts.Node>(
   predicate: (node: ts.Node) => boolean = () => true,
-) => (cursor: TagCursor) =>
-  createSourceFile$(cursor.fileName).pipe(
-    pluck('file'),
+) => (cursor: TagCursor, sourceNode?: ts.Node) =>
+  (sourceNode
+    ? of(sourceNode)
+    : createSourceFile$(cursor.fileName).pipe(pluck('file'))
+  ).pipe(
     switchMap(findNode$<T>(R.both(isAtCursor(cursor), predicate))),
     catchThrowFault('Node not found at cursor', { cursor }),
   );
@@ -88,6 +90,6 @@ export const isAtCursor = (cursor: TagCursor) => (node: ts.Node) => {
   );
 };
 
-export const isJsxLikeElement = R.unary(
+export const isJsxLikeElement: (a: ts.Node) => boolean = R.unary(
   R.anyPass([ts.isJsxElement, ts.isJsxSelfClosingElement]),
 );

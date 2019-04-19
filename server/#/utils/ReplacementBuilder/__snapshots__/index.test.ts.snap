@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete should work with a jsxElement as sourceNode 1`] = `
+"<button>
+      
+      <input value=\\"foo\\" />
+    </button>"
+`;
+
+exports[`replaceNodeWithText should work with a jsxElement as sourceNode 1`] = `
+"<button>
+      rrrr
+      <input value=\\"foo\\" />
+    </button>"
+`;
+
+exports[`should delete node 1`] = `
+"import * as React from 'react';
+
+const Button = () => {
+  return (
+    <button>
+      
+      <input value=\\"foo\\" />
+    </button>
+  );
+};
+
+export default Button;
+"
+`;
+
+exports[`should replace div with text 1`] = `
+"import * as React from 'react';
+
+const Button = () => {
+  return (
+    <button>
+      replaced text
+      <input value=\\"foo\\" />
+    </button>
+  );
+};
+
+export default Button;
+"
+`;

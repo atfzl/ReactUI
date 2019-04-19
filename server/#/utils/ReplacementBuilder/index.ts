@@ -3,10 +3,10 @@ import * as ts from 'typescript';
 
 export class ReplacementBuilder {
   private replacements: Replacement[];
-  private sourceFile: ts.SourceFile;
+  private sourceNode: ts.Node;
 
-  constructor(sourceFile: ts.SourceFile, replacements: Replacement[] = []) {
-    this.sourceFile = sourceFile;
+  constructor(sourceNode: ts.Node, replacements: Replacement[] = []) {
+    this.sourceNode = sourceNode;
     this.replacements = replacements;
   }
 
@@ -19,19 +19,27 @@ export class ReplacementBuilder {
   }
 
   public deleteNode(node: ts.Node) {
-    this.replacements.push(Replacement.delete(node.getStart(), node.getEnd()));
+    this.replacements.push(
+      Replacement.delete(
+        node.getStart() - this.sourceNode.getStart(),
+        node.getEnd() - this.sourceNode.getStart(),
+      ),
+    );
   }
 
   public replaceNodeWithText(node: ts.Node, text: string) {
     this.replacements = this.replacements.concat([
-      Replacement.delete(node.getStart(), node.getEnd()),
-      Replacement.insert(node.getStart(), text),
+      Replacement.delete(
+        node.getStart() - this.sourceNode.getStart(),
+        node.getEnd() - this.sourceNode.getStart(),
+      ),
+      Replacement.insert(node.getStart() - this.sourceNode.getStart(), text),
     ]);
   }
 
   public applyReplacements() {
     return Replacement.applyReplacements(
-      this.sourceFile.getText(),
+      this.sourceNode.getText(),
       this.replacements,
     );
   }
