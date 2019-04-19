@@ -1,7 +1,7 @@
 import { findAllNodes$ } from '#/utils/tsNode';
 import * as R from 'ramda';
 import { pipe } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { concatMap, toArray } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 export const getDeclarationIdentifiersAtNode = (
@@ -49,4 +49,5 @@ export const getDeclarationIdentifiersAtSourceFile = pipe(
     ]),
   ),
   concatMap(getDeclarationIdentifiersAtNode),
+  toArray(),
 );

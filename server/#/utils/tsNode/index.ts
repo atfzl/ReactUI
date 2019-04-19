@@ -2,8 +2,8 @@ import { Fault } from '#/common/models/Fault';
 import { TagCursor } from '#/common/models/file';
 import { catchThrowFault } from '#/operators/catchThrowError';
 import * as R from 'ramda';
-import { Observable, of } from 'rxjs';
-import { pluck, switchMap } from 'rxjs/operators';
+import { EMPTY, from, Observable, of } from 'rxjs';
+import { concatAll, expand, map, pluck, switchMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 import { createSourceFile$ } from '../tsSourceFile';
 
@@ -101,3 +101,21 @@ export const getTagName = (node: ts.JsxElement | ts.JsxSelfClosingElement) => {
 
   return [node.tagName];
 };
+
+export const traverseElement = (
+  element: ts.JsxElement | ts.JsxSelfClosingElement,
+) =>
+  of([element]).pipe(
+    expand(elementNodes =>
+      from(elementNodes).pipe(
+        map(elementNode => {
+          if (ts.isJsxElement(elementNode)) {
+            return from(elementNode.children);
+          }
+
+          return EMPTY;
+        }),
+      ),
+    ),
+    concatAll(),
+  );

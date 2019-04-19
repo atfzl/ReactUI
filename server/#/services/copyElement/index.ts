@@ -4,19 +4,12 @@ import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import {
   findElementAtCursor$,
   getTagName,
-  isJsxLikeElement,
+  traverseElement,
 } from '#/utils/tsNode';
 import { getDeclarationIdentifiersAtSourceFile } from '#/utils/tsNode/getDeclarationIdentifiers';
 import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameFrom';
-import { EMPTY, forkJoin, from, of } from 'rxjs';
-import {
-  concatAll,
-  expand,
-  filter,
-  map,
-  switchMap,
-  toArray,
-} from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { map, switchMap, tap, toArray } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
@@ -28,56 +21,37 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
       getDeclarationIdentifiersAtSourceFile(
         targetCursorNode.getSourceFile(),
       ).pipe(
-        toArray(),
-        switchMap(targetFileDeclarationIdentifiers =>
-          from(targetFileDeclarationIdentifiers).pipe(
-            map(bindingName => bindingName.getText()),
-            toArray(),
-            switchMap(targetFileDeclarationIdentifiersText => {
-              const incrementIdentifierName = incrementIdentifierNameFrom(
-                targetFileDeclarationIdentifiersText,
-              );
+        switchMap(targetFileDeclarationIdentifiers => {
+          const incrementIdentifierName = incrementIdentifierNameFrom(
+            targetFileDeclarationIdentifiers.map(x => x.getText()),
+          );
 
-              const rb = new ReplacementBuilder(sourceCursorNode);
+          const rb = new ReplacementBuilder(sourceCursorNode);
 
-              return of([sourceCursorNode]).pipe(
-                expand(elementNodes =>
-                  from(elementNodes).pipe(
-                    map(elementNode => {
-                      const tags = getTagName(elementNode);
+          return traverseElement(sourceCursorNode).pipe(
+            tap(elementNode => {
+              if (
+                ts.isJsxElement(elementNode) ||
+                ts.isJsxSelfClosingElement(elementNode)
+              ) {
+                const tags = getTagName(elementNode);
 
-                      tags.forEach(tag => {
-                        if (!isInterinsicTag(tag.getText())) {
-                          rb.replaceNodeWithText(
-                            tag,
-                            incrementIdentifierName(tag.getText()),
-                          );
-                        }
-                      });
+                if (!isInterinsicTag(tags[0].getText())) {
+                  tags.forEach(tag => {
+                    rb.replaceNodeWithText(
+                      tag,
+                      incrementIdentifierName(tag.getText()),
+                    );
+                  });
+                }
+              }
 
-                      // tag reference recursive
-
-                      // handle PROPS
-
-                      // continue RECURSION
-
-                      if (ts.isJsxElement(elementNode)) {
-                        return from(elementNode.children).pipe(
-                          filter(isJsxLikeElement),
-                        );
-                      }
-
-                      return EMPTY;
-                    }),
-                  ),
-                ),
-                concatAll(),
-                toArray(),
-                map(() => rb.applyReplacements()),
-              );
+              // handle PROPS
             }),
-          ),
-        ),
+            toArray(),
+            map(() => rb.applyReplacements()),
+          );
+        }),
       ),
     ),
   );
