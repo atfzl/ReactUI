@@ -11,7 +11,9 @@ describe('all declarations', () => {
     getRootNode$
       .pipe(
         switchMap(getDeclarationIdentifiersAtSourceFile),
-        tap(node => expect(node.getText()).toMatchSnapshot()),
+        tap(nodes =>
+          nodes.forEach(node => expect(node.getText()).toMatchSnapshot()),
+        ),
       )
       .subscribe(() => {
         done();

@@ -3,7 +3,16 @@ import { TagCursor } from '#/common/models/file';
 import { catchThrowFault } from '#/operators/catchThrowError';
 import * as R from 'ramda';
 import { EMPTY, from, Observable, of } from 'rxjs';
-import { concatAll, expand, map, pluck, switchMap } from 'rxjs/operators';
+import {
+  concatAll,
+  concatMap,
+  expand,
+  filter,
+  map,
+  pluck,
+  switchMap,
+  toArray,
+} from 'rxjs/operators';
 import * as ts from 'typescript';
 import { createSourceFile$ } from '../tsSourceFile';
 
@@ -119,3 +128,35 @@ export const traverseElement = (
     ),
     concatAll(),
   );
+
+export const traverseNodeReferences = (
+  startingNode: ts.Node,
+  declarationIdentifiers: ts.BindingName[],
+) => {
+  const tagDefinition = declarationIdentifiers.find(
+    x => x.getText() === startingNode.getText(),
+  )!;
+
+  return of([{ node: startingNode, definition: tagDefinition }]).pipe(
+    expand(identifiers => {
+      return from(identifiers).pipe(
+        concatMap(identifier =>
+          findAllNodes$<ts.Identifier>(
+            node => ts.isIdentifier(node) && node !== identifier.definition,
+          )(identifier.definition.parent).pipe(
+            map(a => ({
+              definition: R.find(
+                x => x.getText() === a.getText(),
+                declarationIdentifiers,
+              )!,
+              node: a,
+            })),
+            filter(x => !!x.definition),
+            toArray(),
+          ),
+        ),
+      );
+    }),
+    concatAll(),
+  );
+};
