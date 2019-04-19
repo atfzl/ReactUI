@@ -1,5 +1,11 @@
 import { TagCursor } from '#/common/models/file';
-import { findElementAtCursor$, isJsxLikeElement } from '#/utils/tsNode';
+import { isInterinsicTag } from '#/common/utils';
+import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
+import {
+  findElementAtCursor$,
+  getTagName,
+  isJsxLikeElement,
+} from '#/utils/tsNode';
 import { getDeclarationIdentifiersAtSourceFile } from '#/utils/tsNode/getDeclarationIdentifiers';
 import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameFrom';
 import { EMPTY, forkJoin, from, of } from 'rxjs';
@@ -11,6 +17,7 @@ import {
   switchMap,
   toArray,
 } from 'rxjs/operators';
+import * as ts from 'typescript';
 
 const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
   forkJoin(
@@ -22,29 +29,51 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
         targetCursorNode.getSourceFile(),
       ).pipe(
         toArray(),
-        switchMap(fileDeclarationIdentifiers =>
-          from(fileDeclarationIdentifiers).pipe(
+        switchMap(targetFileDeclarationIdentifiers =>
+          from(targetFileDeclarationIdentifiers).pipe(
             map(bindingName => bindingName.getText()),
             toArray(),
-            switchMap(fileDeclarationIdentifiersText => {
+            switchMap(targetFileDeclarationIdentifiersText => {
               const incrementIdentifierName = incrementIdentifierNameFrom(
-                fileDeclarationIdentifiersText,
+                targetFileDeclarationIdentifiersText,
               );
 
-              incrementIdentifierName('sourceCursorNode');
+              const rb = new ReplacementBuilder(sourceCursorNode);
 
               return of([sourceCursorNode]).pipe(
                 expand(elementNodes =>
                   from(elementNodes).pipe(
                     map(elementNode => {
-                      return from(elementNode.children || EMPTY).pipe(
-                        filter(isJsxLikeElement),
-                      );
+                      const tags = getTagName(elementNode);
+
+                      tags.forEach(tag => {
+                        if (!isInterinsicTag(tag.getText())) {
+                          rb.replaceNodeWithText(
+                            tag,
+                            incrementIdentifierName(tag.getText()),
+                          );
+                        }
+                      });
+
+                      // tag reference recursive
+
+                      // handle PROPS
+
+                      // continue RECURSION
+
+                      if (ts.isJsxElement(elementNode)) {
+                        return from(elementNode.children).pipe(
+                          filter(isJsxLikeElement),
+                        );
+                      }
+
+                      return EMPTY;
                     }),
                   ),
                 ),
                 concatAll(),
-                map(n => n.getText()),
+                toArray(),
+                map(() => rb.applyReplacements()),
               );
             }),
           ),

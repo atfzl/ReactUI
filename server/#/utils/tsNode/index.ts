@@ -74,9 +74,9 @@ export const findNodeAtCursor$ = <T extends ts.Node>(
     catchThrowFault('Node not found at cursor', { cursor }),
   );
 
-export const findElementAtCursor$ = findNodeAtCursor$<ts.JsxElement>(
-  ts.isJsxElement,
-);
+export const findElementAtCursor$ = findNodeAtCursor$<
+  ts.JsxElement | ts.JsxSelfClosingElement
+>(ts.isJsxElement);
 
 export const findTemplateStringAtCursor$ = findNodeAtCursor$<
   ts.TaggedTemplateExpression
@@ -93,3 +93,11 @@ export const isAtCursor = (cursor: TagCursor) => (node: ts.Node) => {
 export const isJsxLikeElement: (a: ts.Node) => boolean = R.unary(
   R.anyPass([ts.isJsxElement, ts.isJsxSelfClosingElement]),
 );
+
+export const getTagName = (node: ts.JsxElement | ts.JsxSelfClosingElement) => {
+  if (ts.isJsxElement(node)) {
+    return [node.openingElement.tagName, node.closingElement.tagName];
+  }
+
+  return [node.tagName];
+};
