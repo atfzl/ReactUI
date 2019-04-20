@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should work 1`] = `
+Object {
+  "insertions": Object {
+    "declarations": Array [
+      "const Button_$1 = styled_$1.button\`
+  color: red;
+\`;",
+      "const color_$ = 'blue';",
+      "const Button_$ = styled_$.button\`
+  color: \${color_$};
+\`;",
+    ],
+    "imports": Array [
+      "import * as styled_$1 from 'styled';",
+      "import * as styled_$ from 'styled';",
+    ],
+  },
+  "jsx": "<div>
+    <p>Source</p>
+    <input value=\\"foo\\" />
+    <Button_$>Click Me</Button_$>
+    <Button_$1>Click Me 2</Button_$1>
+  </div>",
+}
+`;

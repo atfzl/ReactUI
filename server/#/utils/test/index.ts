@@ -12,3 +12,6 @@ export const verifyFault = (fault: Fault) => {
   const cleanFault = { ...fault, stack: undefined };
   expect(cleanFault).toMatchSnapshot();
 };
+
+export const fixtureFile = (dirName: string, fileName: string) =>
+  `${dirName}/__fixtures__/${fileName}`;
