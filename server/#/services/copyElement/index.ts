@@ -111,9 +111,25 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
                   );
                 }
 
-                insertionsMap
-                  .get(x.definitionDeclaration)!
-                  .replaceNodeWithText(x.definition, newIdentifierName);
+                switch (true) {
+                  // single named import
+                  case ts.isImportSpecifier(x.definition.parent) &&
+                    x.definition.parent.name === x.definition &&
+                    !x.definition.parent.propertyName: {
+                    insertionsMap
+                      .get(x.definitionDeclaration)!
+                      .replaceNodeWithText(
+                        x.definition,
+                        `${x.definition.getText()} as ${newIdentifierName}`,
+                      );
+                    break;
+                  }
+                  default: {
+                    insertionsMap
+                      .get(x.definitionDeclaration)!
+                      .replaceNodeWithText(x.definition, newIdentifierName);
+                  }
+                }
               }),
               toArray(),
               map(() => {

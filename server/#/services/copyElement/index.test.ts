@@ -14,3 +14,31 @@ it('should work', done => {
     done();
   });
 });
+
+it('handle named imports', done => {
+  const sourceFile = fixtureFile(__dirname, 'source2.tsx');
+  const targetFile = fixtureFile(__dirname, 'source2.tsx');
+
+  copyElement$(
+    { fileName: sourceFile, lineNumber: 6, columnNumber: 5 },
+    { fileName: targetFile, lineNumber: 7, columnNumber: 5 },
+  ).subscribe(result => {
+    expect(result).toMatchSnapshot();
+
+    done();
+  });
+});
+
+it.only('handle named as imports', done => {
+  const sourceFile = fixtureFile(__dirname, 'source3.tsx');
+  const targetFile = fixtureFile(__dirname, 'source3.tsx');
+
+  copyElement$(
+    { fileName: sourceFile, lineNumber: 6, columnNumber: 5 },
+    { fileName: targetFile, lineNumber: 7, columnNumber: 5 },
+  ).subscribe(result => {
+    expect(result).toMatchSnapshot();
+
+    done();
+  });
+});

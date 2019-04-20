@@ -1,9 +1,9 @@
-import { Button } from 'Button';
+import { Button as Button_$ } from 'Button';
 import * as React from 'react';
 
 const SourceComponent = () => (
   <div>
-    <Button>Click Me</Button>
+    <Button_$>Click Me</Button_$>
     <div>nested</div>
   </div>
 );

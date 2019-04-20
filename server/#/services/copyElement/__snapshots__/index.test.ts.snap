@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`handle named as imports 1`] = `
+Object {
+  "insertions": Object {
+    "imports": Array [
+      "import { Button as Button_$1 } from 'Button';",
+    ],
+  },
+  "jsx": "<Button_$1>Click Me</Button_$1>",
+}
+`;
+
+exports[`handle named imports 1`] = `
+Object {
+  "insertions": Object {
+    "imports": Array [
+      "import { Button as Button_$ } from 'Button';",
+    ],
+  },
+  "jsx": "<Button_$>Click Me</Button_$>",
+}
+`;
+
 exports[`should work 1`] = `
 Object {
   "insertions": Object {
