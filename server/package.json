@@ -15,6 +15,7 @@
     "@types/lodash": "^4.14.123",
     "@types/node": "10",
     "@types/ramda": "^0.26.5",
+    "@types/resolve": "^0.0.8",
     "devtron": "^1.4.0",
     "electron": "^4.1.1",
     "fuse-box": "^3.7.1",
@@ -30,6 +31,7 @@
     "electron-better-ipc": "^0.1.2",
     "lodash": "^4.17.11",
     "ramda": "^0.26.1",
+    "resolve": "^1.10.0",
     "rxjs": "^6.4.0",
     "serialize-error": "^4.0.0",
     "stable": "^0.1.8"

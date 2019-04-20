@@ -1,6 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should not work with something which is not a file 1`] = `
+exports[`getPathRelativeToTarget should resolve .. paths 1`] = `"../../../index.ts"`;
+
+exports[`getPathRelativeToTarget should resolve ./ paths 1`] = `"./target1.ts"`;
+
+exports[`getPathRelativeToTarget should throw for invalid paths 1`] = `
+Fault {
+  "data": [Error: Cannot find module './targe1' from '/Users/I0459/scratch/personal/beragi/server/#/utils/file/__fixtures__'],
+  "level": 0,
+  "message": "Could not get path relative to target",
+  "stack": "Error
+    at new Fault (/Users/I0459/scratch/personal/beragi/server/#/common/models/Fault/index.ts:15:18)
+    at resolve (/Users/I0459/scratch/personal/beragi/server/#/utils/file/index.ts:37:13)
+    at /Users/I0459/scratch/personal/beragi/server/node_modules/resolve/lib/async.js:84:17
+    at load (/Users/I0459/scratch/personal/beragi/server/node_modules/resolve/lib/async.js:101:43)
+    at onex (/Users/I0459/scratch/personal/beragi/server/node_modules/resolve/lib/async.js:126:17)
+    at /Users/I0459/scratch/personal/beragi/server/node_modules/resolve/lib/async.js:13:69
+    at FSReqWrap.oncomplete (fs.js:152:21)",
+}
+`;
+
+exports[`readFileToString$ should not work with something which is not a file 1`] = `
 Object {
   "data": Object {
     "error": "{\\"errno\\":-21,\\"code\\":\\"EISDIR\\",\\"syscall\\":\\"read\\"}",
