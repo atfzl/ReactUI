@@ -49,7 +49,7 @@ describe('getPathRelativeToTarget', () => {
       './targe1',
     ).subscribe({
       error: err => {
-        expect(err).toMatchSnapshot();
+        verifyFault(err);
         done();
       },
     });

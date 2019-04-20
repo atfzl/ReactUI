@@ -1,22 +1,19 @@
 import { TagCursor } from '#/common/models/file';
-import { isInterinsicTag } from '#/common/utils';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import {
   DeclarationStatement,
   findAncestorNode,
   findElementAtCursor$,
-  getTagName,
   isDeclarationStatement,
-  isJsxLikeElement,
   traverseElement,
-  traverseNodeReferences,
 } from '#/utils/tsNode';
 import { getDeclarationIdentifiersAtSourceFile } from '#/utils/tsNode/getDeclarationIdentifiers';
 import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameFrom';
 import * as R from 'ramda';
-import { EMPTY, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
-import * as ts from 'typescript';
+import handleChildElements from './handleChildElements';
+import handleRecursiveDefinitions from './handleRecursiveDefinitions';
 
 const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
   forkJoin(
@@ -44,33 +41,13 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
             >();
 
             return traverseElement(sourceCursorNode).pipe(
-              concatMap(elementNode => {
-                if (
-                  ts.isJsxElement(elementNode) ||
-                  ts.isJsxSelfClosingElement(elementNode)
-                ) {
-                  const tags = getTagName(elementNode);
-                  const openingTag = tags[0];
-
-                  if (!isInterinsicTag(openingTag.getText())) {
-                    tags.forEach(tag => {
-                      rb.replaceNodeWithText(
-                        tag,
-                        incrementIdentifierName(tag.getText()),
-                      );
-                    });
-
-                    // handle props
-
-                    return traverseNodeReferences(
-                      openingTag,
-                      sourceFileDeclarationIdentifiers,
-                    );
-                  }
-                }
-
-                return EMPTY;
-              }),
+              concatMap(
+                handleChildElements(
+                  rb,
+                  sourceFileDeclarationIdentifiers,
+                  incrementIdentifierName,
+                ),
+              ),
               map(({ node, definition }) => {
                 return {
                   node,
@@ -83,80 +60,13 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
                   )(definition)!,
                 };
               }),
-              map(
-                ({
-                  node,
-                  nodeDeclaration,
-                  definition,
-                  definitionDeclaration,
-                }) => {
-                  const newIdentifierName = incrementIdentifierName(
-                    node.getText(),
-                  );
-
-                  /**
-                   * handle node
-                   */
-                  {
-                    if (
-                      !findAncestorNode(isJsxLikeElement)(node) &&
-                      nodeDeclaration
-                    ) {
-                      if (!insertionsMap.has(nodeDeclaration)) {
-                        insertionsMap.set(
-                          nodeDeclaration,
-                          new ReplacementBuilder(nodeDeclaration),
-                        );
-                      }
-
-                      insertionsMap
-                        .get(nodeDeclaration)!
-                        .replaceNodeWithText(node, newIdentifierName);
-                    }
-                  }
-
-                  /**
-                   * handle definition
-                   */
-                  {
-                    if (!insertionsMap.has(definitionDeclaration)) {
-                      insertionsMap.set(
-                        definitionDeclaration,
-                        new ReplacementBuilder(definitionDeclaration),
-                      );
-                    }
-
-                    if (ts.isImportDeclaration(definitionDeclaration)) {
-                      // insertionsMap
-                      //   .get(definitionDeclaration)!
-                      //   .replaceNodeWithText(
-                      //     definitionDeclaration.moduleSpecifier,
-                      //     getPathRelativeToTarget(
-                      //       sourceCursor.fileName,
-                      //       targetCursor.fileName,
-                      //       definitionDeclaration.moduleSpecifier.getText(),
-                      //     ),
-                      //   );
-                    }
-
-                    if (
-                      ts.isImportSpecifier(definition.parent) &&
-                      definition.parent.name === definition &&
-                      !definition.parent.propertyName
-                    ) {
-                      insertionsMap
-                        .get(definitionDeclaration)!
-                        .replaceNodeWithText(
-                          definition,
-                          `${definition.getText()} as ${newIdentifierName}`,
-                        );
-                    } else {
-                      insertionsMap
-                        .get(definitionDeclaration)!
-                        .replaceNodeWithText(definition, newIdentifierName);
-                    }
-                  }
-                },
+              concatMap(
+                handleRecursiveDefinitions(
+                  sourceCursor,
+                  targetCursor,
+                  insertionsMap,
+                  incrementIdentifierName,
+                ),
               ),
               toArray(),
               map(() => {

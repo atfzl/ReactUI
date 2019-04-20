@@ -22,9 +22,10 @@ export const getPathRelativeToTarget = (
   sourceFileName: string,
   targetFileName: string,
   relativePath: string,
-) => {
+): Observable<string> => {
   return new Observable(observer => {
     const sourceFileDirPath = path.dirname(sourceFileName);
+
     resolve(
       relativePath,
       {

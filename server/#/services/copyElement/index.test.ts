@@ -42,3 +42,17 @@ it('handle named as imports', done => {
     done();
   });
 });
+
+it('handle imports path', done => {
+  const sourceFile = fixtureFile(__dirname, 'source4.tsx');
+  const targetFile = fixtureFile(__dirname, 't1/t2/target1.tsx');
+
+  copyElement$(
+    { fileName: sourceFile, lineNumber: 5, columnNumber: 5 },
+    { fileName: targetFile, lineNumber: 4, columnNumber: 3 },
+  ).subscribe(result => {
+    expect(result).toMatchSnapshot();
+
+    done();
+  });
+});

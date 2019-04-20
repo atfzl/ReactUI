@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`handle imports path 1`] = `
+Object {
+  "insertions": Object {
+    "imports": Array [
+      "import Button_$ from ../../../../../index.ts;",
+    ],
+  },
+  "jsx": "<Button_$>Click Me</Button_$>",
+}
+`;
+
 exports[`handle named as imports 1`] = `
 Object {
   "insertions": Object {
