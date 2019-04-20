@@ -2,8 +2,13 @@ import { TagCursor } from '#/common/models/file';
 import { isInterinsicTag } from '#/common/utils';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import {
+  DeclarationStatement,
+  findAncestorNode,
+  findAncestorNode$,
   findElementAtCursor$,
   getTagName,
+  isDeclarationStatement,
+  isJsxLikeElement,
   traverseElement,
   traverseNodeReferences,
 } from '#/utils/tsNode';
@@ -33,6 +38,10 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
             );
 
             const rb = new ReplacementBuilder(sourceCursorNode);
+            const insertions = new Map<
+              DeclarationStatement,
+              ReplacementBuilder
+            >();
 
             return traverseElement(sourceCursorNode).pipe(
               concatMap(elementNode => {
@@ -60,15 +69,62 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
 
                 return EMPTY;
               }),
-              tap(x => {
-                console.log(
-                  x.node.parent.getText(),
-                  x.definition.parent.getText(),
+              concatMap(x => {
+                const nodeDeclaration$ = findAncestorNode$<
+                  DeclarationStatement
+                >(isDeclarationStatement)(x.node);
+                const definitionDeclaration$ = findAncestorNode$<
+                  DeclarationStatement
+                >(isDeclarationStatement)(x.definition);
+
+                return forkJoin(nodeDeclaration$, definitionDeclaration$).pipe(
+                  map(([nodeDeclaration, definitionDeclaration]) => ({
+                    ...x,
+                    nodeDeclaration,
+                    definitionDeclaration,
+                  })),
                 );
+              }),
+              tap(x => {
+                const newIdentifierName = incrementIdentifierName(
+                  x.node.getText(),
+                );
+
+                if (
+                  !findAncestorNode(isJsxLikeElement)(x.node) &&
+                  x.nodeDeclaration
+                ) {
+                  if (!insertions.has(x.nodeDeclaration)) {
+                    insertions.set(
+                      x.nodeDeclaration,
+                      new ReplacementBuilder(x.nodeDeclaration),
+                    );
+                  }
+
+                  insertions
+                    .get(x.nodeDeclaration)!
+                    .replaceNodeWithText(x.node, newIdentifierName);
+                }
+
+                if (!insertions.has(x.definitionDeclaration)) {
+                  insertions.set(
+                    x.definitionDeclaration,
+                    new ReplacementBuilder(x.definitionDeclaration),
+                  );
+                }
+
+                insertions
+                  .get(x.definitionDeclaration)!
+                  .replaceNodeWithText(x.definition, newIdentifierName);
               }),
               toArray(),
               map(() => {
-                return rb.applyReplacements();
+                return [
+                  rb.applyReplacements(),
+                  Array.from(insertions.values()).map(x =>
+                    x.applyReplacements(),
+                  ),
+                ];
               }),
             );
           },

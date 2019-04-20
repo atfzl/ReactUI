@@ -72,6 +72,45 @@ export const findNode$ = <T extends ts.Node>(
   });
 };
 
+export const findAncestorNode = <T extends ts.Node>(
+  predicate: (node: ts.Node) => boolean,
+) => (rootNode: ts.Node): T | undefined => {
+  let resolvedNode;
+
+  let node = rootNode.parent;
+
+  while (node) {
+    if (predicate(node)) {
+      resolvedNode = node as T;
+      break;
+    }
+
+    node = node.parent;
+  }
+
+  return resolvedNode;
+};
+
+export const findAncestorNode$ = <T extends ts.Node>(
+  predicate: (node: ts.Node) => boolean,
+) => (rootNode: ts.Node): Observable<T> => {
+  return new Observable(subscriber => {
+    let node = rootNode.parent;
+
+    while (node) {
+      if (predicate(node)) {
+        subscriber.next(node as T);
+        subscriber.complete();
+        return;
+      }
+
+      node = node.parent;
+    }
+
+    subscriber.error(new Fault('Parent Node not found', { rootNode }));
+  });
+};
+
 export const findNodeAtCursor$ = <T extends ts.Node>(
   predicate: (node: ts.Node) => boolean = () => true,
 ) => (cursor: TagCursor, sourceNode?: ts.Node) =>
@@ -160,3 +199,25 @@ export const traverseNodeReferences = (
     concatAll(),
   );
 };
+
+export const isDeclaration = R.anyPass([
+  ts.isVariableDeclaration,
+  ts.isFunctionDeclaration,
+  ts.isImportDeclaration,
+]);
+
+export const isDeclarationStatement = R.anyPass([
+  ts.isVariableStatement,
+  ts.isFunctionDeclaration,
+  ts.isImportDeclaration,
+]);
+
+export type Declaration =
+  | ts.VariableDeclaration
+  | ts.FunctionDeclaration
+  | ts.ImportDeclaration;
+
+export type DeclarationStatement =
+  | ts.VariableStatement
+  | ts.FunctionDeclaration
+  | ts.ImportDeclaration;

@@ -1,12 +1,9 @@
-import { findAllNodes$ } from '#/utils/tsNode';
-import * as R from 'ramda';
+import { Declaration, findAllNodes$, isDeclaration } from '#/utils/tsNode';
 import { pipe } from 'rxjs';
 import { concatMap, toArray } from 'rxjs/operators';
 import * as ts from 'typescript';
 
-export const getDeclarationIdentifiersAtNode = (
-  node: ts.VariableDeclaration | ts.FunctionDeclaration | ts.ImportDeclaration,
-) => {
+export const getDeclarationIdentifiersAtNode = (node: Declaration) => {
   if (ts.isVariableDeclaration(node)) {
     return [node.name];
   } else if (ts.isFunctionDeclaration(node)) {
@@ -39,15 +36,7 @@ export const getDeclarationIdentifiersAtNode = (
 };
 
 export const getDeclarationIdentifiersAtSourceFile = pipe(
-  findAllNodes$<
-    ts.VariableDeclaration | ts.FunctionDeclaration | ts.ImportDeclaration
-  >(
-    R.anyPass([
-      ts.isVariableDeclaration,
-      ts.isFunctionDeclaration,
-      ts.isImportDeclaration,
-    ]),
-  ),
+  findAllNodes$<Declaration>(isDeclaration),
   concatMap(getDeclarationIdentifiersAtNode),
   toArray(),
 );

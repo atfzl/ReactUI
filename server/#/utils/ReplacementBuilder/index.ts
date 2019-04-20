@@ -12,10 +12,14 @@ export class ReplacementBuilder {
 
   public insert(pos: number, text: string) {
     this.replacements.push(Replacement.insert(pos, text));
+
+    return this;
   }
 
   public delete(start: number, end: number) {
     this.replacements.push(Replacement.delete(start, end));
+
+    return this;
   }
 
   public deleteNode(node: ts.Node) {
@@ -25,6 +29,8 @@ export class ReplacementBuilder {
         node.getEnd() - this.sourceNode.getStart(),
       ),
     );
+
+    return this;
   }
 
   public replaceNodeWithText(node: ts.Node, text: string) {
@@ -35,6 +41,12 @@ export class ReplacementBuilder {
       ),
       Replacement.insert(node.getStart() - this.sourceNode.getStart(), text),
     ]);
+
+    return this;
+  }
+
+  public replaceNodeUsingMapper(node: ts.Node, mapper: (s: string) => string) {
+    return this.replaceNodeWithText(node, mapper(node.getText()));
   }
 
   public applyReplacements() {
