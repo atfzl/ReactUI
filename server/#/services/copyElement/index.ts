@@ -15,7 +15,7 @@ import { getDeclarationIdentifiersAtSourceFile } from '#/utils/tsNode/getDeclara
 import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameFrom';
 import * as R from 'ramda';
 import { EMPTY, forkJoin } from 'rxjs';
-import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
+import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
@@ -83,54 +83,81 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
                   )(definition)!,
                 };
               }),
-              tap(x => {
-                const newIdentifierName = incrementIdentifierName(
-                  x.node.getText(),
-                );
-
-                if (
-                  !findAncestorNode(isJsxLikeElement)(x.node) &&
-                  x.nodeDeclaration
-                ) {
-                  if (!insertionsMap.has(x.nodeDeclaration)) {
-                    insertionsMap.set(
-                      x.nodeDeclaration,
-                      new ReplacementBuilder(x.nodeDeclaration),
-                    );
-                  }
-
-                  insertionsMap
-                    .get(x.nodeDeclaration)!
-                    .replaceNodeWithText(x.node, newIdentifierName);
-                }
-
-                if (!insertionsMap.has(x.definitionDeclaration)) {
-                  insertionsMap.set(
-                    x.definitionDeclaration,
-                    new ReplacementBuilder(x.definitionDeclaration),
+              map(
+                ({
+                  node,
+                  nodeDeclaration,
+                  definition,
+                  definitionDeclaration,
+                }) => {
+                  const newIdentifierName = incrementIdentifierName(
+                    node.getText(),
                   );
-                }
 
-                switch (true) {
-                  // single named import
-                  case ts.isImportSpecifier(x.definition.parent) &&
-                    x.definition.parent.name === x.definition &&
-                    !x.definition.parent.propertyName: {
-                    insertionsMap
-                      .get(x.definitionDeclaration)!
-                      .replaceNodeWithText(
-                        x.definition,
-                        `${x.definition.getText()} as ${newIdentifierName}`,
+                  /**
+                   * handle node
+                   */
+                  {
+                    if (
+                      !findAncestorNode(isJsxLikeElement)(node) &&
+                      nodeDeclaration
+                    ) {
+                      if (!insertionsMap.has(nodeDeclaration)) {
+                        insertionsMap.set(
+                          nodeDeclaration,
+                          new ReplacementBuilder(nodeDeclaration),
+                        );
+                      }
+
+                      insertionsMap
+                        .get(nodeDeclaration)!
+                        .replaceNodeWithText(node, newIdentifierName);
+                    }
+                  }
+
+                  /**
+                   * handle definition
+                   */
+                  {
+                    if (!insertionsMap.has(definitionDeclaration)) {
+                      insertionsMap.set(
+                        definitionDeclaration,
+                        new ReplacementBuilder(definitionDeclaration),
                       );
-                    break;
+                    }
+
+                    if (ts.isImportDeclaration(definitionDeclaration)) {
+                      // insertionsMap
+                      //   .get(definitionDeclaration)!
+                      //   .replaceNodeWithText(
+                      //     definitionDeclaration.moduleSpecifier,
+                      //     getPathRelativeToTarget(
+                      //       sourceCursor.fileName,
+                      //       targetCursor.fileName,
+                      //       definitionDeclaration.moduleSpecifier.getText(),
+                      //     ),
+                      //   );
+                    }
+
+                    if (
+                      ts.isImportSpecifier(definition.parent) &&
+                      definition.parent.name === definition &&
+                      !definition.parent.propertyName
+                    ) {
+                      insertionsMap
+                        .get(definitionDeclaration)!
+                        .replaceNodeWithText(
+                          definition,
+                          `${definition.getText()} as ${newIdentifierName}`,
+                        );
+                    } else {
+                      insertionsMap
+                        .get(definitionDeclaration)!
+                        .replaceNodeWithText(definition, newIdentifierName);
+                    }
                   }
-                  default: {
-                    insertionsMap
-                      .get(x.definitionDeclaration)!
-                      .replaceNodeWithText(x.definition, newIdentifierName);
-                  }
-                }
-              }),
+                },
+              ),
               toArray(),
               map(() => {
                 const insertions = Array.from(insertionsMap.values())

@@ -29,7 +29,7 @@ it('handle named imports', done => {
   });
 });
 
-it.only('handle named as imports', done => {
+it('handle named as imports', done => {
   const sourceFile = fixtureFile(__dirname, 'source3.tsx');
   const targetFile = fixtureFile(__dirname, 'source3.tsx');
 
