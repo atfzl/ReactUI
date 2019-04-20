@@ -91,26 +91,6 @@ export const findAncestorNode = <T extends ts.Node>(
   return resolvedNode;
 };
 
-export const findAncestorNode$ = <T extends ts.Node>(
-  predicate: (node: ts.Node) => boolean,
-) => (rootNode: ts.Node): Observable<T> => {
-  return new Observable(subscriber => {
-    let node = rootNode.parent;
-
-    while (node) {
-      if (predicate(node)) {
-        subscriber.next(node as T);
-        subscriber.complete();
-        return;
-      }
-
-      node = node.parent;
-    }
-
-    subscriber.error(new Fault('Parent Node not found', { rootNode }));
-  });
-};
-
 export const findNodeAtCursor$ = <T extends ts.Node>(
   predicate: (node: ts.Node) => boolean = () => true,
 ) => (cursor: TagCursor, sourceNode?: ts.Node) =>
