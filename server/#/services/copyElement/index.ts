@@ -4,7 +4,6 @@ import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import {
   DeclarationStatement,
   findAncestorNode,
-  findAncestorNode$,
   findElementAtCursor$,
   getTagName,
   isDeclarationStatement,
@@ -14,6 +13,7 @@ import {
 } from '#/utils/tsNode';
 import { getDeclarationIdentifiersAtSourceFile } from '#/utils/tsNode/getDeclarationIdentifiers';
 import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameFrom';
+import * as R from 'ramda';
 import { EMPTY, forkJoin } from 'rxjs';
 import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
 import * as ts from 'typescript';
@@ -38,7 +38,7 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
             );
 
             const rb = new ReplacementBuilder(sourceCursorNode);
-            const insertions = new Map<
+            const insertionsMap = new Map<
               DeclarationStatement,
               ReplacementBuilder
             >();
@@ -60,6 +60,8 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
                       );
                     });
 
+                    // handle props
+
                     return traverseNodeReferences(
                       openingTag,
                       sourceFileDeclarationIdentifiers,
@@ -69,21 +71,17 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
 
                 return EMPTY;
               }),
-              concatMap(x => {
-                const nodeDeclaration$ = findAncestorNode$<
-                  DeclarationStatement
-                >(isDeclarationStatement)(x.node);
-                const definitionDeclaration$ = findAncestorNode$<
-                  DeclarationStatement
-                >(isDeclarationStatement)(x.definition);
-
-                return forkJoin(nodeDeclaration$, definitionDeclaration$).pipe(
-                  map(([nodeDeclaration, definitionDeclaration]) => ({
-                    ...x,
-                    nodeDeclaration,
-                    definitionDeclaration,
-                  })),
-                );
+              map(({ node, definition }) => {
+                return {
+                  node,
+                  nodeDeclaration: findAncestorNode<DeclarationStatement>(
+                    isDeclarationStatement,
+                  )(node)!,
+                  definition,
+                  definitionDeclaration: findAncestorNode<DeclarationStatement>(
+                    isDeclarationStatement,
+                  )(definition)!,
+                };
               }),
               tap(x => {
                 const newIdentifierName = incrementIdentifierName(
@@ -94,37 +92,42 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
                   !findAncestorNode(isJsxLikeElement)(x.node) &&
                   x.nodeDeclaration
                 ) {
-                  if (!insertions.has(x.nodeDeclaration)) {
-                    insertions.set(
+                  if (!insertionsMap.has(x.nodeDeclaration)) {
+                    insertionsMap.set(
                       x.nodeDeclaration,
                       new ReplacementBuilder(x.nodeDeclaration),
                     );
                   }
 
-                  insertions
+                  insertionsMap
                     .get(x.nodeDeclaration)!
                     .replaceNodeWithText(x.node, newIdentifierName);
                 }
 
-                if (!insertions.has(x.definitionDeclaration)) {
-                  insertions.set(
+                if (!insertionsMap.has(x.definitionDeclaration)) {
+                  insertionsMap.set(
                     x.definitionDeclaration,
                     new ReplacementBuilder(x.definitionDeclaration),
                   );
                 }
 
-                insertions
+                insertionsMap
                   .get(x.definitionDeclaration)!
                   .replaceNodeWithText(x.definition, newIdentifierName);
               }),
               toArray(),
               map(() => {
-                return [
-                  rb.applyReplacements(),
-                  Array.from(insertions.values()).map(x =>
-                    x.applyReplacements(),
+                const insertions = Array.from(insertionsMap.values())
+                  .map(a => a.applyReplacements())
+                  .reverse();
+
+                return {
+                  jsx: rb.applyReplacements(),
+                  insertions: R.groupBy(
+                    a => (a.startsWith('import') ? 'imports' : 'declarations'),
+                    insertions,
                   ),
-                ];
+                };
               }),
             );
           },
