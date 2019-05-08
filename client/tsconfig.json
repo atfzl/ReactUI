@@ -20,5 +20,6 @@
     "baseUrl": ".",
     "outDir": "build",
     "lib": ["es6", "es7", "es2017", "dom"]
-  }
+  },
+  "exclude": ["./#/**/*.test.ts", "./#/**/*.test.tsx"]
 }

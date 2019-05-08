@@ -16,7 +16,6 @@ const mainFile = ['./index.tsx'];
 
 const config: webpack.Configuration = {
   mode: __DEV__ ? 'development' : 'production',
-  target: 'electron-renderer',
   context: srcPath,
   entry: {
     main: mainFile,

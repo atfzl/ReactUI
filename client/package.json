@@ -11,8 +11,8 @@
   "devDependencies": {
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.2",
     "@types/html-webpack-plugin": "^3.2.0",
-    "@types/react": "^16.8.8",
-    "@types/react-dom": "^16.8.3",
+    "@types/react": "^16.8.17",
+    "@types/react-dom": "^16.8.4",
     "@types/webpack": "^4.4.26",
     "@types/webpack-dev-server": "^3.1.4",
     "@types/webpack-env": "^1.13.9",
@@ -29,10 +29,10 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
-    "electron": "^4.1.1",
-    "electron-better-ipc": "^0.1.2",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+    "electron": "^5.0.1",
+    "electron-better-ipc": "^0.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "serialize-error": "^4.0.0"
   }
 }
