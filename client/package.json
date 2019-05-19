@@ -13,6 +13,7 @@
     "@types/html-webpack-plugin": "^3.2.0",
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
+    "@types/react-redux": "^7.0.9",
     "@types/webpack": "^4.4.26",
     "@types/webpack-dev-server": "^3.1.4",
     "@types/webpack-env": "^1.13.9",
@@ -20,10 +21,11 @@
     "case-sensitive-paths-webpack-plugin": "^2.2.0",
     "html-webpack-plugin": "^3.2.0",
     "prettier": "^1.16.4",
+    "redux-logger": "^3.0.6",
     "ts-node": "^8.0.3",
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.4000",
+    "typescript": "^3.4.5",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
@@ -31,8 +33,17 @@
   "dependencies": {
     "electron": "^5.0.1",
     "electron-better-ipc": "^0.2.0",
+    "immer": "^3.1.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "serialize-error": "^4.0.0"
+    "react-redux": "^7.0.3",
+    "redux": "^4.0.1",
+    "redux-observable": "^1.1.0",
+    "reselect": "^4.0.0",
+    "rxjs": "^6.5.2",
+    "serialize-error": "^4.0.0",
+    "typesafe-actions": "^4.3.0",
+    "typescript-fsa": "^3.0.0-beta-2",
+    "typescript-fsa-reducers": "^1.2.1"
   }
 }
