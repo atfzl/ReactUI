@@ -18,3 +18,8 @@ declare module 'electron-better-ipc' {
   };
   export = x;
 }
+
+declare module 'react-frame-component' {
+  const x: any;
+  export default x;
+}

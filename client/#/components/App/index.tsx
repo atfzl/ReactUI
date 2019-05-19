@@ -1,6 +1,7 @@
 import { RootState } from '#/reducers';
 import actions from '#/reducers/global/actions';
 import * as React from 'react';
+import Frame from 'react-frame-component';
 import { connect } from 'react-redux';
 
 type StateProps = ReturnType<typeof mapStateToProps>;
@@ -8,7 +9,7 @@ type DispatchProps = typeof mapDispatchToProps;
 
 type Props = StateProps & DispatchProps;
 
-class App extends React.PureComponent<Props> {
+class App extends React.Component<Props> {
   public componentDidMount() {
     // tslint:disable-next-line:no-console
     console.log('App loaded');
@@ -17,7 +18,13 @@ class App extends React.PureComponent<Props> {
   }
 
   public render() {
-    return <div>App: {this.props.message}</div>;
+    return (
+      <div>
+        <Frame style={{ border: 'none' }}>
+          <div>App: {this.props.message}</div>
+        </Frame>
+      </div>
+    );
   }
 }
 
