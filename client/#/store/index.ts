@@ -1,6 +1,8 @@
 import { rootEpic, rootReducer, RootState } from '#/reducers';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
+import { BehaviorSubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 export function configureStore(initialState?: RootState) {
   const epicMiddleware = createEpicMiddleware();
@@ -18,15 +20,28 @@ export function configureStore(initialState?: RootState) {
 
   const middleware = applyMiddleware(...middlewares);
 
-  const s = createStore(rootReducer, initialState!, middleware) as Store<
+  const store = createStore(rootReducer, initialState!, middleware) as Store<
     RootState
   >;
 
-  epicMiddleware.run(rootEpic as any);
+  const epic$ = new BehaviorSubject(rootEpic);
+  // Every time a new epic is given to epic$ it
+  // will unsubscribe from the previous one then
+  // call and subscribe to the new one because of
+  // how switchMap works
+  const hotReloadingEpic = (...args: any) =>
+    epic$.pipe(switchMap((epic: any) => epic(...args)));
 
-  return s;
+  epicMiddleware.run(hotReloadingEpic as any);
+
+  if (module.hot) {
+    module.hot.accept('#/reducers', () => {
+      const nextRootEpic = require('#/reducers').rootEpic;
+      epic$.next(nextRootEpic);
+    });
+  }
+
+  return store;
 }
 
-const store = configureStore();
-
-export default store;
+export default configureStore();
