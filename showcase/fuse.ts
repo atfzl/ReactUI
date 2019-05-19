@@ -1,6 +1,6 @@
 import { FuseBox } from 'fuse-box';
 import tsTranformJsxSource from 'ts-transform-jsx-source';
-import styledComponentSource from './style-components-source';
+import styledComponentSource from './styled-components-source';
 
 const fuse = FuseBox.init({
   homeDir: 'src',

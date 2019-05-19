@@ -4,8 +4,6 @@ import AlbumArt from './components/AlbumArt';
 import Page from './components/Page';
 import Seeker from './components/Seeker';
 
-export const ContextProvider = props => props.children;
-
 // tslint:disable-next-line no-unused-expression
 injectGlobal`
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -45,11 +43,6 @@ export const workspace = [
 const event = new CustomEvent('icarus-build', {
   detail: {
     workspace,
-    ContextProvider,
-    mainFile:
-      '/Users/atifafzal/scratch/personal/icarus/showcase/src/icarus.tsx',
-    prettierConfig:
-      '/Users/atifafzal/scratch/personal/icarus/showcase/.prettierrc',
   },
 });
 
