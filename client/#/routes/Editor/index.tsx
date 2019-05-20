@@ -41,6 +41,8 @@ const CenterHeader = styled.div`
 
 const CenterBodyWrapper = styled.div`
   overflow: auto;
+  padding: 32px;
+  text-align: center;
 `;
 
 const Right = styled.div`

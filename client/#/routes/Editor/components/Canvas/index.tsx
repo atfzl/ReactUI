@@ -3,17 +3,9 @@ import styled from '@emotion/styled';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 32px;
-`;
-
 const Wrapper = styled.div`
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.3);
   display: inline-block;
-  overflow: hidden;
 `;
 
 class Canvas extends React.Component {
@@ -31,11 +23,9 @@ class Canvas extends React.Component {
 
   public render() {
     return (
-      <Container>
-        <Wrapper>
-          <Isolate onReady={this.onIsolateReady} />
-        </Wrapper>
-      </Container>
+      <Wrapper>
+        <Isolate onReady={this.onIsolateReady} />
+      </Wrapper>
     );
   }
 }
