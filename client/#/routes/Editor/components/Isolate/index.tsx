@@ -1,22 +1,44 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Frame, { FrameContextConsumer } from 'react-frame-component';
 
 interface State {
-  data?: any;
+  refRect?: ClientRect;
 }
 
 class Isolate extends React.Component<{}, State> {
   public state: State = {};
 
+  private ref?: HTMLDivElement | null;
   private window?: Window;
   private document?: Document;
 
-  private frameLoaded(window: Window, document: Document) {
+  private setRef = (ref: HTMLDivElement | null) => {
+    if (!ref) {
+      return;
+    }
+
+    this.ref = ref;
+
+    const resizeObserver = new (window as any).ResizeObserver(
+      (entries: any) => {
+        for (const entry of entries) {
+          this.setState({ refRect: entry.contentRect });
+        }
+      },
+    );
+
+    resizeObserver.observe(ref);
+  };
+
+  private onFrameLoad(window: Window, document: Document) {
     this.window = window;
     this.document = document;
 
     document.addEventListener('icarus-build', (e: any) => {
-      this.setState({ data: e.detail });
+      const { detail } = e;
+
+      ReactDOM.render(<>{detail.workspace[0].instances[0]}</>, this.ref!);
     });
 
     const script = document.createElement('script');
@@ -26,57 +48,37 @@ class Isolate extends React.Component<{}, State> {
   }
 
   public render() {
+    const { refRect } = this.state;
+
     return (
       <Frame
         style={{
-          width: '100vw',
-          height: '100vh',
+          width: refRect ? refRect.width : '100%',
+          height: refRect ? refRect.height : '100%',
           border: 'none',
           display: 'block',
-          backgroundColor: '#f9f9f9',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: 32,
-          }}
-        >
-          {(() => {
-            if (!this.window) {
-              return (
-                <FrameContextConsumer>
-                  {({
-                    window,
-                    document,
-                  }: {
-                    window: Window;
-                    document: Document;
-                  }) => {
-                    this.frameLoaded(window, document);
-                  }}
-                </FrameContextConsumer>
-              );
-            }
+        {(() => {
+          if (!this.window) {
+            return (
+              <FrameContextConsumer>
+                {({
+                  window,
+                  document,
+                }: {
+                  window: Window;
+                  document: Document;
+                }) => {
+                  this.onFrameLoad(window, document);
+                }}
+              </FrameContextConsumer>
+            );
+          }
 
-            if (this.state.data) {
-              return (
-                <div
-                  style={{
-                    display: 'inline-block',
-                    boxShadow: '0px 0px 2px 1px rgba(0,0,0,0.2)',
-                  }}
-                >
-                  {this.state.data.workspace[0].instances[0]}
-                </div>
-              );
-            }
-
-            return null;
-          })()}
-        </div>
+          return null;
+        })()}
+        <div style={{ display: 'inline-block' }} ref={this.setRef} />
       </Frame>
     );
   }

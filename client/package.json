@@ -31,6 +31,8 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.10",
+    "@emotion/styled": "^10.0.11",
     "@types/react-router-dom": "^4.3.3",
     "electron": "^5.0.1",
     "electron-better-ipc": "^0.2.0",
