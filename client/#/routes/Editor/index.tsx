@@ -13,6 +13,7 @@ const Left = styled.div`
   flex: 0 0 240px;
   display: flex;
   overflow: hidden;
+  border-right: 1px solid black;
 `;
 
 const LeftBodyWrapper = styled.div`
@@ -35,8 +36,10 @@ const Center = styled.div`
 `;
 
 const CenterHeader = styled.div`
-  background-color: orchid;
-  flex: 0 0 32px;
+  background-color: #fdf9f3;
+  border-bottom: 1px solid black;
+  flex: 0 0 28px;
+  display: flex;
 `;
 
 const CenterBodyWrapper = styled.div`
@@ -46,10 +49,10 @@ const CenterBodyWrapper = styled.div`
 `;
 
 const Right = styled.div`
-  background-color: midnightblue;
   flex: 0 0 240px;
   display: flex;
   overflow: hidden;
+  border-left: 1px solid black;
 `;
 
 const RightBodyWrapper = styled.div`
@@ -58,7 +61,7 @@ const RightBodyWrapper = styled.div`
 `;
 
 const RightBody = styled.div`
-  background-color: coral;
+  background-color: oldlace;
   height: 200vh;
 `;
 
