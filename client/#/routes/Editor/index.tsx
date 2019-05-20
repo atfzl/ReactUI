@@ -1,25 +1,43 @@
 import Isolate from '#/routes/Editor/components/Isolate';
+import styled from '@emotion/styled';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 32px;
+  height: 100vh;
+  background-color: #f9f9f9;
+`;
+
+const Wrapper = styled.div`
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  overflow: hidden;
+`;
+
 class Editor extends React.Component {
+  private onIsolateReady(document: Document, element: Element) {
+    document.addEventListener('icarus-build', (e: any) => {
+      const { detail } = e;
+
+      ReactDOM.render(<>{detail.workspace[0].instances[0]}</>, element);
+    });
+
+    const script = document.createElement('script');
+    script.src = 'http://localhost:9889/app.js';
+    document.body.appendChild(script);
+  }
+
   public render() {
     return (
-      <div style={{ border: '1px solid black', display: 'inline-block' }}>
-        <Isolate
-          onReady={(document, element) => {
-            document.addEventListener('icarus-build', (e: any) => {
-              const { detail } = e;
-
-              ReactDOM.render(<>{detail.workspace[0].instances[0]}</>, element);
-            });
-
-            const script = document.createElement('script');
-            script.src = 'http://localhost:9889/app.js';
-            document.body.appendChild(script);
-          }}
-        />
-      </div>
+      <Container>
+        <Wrapper>
+          <Isolate onReady={this.onIsolateReady} />
+        </Wrapper>
+      </Container>
     );
   }
 }
