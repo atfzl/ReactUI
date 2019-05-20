@@ -20,6 +20,6 @@ declare module 'electron-better-ipc' {
 }
 
 declare module 'react-frame-component' {
-  const x: any;
-  export default x;
+  const x: { default: any; FrameContextConsumer: any };
+  export = x;
 }

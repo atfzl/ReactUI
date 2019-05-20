@@ -1,3 +1,4 @@
+import Interval from '#/components/Interval';
 import { RootState } from '#/reducers';
 import actions from '#/reducers/global/actions';
 import * as React from 'react';
@@ -22,6 +23,7 @@ class App extends React.Component<Props> {
       <div>
         <Frame style={{ border: 'none' }}>
           <div>App: {this.props.message}</div>
+          <Interval />
         </Frame>
       </div>
     );
