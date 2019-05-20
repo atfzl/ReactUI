@@ -1,4 +1,4 @@
-import Isolate from '#/routes/Canvas/components/Isolate';
+import Isolate from '#/components/Isolate';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
