@@ -1,26 +1,26 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import Frame, { FrameContextConsumer } from 'react-frame-component';
+
+interface Props {
+  onReady: (document: Document, element: HTMLDivElement) => void;
+}
 
 interface State {
   refRect?: ClientRect;
 }
 
-class Isolate extends React.Component<{}, State> {
+class Isolate extends React.Component<Props, State> {
   public state: State = {};
 
-  private ref?: HTMLDivElement | null;
   private window?: Window;
   private document?: Document;
 
-  private setRef = (ref: HTMLDivElement | null) => {
-    if (!ref) {
+  private getElementRef = (element: HTMLDivElement | null) => {
+    if (!element) {
       return;
     }
 
-    this.ref = ref;
-
-    const resizeObserver = new (window as any).ResizeObserver(
+    const resizeObserver = new (this.window as any).ResizeObserver(
       (entries: any) => {
         for (const entry of entries) {
           this.setState({ refRect: entry.contentRect });
@@ -28,23 +28,16 @@ class Isolate extends React.Component<{}, State> {
       },
     );
 
-    resizeObserver.observe(ref);
+    resizeObserver.observe(element);
+
+    this.props.onReady(this.document!, element);
+
+    this.document!.body.style.margin = '0';
   };
 
   private onFrameLoad(window: Window, document: Document) {
     this.window = window;
     this.document = document;
-
-    document.addEventListener('icarus-build', (e: any) => {
-      const { detail } = e;
-
-      ReactDOM.render(<>{detail.workspace[0].instances[0]}</>, this.ref!);
-    });
-
-    const script = document.createElement('script');
-    script.src = 'http://localhost:9889/app.js';
-    this.document.body.appendChild(script);
-    this.document.body.style.margin = '0';
   }
 
   public render() {
@@ -82,7 +75,7 @@ class Isolate extends React.Component<{}, State> {
           style={{
             display: 'inline-block',
           }}
-          ref={this.setRef}
+          ref={this.getElementRef}
         />
       </Frame>
     );
