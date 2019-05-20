@@ -11,3 +11,9 @@ export function immerCase<S, P>(
       produce(state, draft => handler(draft, payload)),
     );
 }
+
+export function executeScript(url: string, doc: Document = document) {
+  const script = doc.createElement('script');
+  script.src = url;
+  doc.body.appendChild(script);
+}

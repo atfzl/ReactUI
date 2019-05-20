@@ -1,4 +1,5 @@
 import Isolate from '#/components/Isolate';
+import { executeScript } from '#/utils';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -16,9 +17,7 @@ class Canvas extends React.Component {
       ReactDOM.render(<>{detail.workspace[0].instances[0]}</>, element);
     });
 
-    const script = document.createElement('script');
-    script.src = 'http://localhost:9889/app.js';
-    document.body.appendChild(script);
+    executeScript('http://localhost:9889/app.js', document);
   }
 
   public render() {
