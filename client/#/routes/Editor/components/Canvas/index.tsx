@@ -7,9 +7,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 32px;
-  height: 100vh;
-  background-color: #f9f9f9;
+  padding: 32px;
 `;
 
 const Wrapper = styled.div`
