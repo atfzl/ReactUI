@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import Editor from './Editor';
+import Canvas from './Canvas';
 
 const Routes = () => {
   return (
     <>
-      <Route exact path="/" component={Editor} />
+      <Route exact path="/" component={Canvas} />
     </>
   );
 };

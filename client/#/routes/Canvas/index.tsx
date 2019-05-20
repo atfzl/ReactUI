@@ -1,4 +1,4 @@
-import Isolate from '#/routes/Editor/components/Isolate';
+import Isolate from '#/routes/Canvas/components/Isolate';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-class Editor extends React.Component {
+class Canvas extends React.Component {
   private onIsolateReady(document: Document, element: Element) {
     document.addEventListener('icarus-build', (e: any) => {
       const { detail } = e;
@@ -42,4 +42,4 @@ class Editor extends React.Component {
   }
 }
 
-export default Editor;
+export default Canvas;
