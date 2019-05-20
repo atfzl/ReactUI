@@ -78,7 +78,12 @@ class Isolate extends React.Component<{}, State> {
 
           return null;
         })()}
-        <div style={{ display: 'inline-block' }} ref={this.setRef} />
+        <div
+          style={{
+            display: 'inline-block',
+          }}
+          ref={this.setRef}
+        />
       </Frame>
     );
   }
