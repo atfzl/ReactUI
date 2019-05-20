@@ -11,17 +11,18 @@ const Container = styled.div`
 
 const Left = styled.div`
   flex: 0 0 240px;
-  background-color: oldlace;
   display: flex;
   overflow: hidden;
 `;
 
 const LeftBodyWrapper = styled.div`
   overflow: auto;
+  flex: 1;
 `;
 
 const LeftBody = styled.div`
-  padding: 2px;
+  background-color: oldlace;
+  height: 200vh;
 `;
 
 const Center = styled.div`
@@ -64,9 +65,9 @@ class Editor extends React.Component {
     return (
       <Container>
         <Left>
-          <LeftBody>
-            <LeftBodyWrapper>Left</LeftBodyWrapper>
-          </LeftBody>
+          <LeftBodyWrapper>
+            <LeftBody>Left</LeftBody>
+          </LeftBodyWrapper>
         </Left>
         <Center>
           <CenterHeader>Header</CenterHeader>
