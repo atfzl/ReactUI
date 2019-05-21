@@ -1,3 +1,4 @@
+import ComponentInstanceName from '#/routes/Editor/containers/ComponentInstanceName';
 import ZoomPanelContainer from '#/routes/Editor/containers/ZoomPanelContainer';
 import styled from '#/styled';
 import * as React from 'react';
@@ -8,12 +9,13 @@ const Container = styled.div`
   flex: 0 0 32px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 0 6px;
+  justify-content: space-between;
+  padding: 0 8px;
 `;
 
 const Header = () => (
   <Container>
+    <ComponentInstanceName />
     <ZoomPanelContainer />
   </Container>
 );
