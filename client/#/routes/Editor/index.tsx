@@ -2,6 +2,8 @@ import Canvas from '#/routes/Editor/containers/Canvas';
 import styled from '@emotion/styled';
 import * as React from 'react';
 
+const borderColor = 'rgba(0, 0, 0, 0.5)';
+
 const Container = styled.div`
   min-width: 1024px;
   width: 100vw;
@@ -13,7 +15,7 @@ const Left = styled.div`
   flex: 0 0 240px;
   display: flex;
   overflow: hidden;
-  border-right: 1px solid black;
+  border-right: 1px solid ${borderColor};
 `;
 
 const LeftBodyWrapper = styled.div`
@@ -37,9 +39,12 @@ const Center = styled.div`
 
 const CenterHeader = styled.div`
   background-color: #fdf9f3;
-  border-bottom: 1px solid black;
-  flex: 0 0 28px;
+  border-bottom: 1px solid ${borderColor};
+  flex: 0 0 32px;
   display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 6px;
 `;
 
 const CenterBodyWrapper = styled.div`
@@ -52,7 +57,7 @@ const Right = styled.div`
   flex: 0 0 240px;
   display: flex;
   overflow: hidden;
-  border-left: 1px solid black;
+  border-left: 1px solid ${borderColor};
 `;
 
 const RightBodyWrapper = styled.div`
@@ -75,7 +80,10 @@ class Editor extends React.Component {
           </LeftBodyWrapper>
         </Left>
         <Center>
-          <CenterHeader>Header</CenterHeader>
+          <CenterHeader>
+            <i className="material-icons">zoom_in</i>
+            <i className="material-icons">zoom_out</i>
+          </CenterHeader>
           <CenterBodyWrapper>
             <Canvas />
           </CenterBodyWrapper>
