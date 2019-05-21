@@ -1,7 +1,7 @@
 // naming this file like this so that import auto sort keeps it at the top
 
+import { Events } from '#/models/Events';
 import { FiberRoot, Renderer } from '#/models/React';
-import { Events } from './constants/Events';
 
 const renderers: Record<string, Renderer> = {};
 
@@ -19,7 +19,7 @@ const renderers: Record<string, Renderer> = {};
   onCommitFiberRoot: (rendererId: string, fiberRoot: FiberRoot) => {
     const renderer = renderers[rendererId];
 
-    const event = new CustomEvent(Events.ON_COMMIT_FIBER_ROOT, {
+    const event = new CustomEvent(Events.onCommitFiberRoot.name, {
       detail: {
         rendererId,
         renderer,

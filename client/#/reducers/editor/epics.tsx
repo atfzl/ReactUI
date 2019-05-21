@@ -1,11 +1,11 @@
-import { EventListenerBuilders } from '#/models/Events';
+import { Workspace } from '#/models/Editor';
+import { Events } from '#/models/Events';
 import { Epic } from '#/reducers';
 import { executeScript } from '#/utils';
-import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { combineEpics } from 'redux-observable';
 import { EMPTY, merge } from 'rxjs';
-import { filter, switchMap, tap } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import actions from './actions';
 
 const epics: Epic[] = [
@@ -13,30 +13,28 @@ const epics: Epic[] = [
     action$.pipe(
       filter(actions.setCanvasInternals.match),
       switchMap(({ payload: { doc, element } }) => {
-        const onClientBuild$ = EventListenerBuilders.ON_CLIENT_BUILD(doc);
-        const onCommitFiberRoot$ = EventListenerBuilders.ON_COMMIT_FIBER_ROOT(
-          document,
-        );
+        const onClientBuild$ = Events.onClientBuild.builder(doc);
+        const onCommitFiberRoot$ = Events.onCommitFiberRoot.builder(document);
 
         executeScript('http://localhost:9889/app.js', doc);
 
         return merge(
           onClientBuild$.pipe(
-            switchMap((e: any) => {
-              const { detail } = e;
+            map((e: any) => {
+              const { detail } = e as { detail: Workspace };
 
               ReactDOM.render(
-                <>{detail.components[0].instances[0].instance}</>,
+                detail.components[0].instances[0].instance,
                 element,
               );
 
-              return EMPTY;
+              return actions.setWorkspace(detail);
             }),
           ),
           onCommitFiberRoot$.pipe(
             // tslint:disable-next-line:no-console
             tap(console.log),
-            switchMap(() => EMPTY),
+            mergeMap(() => EMPTY),
           ),
         );
       }),
