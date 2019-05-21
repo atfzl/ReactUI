@@ -3,7 +3,7 @@ export interface Workspace {
     title?: string;
     instances: Array<{
       title?: string;
-      instance: JSX.Element;
+      element: JSX.Element;
     }>;
   }>;
 }

@@ -24,7 +24,7 @@ const epics: Epic[] = [
               const { detail } = e as { detail: Workspace };
 
               ReactDOM.render(
-                detail.components[0].instances[0].instance,
+                detail.components[0].instances[0].element,
                 element,
               );
 

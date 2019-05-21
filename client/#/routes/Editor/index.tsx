@@ -1,5 +1,6 @@
 import Header from '#/routes/Editor/components/Header';
 import Canvas from '#/routes/Editor/containers/Canvas';
+import RightPanel from '#/routes/Editor/containers/RightPanel';
 import styled from '#/styled';
 import * as React from 'react';
 
@@ -54,11 +55,6 @@ const RightBodyWrapper = styled.div`
   flex: 1;
 `;
 
-const RightBody = styled.div`
-  background-color: oldlace;
-  height: 200vh;
-`;
-
 class Editor extends React.Component {
   public render() {
     return (
@@ -76,7 +72,7 @@ class Editor extends React.Component {
         </Center>
         <Right>
           <RightBodyWrapper>
-            <RightBody>Right</RightBody>
+            <RightPanel />
           </RightBodyWrapper>
         </Right>
       </Container>

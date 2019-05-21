@@ -23,7 +23,7 @@ export const components = [
     title: 'Page',
     instances: [
       {
-        instance: <Page />,
+        element: <Page />,
       },
     ],
   },
@@ -31,14 +31,14 @@ export const components = [
     title: 'Album Art',
     instances: [
       {
-        instance: (
+        element: (
           <div style={{ width: 200, height: 200 }}>
             <AlbumArt src="https://upload.wikimedia.org/wikipedia/en/6/6e/Opus_Eric_Prydz_cover_artwork.jpg" />
           </div>
         ),
       },
       {
-        instance: (
+        element: (
           <div style={{ width: 200, height: 200 }}>
             <AlbumArt src="https://consequenceofsound.files.wordpress.com/2015/05/unnamed.png?w=760&h=760&crop=1" />
           </div>
@@ -50,7 +50,7 @@ export const components = [
     title: 'Seeker',
     instances: [
       {
-        instance: <Seeker currentTime={108} endTime={671} />,
+        element: <Seeker currentTime={108} endTime={671} />,
       },
     ],
   },
