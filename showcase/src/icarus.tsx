@@ -56,7 +56,7 @@ export const components = [
   },
 ];
 
-const event = new CustomEvent('icarus-build', {
+const event = new CustomEvent('beragi', {
   detail: {
     components,
   },

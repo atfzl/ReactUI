@@ -1,3 +1,4 @@
+import { Events } from '#/constants/Events';
 import { Epic } from '#/reducers';
 import { executeScript } from '#/utils';
 import * as React from 'react';
@@ -12,7 +13,7 @@ const epics: Epic[] = [
     action$.pipe(
       filter(actions.setCanvasInternals.match),
       switchMap(({ payload: { doc, element } }) => {
-        doc.addEventListener('icarus-build', (e: any) => {
+        doc.addEventListener(Events.ON_CLIENT_BUILD, (e: any) => {
           const { detail } = e;
 
           ReactDOM.render(
@@ -22,7 +23,7 @@ const epics: Epic[] = [
         });
 
         // tslint:disable-next-line:no-console
-        document.addEventListener('beragi-commit-fiber-root', console.log);
+        document.addEventListener(Events.ON_COMMIT_FIBER_ROOT, console.log);
 
         executeScript('http://localhost:9889/app.js', doc);
         return EMPTY;
