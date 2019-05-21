@@ -40,7 +40,7 @@ export const components = [
       {
         element: (
           <div style={{ width: 200, height: 200 }}>
-            <AlbumArt src="https://consequenceofsound.files.wordpress.com/2015/05/unnamed.png?w=760&h=760&crop=1" />
+            <AlbumArt src="https://media.pitchfork.com/photos/5a95784ab848c0268b200ffd/1:1/w_320/2012%20-%202017.jpg" />
           </div>
         ),
       },

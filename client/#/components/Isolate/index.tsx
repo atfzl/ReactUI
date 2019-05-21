@@ -3,6 +3,7 @@ import Frame, { FrameContextConsumer } from 'react-frame-component';
 
 interface Props {
   onReady: (p: { doc: Document; element: HTMLDivElement }) => void;
+  style?: React.CSSProperties;
 }
 
 interface State {
@@ -10,6 +11,8 @@ interface State {
 }
 
 class Isolate extends React.Component<Props, State> {
+  public static defaultProps = { style: {} };
+
   public state: State = {};
 
   private window?: Window;
@@ -46,10 +49,13 @@ class Isolate extends React.Component<Props, State> {
     return (
       <Frame
         style={{
-          width: refRect ? refRect.width : '100%',
-          height: refRect ? refRect.height : '100%',
-          border: 'none',
-          display: 'block',
+          ...{
+            width: refRect ? refRect.width : '100%',
+            height: refRect ? refRect.height : '100%',
+            border: 'none',
+            display: 'block',
+          },
+          ...this.props.style,
         }}
       >
         {(() => {

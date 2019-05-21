@@ -47,11 +47,13 @@ const Right = styled.div`
   flex: 0 0 240px;
   display: flex;
   overflow: hidden;
+  height: 100vh;
   border-left: 1px solid ${props => props.theme.colors.border.main};
 `;
 
 const RightBodyWrapper = styled.div`
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
 `;
 
