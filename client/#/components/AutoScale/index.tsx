@@ -21,7 +21,7 @@ class AutoScale extends React.Component<IProps, IState> {
 
   public state: IState = {};
 
-  public componentDidMount() {
+  public componentDidUpdate() {
     if (this.componentRef) {
       const element = ReactDOM.findDOMNode(this.componentRef.current) as
         | HTMLElement

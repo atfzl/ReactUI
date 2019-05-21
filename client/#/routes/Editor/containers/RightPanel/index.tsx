@@ -22,12 +22,13 @@ interface State {
   containerRect?: ClientRect;
 }
 
-const ONE_SIDE_PADDING = 24;
+const LEFT_RIGHT_PADDING = 48;
 
 class RightPanel extends React.PureComponent<Props, State> {
   public state: State = {};
 
   private containerRef = React.createRef<HTMLDivElement>();
+  private resizeObserver: any;
 
   private onFrameReady = ({
     doc,
@@ -38,16 +39,18 @@ class RightPanel extends React.PureComponent<Props, State> {
   }) => {
     this.props.setCanvasInternals({ doc, element });
 
-    const resizeObserver = new (window as any).ResizeObserver(
-      (entries: any) => {
-        for (const entry of entries) {
-          this.setState({ containerRect: entry.contentRect });
-        }
-      },
-    );
+    this.resizeObserver = new (window as any).ResizeObserver((entries: any) => {
+      for (const entry of entries) {
+        this.setState({ containerRect: entry.contentRect });
+      }
+    });
 
-    resizeObserver.observe(this.containerRef.current);
+    this.resizeObserver.observe(this.containerRef.current);
   };
+
+  public componentWillUnmount() {
+    this.resizeObserver.disconnect();
+  }
 
   public render() {
     const { workspace, selectedComponent, setSelectedComponent } = this.props;
@@ -60,9 +63,13 @@ class RightPanel extends React.PureComponent<Props, State> {
             height: '100%',
             width: oc(this.state.containerRect).width(),
           }}
+          wrapperStyle={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
         >
           {workspace && this.state.containerRect && (
-            <div style={{ paddingLeft: ONE_SIDE_PADDING }}>
+            <div>
               {workspace.components.map((component, i) => (
                 <div style={{ marginTop: 20, marginBottom: 32 }} key={i}>
                   <div style={{ marginLeft: -8, fontWeight: 700 }}>
@@ -76,8 +83,7 @@ class RightPanel extends React.PureComponent<Props, State> {
                         </div>
                         <AutoScale
                           maxWidth={
-                            this.state.containerRect!.width -
-                            ONE_SIDE_PADDING * 2
+                            this.state.containerRect!.width - LEFT_RIGHT_PADDING
                           }
                         >
                           <div

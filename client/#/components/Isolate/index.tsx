@@ -4,6 +4,7 @@ import Frame, { FrameContextConsumer } from 'react-frame-component';
 interface Props {
   onReady: (p: { doc: Document; element: HTMLDivElement }) => void;
   style?: React.CSSProperties;
+  wrapperStyle?: React.CSSProperties;
 }
 
 interface State {
@@ -11,7 +12,7 @@ interface State {
 }
 
 class Isolate extends React.Component<Props, State> {
-  public static defaultProps = { style: {} };
+  public static defaultProps = { style: {}, wrapperStyle: {} };
 
   public state: State = {};
 
@@ -79,7 +80,10 @@ class Isolate extends React.Component<Props, State> {
         })()}
         <div
           style={{
-            display: 'inline-block',
+            ...{
+              display: 'inline-block',
+            },
+            ...this.props.wrapperStyle,
           }}
           ref={this.getElementRef}
         >
