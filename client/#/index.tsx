@@ -1,3 +1,4 @@
+import '#/aaa-devToolsHook';
 import Routes from '#/routes';
 import store from '#/store';
 import globalCss from '#/styles/global';

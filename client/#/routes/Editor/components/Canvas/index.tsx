@@ -10,14 +10,17 @@ const Wrapper = styled.div`
 `;
 
 class Canvas extends React.Component {
-  private onIsolateReady(document: Document, element: Element) {
-    document.addEventListener('icarus-build', (e: any) => {
+  private onIsolateReady(doc: Document, element: Element) {
+    doc.addEventListener('icarus-build', (e: any) => {
       const { detail } = e;
 
       ReactDOM.render(<>{detail.workspace[0].instances[0]}</>, element);
     });
 
-    executeScript('http://localhost:9889/app.js', document);
+    // tslint:disable-next-line:no-console
+    document.addEventListener('beragi-commit-fiber-root', console.log);
+
+    executeScript('http://localhost:9889/app.js', doc);
   }
 
   public render() {
