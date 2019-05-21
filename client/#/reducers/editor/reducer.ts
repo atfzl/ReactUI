@@ -30,6 +30,17 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
       state.canvas.element = payload.element;
     }),
   )
+  .withHandling(
+    immerCase(actions.increaseZoom, state => {
+      // to avoid 0.1 + 0.2 === 0.3 false
+      state.zoomLevel = +(state.zoomLevel + EditorConstants.STEP).toFixed(1);
+    }),
+  )
+  .withHandling(
+    immerCase(actions.decreaseZoom, state => {
+      state.zoomLevel = +(state.zoomLevel - EditorConstants.STEP).toFixed(1);
+    }),
+  )
   .build();
 
 export default reducer;

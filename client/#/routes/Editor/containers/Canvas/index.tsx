@@ -1,4 +1,5 @@
 import Isolate from '#/components/Isolate';
+import { RootState } from '#/reducers';
 import actions from '#/reducers/editor/actions';
 import styled from '#/styled';
 import * as React from 'react';
@@ -10,24 +11,29 @@ const Wrapper = styled.div`
 `;
 
 type DispatchProps = typeof mapDispatchToProps;
+type StateProps = ReturnType<typeof mapStateToProps>;
 
-interface Props extends DispatchProps {}
+interface Props extends DispatchProps, StateProps {}
 
 class Canvas extends React.PureComponent<Props> {
   public render() {
     return (
-      <Wrapper>
+      <Wrapper style={{ transform: `scale(${this.props.zoomLevel})` }}>
         <Isolate onReady={this.props.setCanvasInternals} />
       </Wrapper>
     );
   }
 }
 
+const mapStateToProps = (state: RootState) => ({
+  zoomLevel: state.editor.zoomLevel,
+});
+
 const mapDispatchToProps = {
   setCanvasInternals: actions.setCanvasInternals,
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Canvas);

@@ -8,6 +8,8 @@ const actions = {
   setCanvasInternals: actionCreator<{ doc: Document; element: HTMLDivElement }>(
     'setCanvasInternals',
   ),
+  increaseZoom: actionCreator('increaseZoom'),
+  decreaseZoom: actionCreator('decreaseZoom'),
 };
 
 export default actions;
