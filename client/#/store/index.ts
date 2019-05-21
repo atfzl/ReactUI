@@ -12,7 +12,6 @@ export function configureStore(initialState?: RootState) {
   if (process.env.NODE_ENV !== 'production') {
     const logger = require('redux-logger').createLogger({
       collapsed: true,
-      diff: true,
     });
 
     middlewares.push(logger);
