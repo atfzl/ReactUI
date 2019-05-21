@@ -1,3 +1,4 @@
+import { EditorConstants } from '#/constants/Editor';
 import { Workspace } from '#/models/Editor';
 import { immerCase } from '#/utils';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
@@ -9,10 +10,12 @@ export interface ReducerState {
     element?: HTMLDivElement;
   };
   workspace?: Workspace;
+  zoomLevel: number;
 }
 
 const InitialState: ReducerState = {
   canvas: {},
+  zoomLevel: EditorConstants.DEFAULT_ZOOM,
 };
 
 const reducer = reducerWithInitialState<ReducerState>(InitialState)
