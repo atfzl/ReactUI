@@ -1,4 +1,4 @@
-import { Events } from '#/models/Events';
+import { EventListenerBuilders } from '#/models/Events';
 import { Epic } from '#/reducers';
 import { executeScript } from '#/utils';
 import * as React from 'react';
@@ -13,8 +13,8 @@ const epics: Epic[] = [
     action$.pipe(
       filter(actions.setCanvasInternals.match),
       switchMap(({ payload: { doc, element } }) => {
-        const onClientBuild$ = Events.ON_CLIENT_BUILD.eventListenerBuilder(doc);
-        const onCommitFiberRoot$ = Events.ON_COMMIT_FIBER_ROOT.eventListenerBuilder(
+        const onClientBuild$ = EventListenerBuilders.ON_CLIENT_BUILD(doc);
+        const onCommitFiberRoot$ = EventListenerBuilders.ON_COMMIT_FIBER_ROOT(
           document,
         );
 
