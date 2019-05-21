@@ -2,15 +2,14 @@
 
 import { Events } from '#/models/Events';
 import { FiberRoot, Renderer } from '#/models/React';
+import * as nanoid from 'nanoid';
 
 const renderers: Record<string, Renderer> = {};
 
 (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
   supportsFiber: true,
   inject: (renderer: Renderer) => {
-    const rendererId = Math.random()
-      .toString()
-      .slice(2);
+    const rendererId = nanoid();
 
     renderers[rendererId] = renderer;
 
