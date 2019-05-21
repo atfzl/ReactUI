@@ -18,31 +18,47 @@ body {
 }
 `;
 
-export const workspace = [
+export const components = [
   {
     title: 'Page',
-    instances: [<Page />],
+    instances: [
+      {
+        instance: <Page />,
+      },
+    ],
   },
   {
     title: 'Album Art',
     instances: [
-      <div style={{ width: 200, height: 200 }}>
-        <AlbumArt src="https://upload.wikimedia.org/wikipedia/en/6/6e/Opus_Eric_Prydz_cover_artwork.jpg" />
-      </div>,
-      <div style={{ width: 200, height: 200 }}>
-        <AlbumArt src="https://consequenceofsound.files.wordpress.com/2015/05/unnamed.png?w=760&h=760&crop=1" />
-      </div>,
+      {
+        instance: (
+          <div style={{ width: 200, height: 200 }}>
+            <AlbumArt src="https://upload.wikimedia.org/wikipedia/en/6/6e/Opus_Eric_Prydz_cover_artwork.jpg" />
+          </div>
+        ),
+      },
+      {
+        instance: (
+          <div style={{ width: 200, height: 200 }}>
+            <AlbumArt src="https://consequenceofsound.files.wordpress.com/2015/05/unnamed.png?w=760&h=760&crop=1" />
+          </div>
+        ),
+      },
     ],
   },
   {
     title: 'Seeker',
-    instances: [<Seeker currentTime={108} endTime={671} />],
+    instances: [
+      {
+        instance: <Seeker currentTime={108} endTime={671} />,
+      },
+    ],
   },
 ];
 
 const event = new CustomEvent('icarus-build', {
   detail: {
-    workspace,
+    components,
   },
 });
 

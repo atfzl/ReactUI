@@ -1,4 +1,4 @@
-import Canvas from '#/routes/Editor/components/Canvas';
+import Canvas from '#/routes/Editor/containers/Canvas';
 import styled from '@emotion/styled';
 import * as React from 'react';
 

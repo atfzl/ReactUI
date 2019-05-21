@@ -2,7 +2,7 @@ import * as React from 'react';
 import Frame, { FrameContextConsumer } from 'react-frame-component';
 
 interface Props {
-  onReady: (document: Document, element: HTMLDivElement) => void;
+  onReady: (p: { doc: Document; element: HTMLDivElement }) => void;
 }
 
 interface State {
@@ -30,7 +30,7 @@ class Isolate extends React.Component<Props, State> {
 
     resizeObserver.observe(element);
 
-    this.props.onReady(this.document!, element);
+    this.props.onReady({ doc: this.document!, element });
 
     this.document!.body.style.margin = '0';
   };

@@ -1,22 +1,30 @@
-import actions from '#/reducers/global/actions';
+import { Workspace } from '#/models/Editor';
 import { immerCase } from '#/utils';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
+import actions from './actions';
 
 export interface ReducerState {
-  message: string;
+  canvas: {
+    doc?: Document;
+    element?: HTMLDivElement;
+  };
+  workspace?: Workspace;
 }
 
-const InitialState: ReducerState = { message: 'hello' };
+const InitialState: ReducerState = {
+  canvas: {},
+};
 
 const reducer = reducerWithInitialState<ReducerState>(InitialState)
   .withHandling(
-    immerCase(actions.ping, draft => {
-      draft.message = 'PING';
+    immerCase(actions.setWorkspace, (state, payload) => {
+      state.workspace = payload;
     }),
   )
   .withHandling(
-    immerCase(actions.pong, draft => {
-      draft.message = 'PONG';
+    immerCase(actions.setCanvasInternals, (state, payload) => {
+      state.canvas.doc = payload.doc;
+      state.canvas.element = payload.element;
     }),
   )
   .build();

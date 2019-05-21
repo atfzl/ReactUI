@@ -5,6 +5,7 @@
     "no-submodule-imports": false,
     "no-implicit-dependencies": false,
     "interface-name": false,
-    "member-ordering": false
+    "member-ordering": false,
+    "no-empty-interface": false
   }
 }
