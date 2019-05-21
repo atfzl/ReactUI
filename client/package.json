@@ -36,6 +36,7 @@
     "@types/react-router-dom": "^4.3.3",
     "electron": "^5.0.1",
     "electron-better-ipc": "^0.2.0",
+    "emotion-theming": "^10.0.10",
     "immer": "^3.1.2",
     "nanoid": "^2.0.2",
     "react": "^16.8.6",

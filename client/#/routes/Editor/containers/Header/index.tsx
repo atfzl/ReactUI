@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
+import styled from '#/styled';
 import * as React from 'react';
 
 const Container = styled.div`
   background-color: #fdf9f3;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid ${props => props.theme.colors.border.main};
   flex: 0 0 32px;
   display: flex;
   align-items: center;

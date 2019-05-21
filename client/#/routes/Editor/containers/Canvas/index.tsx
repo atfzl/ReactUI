@@ -1,6 +1,6 @@
 import Isolate from '#/components/Isolate';
 import actions from '#/reducers/editor/actions';
-import styled from '@emotion/styled';
+import styled from '#/styled';
 import * as React from 'react';
 import { connect } from 'react-redux';
 

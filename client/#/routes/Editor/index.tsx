@@ -1,9 +1,7 @@
 import Canvas from '#/routes/Editor/containers/Canvas';
 import Header from '#/routes/Editor/containers/Header';
-import styled from '@emotion/styled';
+import styled from '#/styled';
 import * as React from 'react';
-
-const borderColor = 'rgba(0, 0, 0, 0.5)';
 
 const Container = styled.div`
   min-width: 1024px;
@@ -16,7 +14,7 @@ const Left = styled.div`
   flex: 0 0 240px;
   display: flex;
   overflow: hidden;
-  border-right: 1px solid ${borderColor};
+  border-right: 1px solid ${props => props.theme.colors.border.main};
 `;
 
 const LeftBodyWrapper = styled.div`
@@ -48,7 +46,7 @@ const Right = styled.div`
   flex: 0 0 240px;
   display: flex;
   overflow: hidden;
-  border-left: 1px solid ${borderColor};
+  border-left: 1px solid ${props => props.theme.colors.border.main};
 `;
 
 const RightBodyWrapper = styled.div`
