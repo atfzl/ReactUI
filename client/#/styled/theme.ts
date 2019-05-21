@@ -3,5 +3,8 @@ export const theme = {
     border: {
       main: 'rgba(0, 0, 0, 0.5)',
     },
+    background: {
+      main: '#f9f9f9',
+    },
   },
 };

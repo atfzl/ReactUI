@@ -8,7 +8,7 @@ import * as ReactDOMServer from 'react-dom/server';
 import { connect } from 'react-redux';
 
 const Container = styled.div`
-  background-color: oldlace;
+  background-color: #f2f2f2;
   height: 100vh;
 `;
 
@@ -20,6 +20,8 @@ interface Props extends StateProps, DispatchProps {}
 interface State {
   containerRect?: ClientRect;
 }
+
+const ONE_SIDE_PADDING = 24;
 
 class RightPanel extends React.PureComponent<Props, State> {
   public state: State = {};
@@ -51,20 +53,26 @@ class RightPanel extends React.PureComponent<Props, State> {
       <Container ref={this.containerRef}>
         <Isolate onReady={this.onFrameReady} style={{ height: '100%' }}>
           {this.props.workspace && this.state.containerRect && (
-            <div style={{ paddingLeft: 16 }}>
+            <div style={{ paddingLeft: ONE_SIDE_PADDING }}>
               {this.props.workspace.components.map((component, i) => (
-                <div key={i}>
-                  {component.title}
+                <div style={{ marginTop: 20, marginBottom: 32 }} key={i}>
+                  <div style={{ marginBottom: 12, marginLeft: -8 }}>
+                    {component.title}
+                  </div>
                   <div>
                     {component.instances.map((instance, j) => (
-                      <div key={j}>
+                      <div style={{ marginBottom: 8 }} key={j}>
                         <div>{instance.title}</div>
                         <AutoScale
-                          maxWidth={this.state.containerRect!.width - 32}
+                          maxWidth={
+                            this.state.containerRect!.width -
+                            ONE_SIDE_PADDING * 2
+                          }
                         >
                           <div
                             style={{
                               display: 'inline-block',
+                              border: '1px solid rgba(0, 0, 0, 0.3)',
                             }}
                             dangerouslySetInnerHTML={{
                               __html: ReactDOMServer.renderToStaticMarkup(

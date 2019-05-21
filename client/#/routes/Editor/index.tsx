@@ -34,7 +34,7 @@ const Center = styled.div`
   height: 100%;
   flex-direction: column;
   overflow: hidden;
-  background-color: #f9f9f9;
+  background-color: ${props => props.theme.colors.background.main};
 `;
 
 const CenterBodyWrapper = styled.div`
