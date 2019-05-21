@@ -76,7 +76,9 @@ class Isolate extends React.Component<Props, State> {
             display: 'inline-block',
           }}
           ref={this.getElementRef}
-        />
+        >
+          {this.props.children}
+        </div>
       </Frame>
     );
   }

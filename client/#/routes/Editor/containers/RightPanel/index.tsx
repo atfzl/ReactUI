@@ -1,41 +1,41 @@
+import Isolate from '#/components/Isolate';
 import { RootState } from '#/reducers';
+import actions from '#/reducers/gallery/actions';
 import styled from '#/styled';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
 const Container = styled.div`
   background-color: oldlace;
-  height: 200vh;
 `;
 
 type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
 
-interface Props extends StateProps {}
+interface Props extends StateProps, DispatchProps {}
 
 class RightPanel extends React.PureComponent<Props> {
   public render() {
-    if (!this.props.workspace) {
-      return null;
-    }
-
-    return this.props.workspace.components.map(component => (
+    return (
       <Container>
-        {component.title}
-        <div>
-          {component.instances.map(instance => (
-            <div>
-              <div>{instance.title}</div>
-              />
-            </div>
-          ))}
-        </div>
+        <Isolate onReady={this.props.setCanvasInternals}>
+          {this.props.workspace &&
+            this.props.workspace.components[0].instances[0].element}
+        </Isolate>
       </Container>
-    ));
+    );
   }
 }
 
 const mapStateToProps = (state: RootState) => ({
-  workspace: state.editor.workspace,
+  workspace: state.gallery.workspace,
 });
 
-export default connect(mapStateToProps)(RightPanel);
+const mapDispatchToProps = {
+  setCanvasInternals: actions.setCanvasInternals,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(RightPanel);
