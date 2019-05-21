@@ -23,6 +23,7 @@ export const components = [
     title: 'Page',
     instances: [
       {
+        title: 'main',
         element: <Page />,
       },
     ],
@@ -31,6 +32,7 @@ export const components = [
     title: 'Album Art',
     instances: [
       {
+        title: 'opus',
         element: (
           <div style={{ width: 200, height: 200 }}>
             <AlbumArt src="https://upload.wikimedia.org/wikipedia/en/6/6e/Opus_Eric_Prydz_cover_artwork.jpg" />
@@ -38,6 +40,7 @@ export const components = [
         ),
       },
       {
+        title: 'against all logic',
         element: (
           <div style={{ width: 200, height: 200 }}>
             <AlbumArt src="https://media.pitchfork.com/photos/5a95784ab848c0268b200ffd/1:1/w_320/2012%20-%202017.jpg" />
@@ -50,6 +53,7 @@ export const components = [
     title: 'Seeker',
     instances: [
       {
+        title: 'main',
         element: <Seeker currentTime={108} endTime={671} />,
       },
     ],

@@ -24,7 +24,7 @@ const LeftBodyWrapper = styled.div`
 `;
 
 const LeftBody = styled.div`
-  background-color: oldlace;
+  background-color: ${props => props.theme.colors.background.dark};
   height: 200vh;
 `;
 

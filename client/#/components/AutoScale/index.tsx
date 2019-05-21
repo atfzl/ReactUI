@@ -42,6 +42,7 @@ class AutoScale extends React.Component<IProps, IState> {
           style: {
             transformOrigin: '0px 0px 0px',
             transform: `scale(${scale})`,
+            width: scale * width,
             height: newHeight,
           },
         });

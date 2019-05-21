@@ -9,10 +9,12 @@ export interface ReducerState {
     element?: HTMLDivElement;
   };
   workspace?: Workspace;
+  selectedComponent: [number, number]; // first index is component, second is instance
 }
 
 const InitialState: ReducerState = {
   canvas: {},
+  selectedComponent: [0, 0],
 };
 
 const reducer = reducerWithInitialState<ReducerState>(InitialState)
@@ -25,6 +27,11 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
     immerCase(actions.setCanvasInternals, (state, payload) => {
       state.canvas.doc = payload.doc;
       state.canvas.element = payload.element;
+    }),
+  )
+  .withHandling(
+    immerCase(actions.setSelectedComponent, (state, payload) => {
+      state.selectedComponent = payload;
     }),
   )
   .build();

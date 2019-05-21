@@ -8,6 +8,7 @@ const actions = {
   setCanvasInternals: actionCreator<{ doc: Document; element: HTMLDivElement }>(
     'setCanvasInternals',
   ),
+  setSelectedComponent: actionCreator<[number, number]>('setSelectedComponent'),
 };
 
 export default actions;

@@ -6,9 +6,10 @@ import styled from '#/styled';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { connect } from 'react-redux';
+import { oc } from 'ts-optchain';
 
 const Container = styled.div`
-  background-color: #f2f2f2;
+  background-color: ${props => props.theme.colors.background.dark};
   height: 100vh;
 `;
 
@@ -49,20 +50,30 @@ class RightPanel extends React.PureComponent<Props, State> {
   };
 
   public render() {
+    const { workspace, selectedComponent, setSelectedComponent } = this.props;
+
     return (
       <Container ref={this.containerRef}>
-        <Isolate onReady={this.onFrameReady} style={{ height: '100%' }}>
-          {this.props.workspace && this.state.containerRect && (
+        <Isolate
+          onReady={this.onFrameReady}
+          style={{
+            height: '100%',
+            width: oc(this.state.containerRect).width(),
+          }}
+        >
+          {workspace && this.state.containerRect && (
             <div style={{ paddingLeft: ONE_SIDE_PADDING }}>
-              {this.props.workspace.components.map((component, i) => (
+              {workspace.components.map((component, i) => (
                 <div style={{ marginTop: 20, marginBottom: 32 }} key={i}>
-                  <div style={{ marginBottom: 12, marginLeft: -8 }}>
+                  <div style={{ marginLeft: -8, fontWeight: 700 }}>
                     {component.title}
                   </div>
                   <div>
                     {component.instances.map((instance, j) => (
                       <div style={{ marginBottom: 8 }} key={j}>
-                        <div>{instance.title}</div>
+                        <div style={{ textAlign: 'end', marginBottom: 4 }}>
+                          {instance.title}
+                        </div>
                         <AutoScale
                           maxWidth={
                             this.state.containerRect!.width -
@@ -72,8 +83,15 @@ class RightPanel extends React.PureComponent<Props, State> {
                           <div
                             style={{
                               display: 'inline-block',
-                              border: '1px solid rgba(0, 0, 0, 0.3)',
+                              border:
+                                selectedComponent[0] === i &&
+                                selectedComponent[1] === j
+                                  ? '2px solid blue'
+                                  : '1px solid rgba(0, 0, 0, 0.3)',
+                              cursor: 'pointer',
+                              userSelect: 'none',
                             }}
+                            onClick={() => setSelectedComponent([i, j])}
                             dangerouslySetInnerHTML={{
                               __html: ReactDOMServer.renderToStaticMarkup(
                                 instance.element,
@@ -96,10 +114,12 @@ class RightPanel extends React.PureComponent<Props, State> {
 
 const mapStateToProps = (state: RootState) => ({
   workspace: state.gallery.workspace,
+  selectedComponent: state.gallery.selectedComponent,
 });
 
 const mapDispatchToProps = {
   setCanvasInternals: actions.setCanvasInternals,
+  setSelectedComponent: actions.setSelectedComponent,
 };
 
 export default connect(
