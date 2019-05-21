@@ -1,5 +1,5 @@
+import Header from '#/routes/Editor/components/Header';
 import Canvas from '#/routes/Editor/containers/Canvas';
-import Header from '#/routes/Editor/containers/Header';
 import styled from '#/styled';
 import * as React from 'react';
 
