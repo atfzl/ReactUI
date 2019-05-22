@@ -72,7 +72,14 @@ class RightPanel extends React.PureComponent<Props, State> {
             <div>
               {workspace.components.map((component, i) => (
                 <div style={{ marginTop: 20, marginBottom: 32 }} key={i}>
-                  <div style={{ marginLeft: -8, fontWeight: 700 }}>
+                  <div
+                    style={{
+                      fontFamily: 'sans-serif',
+                      fontSize: 16,
+                      marginLeft: -8,
+                      fontWeight: 700,
+                    }}
+                  >
                     {component.title}
                   </div>
                   <div>
@@ -88,6 +95,8 @@ class RightPanel extends React.PureComponent<Props, State> {
                       >
                         <div
                           style={{
+                            fontFamily: 'sans-serif',
+                            fontSize: 16,
                             marginBottom: 5,
                             alignSelf: 'flex-end',
                             borderBottom:
