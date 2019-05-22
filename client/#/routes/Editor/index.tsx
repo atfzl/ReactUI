@@ -3,6 +3,7 @@ import Canvas from '#/routes/Editor/containers/Canvas';
 import RightPanel from '#/routes/Editor/containers/RightPanel';
 import styled from '#/styled';
 import * as React from 'react';
+import LeftPanel from './containers/LeftPanel';
 
 const Container = styled.div`
   min-width: 1024px;
@@ -21,11 +22,6 @@ const Left = styled.div`
 const LeftBodyWrapper = styled.div`
   overflow: auto;
   flex: 1;
-`;
-
-const LeftBody = styled.div`
-  background-color: ${props => props.theme.colors.background.dark};
-  height: 200vh;
 `;
 
 const Center = styled.div`
@@ -62,7 +58,7 @@ class Editor extends React.Component {
       <Container>
         <Left>
           <LeftBodyWrapper>
-            <LeftBody>Left</LeftBody>
+            <LeftPanel />
           </LeftBodyWrapper>
         </Left>
         <Center>
