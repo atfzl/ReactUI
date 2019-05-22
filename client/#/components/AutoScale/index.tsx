@@ -21,7 +21,7 @@ class AutoScale extends React.Component<IProps, IState> {
 
   public state: IState = {};
 
-  public componentDidUpdate() {
+  private recalculate() {
     if (this.componentRef) {
       const element = ReactDOM.findDOMNode(this.componentRef.current) as
         | HTMLElement
@@ -42,12 +42,20 @@ class AutoScale extends React.Component<IProps, IState> {
           style: {
             transformOrigin: '0px 0px 0px',
             transform: `scale(${scale})`,
-            width: scale * width,
+            maxWidth: scale * width,
             height: newHeight,
           },
         });
       }
     }
+  }
+
+  public componentDidMount() {
+    this.recalculate();
+  }
+
+  public componentDidUpdate() {
+    this.recalculate();
   }
 
   public render() {

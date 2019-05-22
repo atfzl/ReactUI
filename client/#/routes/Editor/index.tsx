@@ -53,7 +53,6 @@ const Right = styled.div`
 
 const RightBodyWrapper = styled.div`
   overflow-y: auto;
-  overflow-x: hidden;
   flex: 1;
 `;
 
