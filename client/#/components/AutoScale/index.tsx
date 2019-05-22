@@ -1,3 +1,4 @@
+import Ref from '#/components/Ref';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -9,13 +10,6 @@ interface IState {
   style?: React.CSSProperties;
 }
 
-class Ref extends React.Component {
-  public render() {
-    return this.props.children;
-  }
-}
-
-// tslint:disable-next-line:max-classes-per-file
 class AutoScale extends React.Component<IProps, IState> {
   private componentRef?: React.RefObject<any> = React.createRef();
 
