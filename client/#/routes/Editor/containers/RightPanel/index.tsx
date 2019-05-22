@@ -8,6 +8,8 @@ import * as ReactDOMServer from 'react-dom/server';
 import { connect } from 'react-redux';
 import { oc } from 'ts-optchain';
 
+const ONE_SIDE_PADDING = 24;
+
 const Container = styled.div`
   background-color: ${props => props.theme.colors.background.dark};
   height: 100vh;
@@ -21,8 +23,6 @@ interface Props extends StateProps, DispatchProps {}
 interface State {
   containerRect?: ClientRect;
 }
-
-const LEFT_RIGHT_PADDING = 48;
 
 class RightPanel extends React.PureComponent<Props, State> {
   public state: State = {};
@@ -64,8 +64,8 @@ class RightPanel extends React.PureComponent<Props, State> {
             width: oc(this.state.containerRect).width(),
           }}
           wrapperStyle={{
-            display: 'flex',
-            justifyContent: 'center',
+            paddingLeft: ONE_SIDE_PADDING,
+            paddingRight: ONE_SIDE_PADDING,
           }}
         >
           {workspace && this.state.containerRect && (
@@ -77,25 +77,40 @@ class RightPanel extends React.PureComponent<Props, State> {
                   </div>
                   <div>
                     {component.instances.map((instance, j) => (
-                      <div style={{ marginBottom: 8 }} key={j}>
-                        <div style={{ textAlign: 'end', marginBottom: 4 }}>
+                      <div
+                        style={{
+                          marginBottom: 8,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                        }}
+                        key={j}
+                      >
+                        <div
+                          style={{
+                            marginBottom: 5,
+                            alignSelf: 'flex-end',
+                            borderBottom:
+                              selectedComponent[0] === i &&
+                              selectedComponent[1] === j
+                                ? '2px solid blue'
+                                : '2px solid transparent',
+                          }}
+                        >
                           {instance.title}
                         </div>
                         <AutoScale
                           maxWidth={
-                            this.state.containerRect!.width - LEFT_RIGHT_PADDING
+                            this.state.containerRect!.width -
+                            ONE_SIDE_PADDING * 2
                           }
                         >
                           <div
                             style={{
                               display: 'inline-block',
-                              border:
-                                selectedComponent[0] === i &&
-                                selectedComponent[1] === j
-                                  ? '2px solid blue'
-                                  : '1px solid rgba(0, 0, 0, 0.3)',
-                              cursor: 'pointer',
+                              border: '1px solid rgba(0, 0, 0, 0.3)',
                               userSelect: 'none',
+                              cursor: 'pointer',
                             }}
                             onClick={() => setSelectedComponent([i, j])}
                             dangerouslySetInnerHTML={{
