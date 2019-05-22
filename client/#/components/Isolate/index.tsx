@@ -81,7 +81,7 @@ class Isolate extends React.Component<Props, State> {
         <div
           style={{
             ...{
-              display: 'inline-block',
+              display: 'table',
             },
             ...this.props.wrapperStyle,
           }}

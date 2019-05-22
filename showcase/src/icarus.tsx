@@ -3,6 +3,8 @@ import { injectGlobal } from 'styled-components';
 import AlbumArt from './components/AlbumArt';
 import Page from './components/Page';
 import Seeker from './components/Seeker';
+import PlayControl from './components/PlayControl';
+import StatusBar from './components/StatusBar';
 
 // tslint:disable-next-line no-unused-expression
 injectGlobal`
@@ -25,6 +27,24 @@ export const components = [
       {
         title: 'main',
         element: <Page />,
+      },
+    ],
+  },
+  {
+    title: 'Play Control',
+    instances: [
+      {
+        title: 'main',
+        element: <PlayControl />,
+      },
+    ],
+  },
+  {
+    title: 'Status Bar',
+    instances: [
+      {
+        title: 'main',
+        element: <StatusBar />,
       },
     ],
   },

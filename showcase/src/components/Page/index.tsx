@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import AlbumArt from '../AlbumArt';
-import NavigationBar from '../NavigationBar';
+import StatusBar from '../StatusBar';
 import PlayControl from '../PlayControl';
 import Seeker from '../Seeker';
 
@@ -134,7 +134,7 @@ class Page extends React.Component<
   public render() {
     return (
       <Container>
-        <NavigationBar />
+        <StatusBar />
         <AlbumArtWrapper>
           <AlbumArt src="http://blog.iso50.com/wp-content/uploads/2013/12/Awake-450.jpg" />
         </AlbumArtWrapper>
