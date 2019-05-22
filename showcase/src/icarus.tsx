@@ -5,6 +5,7 @@ import Page from './components/Page';
 import Seeker from './components/Seeker';
 import PlayControl from './components/PlayControl';
 import StatusBar from './components/StatusBar';
+import Icon from './components/Icon';
 
 // tslint:disable-next-line no-unused-expression
 injectGlobal`
@@ -45,6 +46,15 @@ export const components = [
       {
         title: 'main',
         element: <StatusBar />,
+      },
+    ],
+  },
+  {
+    title: 'Icon',
+    instances: [
+      {
+        title: 'close',
+        element: <Icon>close</Icon>,
       },
     ],
   },

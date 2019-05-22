@@ -4,6 +4,7 @@ import AlbumArt from '../AlbumArt';
 import StatusBar from '../StatusBar';
 import PlayControl from '../PlayControl';
 import Seeker from '../Seeker';
+import Icon from '../Icon';
 
 const Container = styled.div`
   height: 600px;
@@ -55,17 +56,15 @@ const PlayControlRow = styled.div`
   padding: 0 16px;
 `;
 
-const RepeatIcon = styled.i.attrs({
+const RepeatIcon = styled(Icon).attrs({
   children: 'repeat',
-  className: 'material-icons',
 })`
   font-size: 20px;
   color: #dedede;
 `;
 
-const ShuffleIcon = styled.i.attrs({
+const ShuffleIcon = styled(Icon).attrs({
   children: 'shuffle',
-  className: 'material-icons',
 })`
   font-size: 20px;
   color: grey;
@@ -79,8 +78,7 @@ const BottomRow = styled.div`
   width: 100%;
 `;
 
-const CloseIcon = styled.i.attrs({
-  className: 'material-icons',
+const CloseIcon = styled(Icon).attrs({
   children: 'close',
 })`
   color: grey;
@@ -93,8 +91,7 @@ const BottomRightIconsGroup = styled.div`
   align-items: center;
 `;
 
-const FavoriteIcon = styled.i.attrs({
-  className: 'material-icons',
+const FavoriteIcon = styled(Icon).attrs({
   children: 'favorite_border',
 })`
   color: grey;
@@ -102,8 +99,7 @@ const FavoriteIcon = styled.i.attrs({
   margin-right: 16px;
 `;
 
-const PlaylistPlayIcon = styled.i.attrs({
-  className: 'material-icons',
+const PlaylistPlayIcon = styled(Icon).attrs({
   children: 'playlist_play',
 })`
   color: grey;

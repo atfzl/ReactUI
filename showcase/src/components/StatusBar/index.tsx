@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import Icon from '../Icon';
 
 const Container = styled.div`
   display: flex;
@@ -16,9 +17,7 @@ const BatteryPercentageText = styled(Text)`
   margin-left: 4px;
 `;
 
-const MaterialIcon = styled.i.attrs({
-  className: 'material-icons',
-})`
+const MaterialIcon = styled(Icon)`
   font-size: inherit;
 `;
 

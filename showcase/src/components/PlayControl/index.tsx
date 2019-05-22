@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import Icon from '../Icon';
 
 const PauseIconCircle = styled.div`
   border-radius: 50%;
@@ -13,16 +14,13 @@ const PauseIconCircle = styled.div`
   margin: 0 16px;
 `;
 
-const PauseIcon = styled.i.attrs({
+const PauseIcon = styled(Icon).attrs({
   children: 'pause',
-  className: 'material-icons',
 })`
   font-size: 24px;
 `;
 
-const NextPrevIcon = styled.i.attrs({
-  className: 'material-icons',
-})`
+const NextPrevIcon = styled(Icon)`
   font-size: 28px;
   color: grey;
 `;
