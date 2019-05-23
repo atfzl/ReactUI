@@ -5,9 +5,10 @@ const actionCreator = actionCreatorFactory('EDITOR');
 
 const actions = {
   setWorkspace: actionCreator<Workspace>('setWorkspace'),
-  setCanvasInternals: actionCreator<{ doc: Document; element: HTMLDivElement }>(
-    'setCanvasInternals',
-  ),
+  setCanvasDomInternals: actionCreator<{
+    doc: Document;
+    element: HTMLDivElement;
+  }>('setCanvasDomInternals'),
   increaseZoom: actionCreator('increaseZoom'),
   decreaseZoom: actionCreator('decreaseZoom'),
 };

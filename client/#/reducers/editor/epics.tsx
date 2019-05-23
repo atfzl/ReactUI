@@ -9,7 +9,7 @@ import actions from './actions';
 const epics: Epic[] = [
   action$ =>
     action$.pipe(
-      filter(actions.setCanvasInternals.match),
+      filter(actions.setCanvasDomInternals.match),
       switchMap(({ payload: { doc } }) => {
         const onClientBuild$ = Events.onClientBuild.builder(doc);
         const onCommitFiberRoot$ = Events.onCommitFiberRoot.builder(document);

@@ -19,7 +19,7 @@ class Canvas extends React.PureComponent<Props> {
   public render() {
     const {
       zoomLevel,
-      setCanvasInternals,
+      setCanvasDomInternals,
       workspace,
       selectedComponent,
     } = this.props;
@@ -31,7 +31,7 @@ class Canvas extends React.PureComponent<Props> {
 
     return (
       <Wrapper style={{ transform: `scale(${zoomLevel})` }}>
-        <Isolate onReady={setCanvasInternals}>
+        <Isolate onReady={setCanvasDomInternals}>
           <>{element}</>
         </Isolate>
       </Wrapper>
@@ -46,7 +46,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = {
-  setCanvasInternals: actions.setCanvasInternals,
+  setCanvasDomInternals: actions.setCanvasDomInternals,
 };
 
 export default connect(

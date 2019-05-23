@@ -3,19 +3,22 @@ import { Workspace } from '#/models/Editor';
 import { immerCase } from '#/utils';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import actions from './actions';
+import { NodeMap, ReactInternals } from './interfaces';
 
 export interface ReducerState {
-  canvas: {
-    doc?: Document;
-    element?: HTMLDivElement;
+  canvas?: {
+    doc: Document;
+    element: HTMLDivElement;
   };
   workspace?: Workspace;
   zoomLevel: number;
+  reactInternals?: ReactInternals;
+  nodeMap: NodeMap;
 }
 
 const InitialState: ReducerState = {
-  canvas: {},
   zoomLevel: EditorConstants.DEFAULT_ZOOM,
+  nodeMap: {},
 };
 
 const reducer = reducerWithInitialState<ReducerState>(InitialState)
@@ -25,9 +28,11 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
     }),
   )
   .withHandling(
-    immerCase(actions.setCanvasInternals, (state, payload) => {
-      state.canvas.doc = payload.doc;
-      state.canvas.element = payload.element;
+    immerCase(actions.setCanvasDomInternals, (state, payload) => {
+      state.canvas = {
+        doc: payload.doc,
+        element: payload.element,
+      };
     }),
   )
   .withHandling(
