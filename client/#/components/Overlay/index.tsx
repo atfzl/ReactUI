@@ -1,4 +1,13 @@
+import styled from '#/styled';
 import * as React from 'react';
+
+const Container = styled.div`
+  border: 1px solid blue;
+
+  &:hover {
+    border: 1px dashed #f400b5;
+  }
+`;
 
 interface Props {
   children: HTMLElement;
@@ -6,7 +15,7 @@ interface Props {
 
 class Overlay extends React.Component<Props> {
   public render() {
-    const element = this.props.children;
+    const { children: element } = this.props;
 
     const rect = element.getBoundingClientRect();
 
@@ -18,10 +27,9 @@ class Overlay extends React.Component<Props> {
       bottom: rect.bottom + 'px',
       height: rect.height + 'px',
       width: rect.width + 'px',
-      border: '1px solid blue',
     };
 
-    return <div style={style} />;
+    return <Container style={style} />;
   }
 }
 
