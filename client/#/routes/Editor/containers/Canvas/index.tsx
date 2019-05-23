@@ -24,13 +24,15 @@ class Canvas extends React.PureComponent<Props> {
       selectedComponent,
     } = this.props;
 
+    const element =
+      workspace &&
+      workspace.components[selectedComponent[0]].instances[selectedComponent[1]]
+        .element;
+
     return (
       <Wrapper style={{ transform: `scale(${zoomLevel})` }}>
         <Isolate onReady={setCanvasInternals}>
-          {workspace &&
-            workspace.components[selectedComponent[0]].instances[
-              selectedComponent[1]
-            ].element}
+          <>{element}</>
         </Isolate>
       </Wrapper>
     );
