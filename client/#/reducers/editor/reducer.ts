@@ -14,7 +14,7 @@ export interface ReducerState {
   workspace?: Workspace;
   zoomLevel: number;
   renderer?: Renderer;
-  fiberRootNode?: FiberNode;
+  rootFiberNode?: FiberNode;
   nodeMap: NodeMap;
 }
 
@@ -52,7 +52,7 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
     immerCase(actions.onCommitFiberRoot, (state, payload) => {
       state.renderer = payload.renderer;
       state.nodeMap = payload.nodeMap;
-      state.fiberRootNode = payload.fiberRootNode;
+      state.rootFiberNode = payload.rootFiberNode;
     }),
   )
   .build();

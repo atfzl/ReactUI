@@ -2,6 +2,7 @@ import { Events } from '#/models/Events';
 import { Epic } from '#/reducers';
 import { executeScript } from '#/utils';
 import { getTitle, walkTree } from '#/utils/fiberNode';
+import * as ReactDOM from 'react-dom';
 import { combineEpics } from 'redux-observable';
 import { EMPTY, merge, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
@@ -12,7 +13,7 @@ const epics: Epic[] = [
   (action$, state$) =>
     action$.pipe(
       filter(actions.setCanvasDomInternals.match),
-      switchMap(({ payload: { doc } }) => {
+      switchMap(({ payload: { doc, element } }) => {
         const onClientBuild$ = Events.onClientBuild.subscriberBuilder(doc);
         const onCommitFiberRoot$ = Events.onCommitFiberRoot.subscriberBuilder(
           document,
@@ -23,28 +24,33 @@ const epics: Epic[] = [
         return merge(
           onClientBuild$.pipe(
             map(workspace => {
+              const { selectedComponent } = state$.value.gallery;
+
+              const selectedElement =
+                workspace.components[selectedComponent[0]].instances[
+                  selectedComponent[1]
+                ].element;
+
+              ReactDOM.render(selectedElement, element);
+
               return actions.setWorkspace(workspace);
             }),
           ),
           onCommitFiberRoot$.pipe(
-            switchMap(payload => {
-              const { canvas } = state$.value.editor;
-
-              if (!canvas) {
+            switchMap(({ fiberRoot, renderer }) => {
+              if (fiberRoot.containerInfo !== element) {
                 return EMPTY;
               }
 
-              const fiberRootNode = payload.renderer.findFiberByHostInstance(
-                canvas.element,
-              );
+              const rootFiberNode = fiberRoot.current;
 
               const nodeMap: NodeMap = {};
 
-              walkTree(fiberRootNode, (node, depth) => {
+              walkTree(rootFiberNode, (node, depth) => {
                 const title = getTitle(node);
 
                 if (title) {
-                  const nativeNode = payload.renderer.findHostInstanceByFiber(
+                  const nativeNode = renderer.findHostInstanceByFiber(
                     node,
                   ) as HTMLElement;
 
@@ -54,9 +60,9 @@ const epics: Epic[] = [
 
               return of(
                 actions.onCommitFiberRoot({
-                  fiberRootNode,
+                  rootFiberNode,
                   nodeMap,
-                  renderer: payload.renderer,
+                  renderer,
                 }),
               );
             }),

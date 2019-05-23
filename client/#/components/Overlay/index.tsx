@@ -11,6 +11,7 @@ class Overlay extends React.Component<Props> {
     const rect = element.getBoundingClientRect();
 
     const style: React.CSSProperties = {
+      position: 'absolute',
       left: rect.left + 'px',
       right: rect.right + 'px',
       top: rect.top + 'px',

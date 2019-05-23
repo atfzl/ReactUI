@@ -15,7 +15,7 @@ const actions = {
   decreaseZoom: actionCreator('decreaseZoom'),
   onCommitFiberRoot: actionCreator<{
     renderer: Renderer;
-    fiberRootNode: FiberNode;
+    rootFiberNode: FiberNode;
     nodeMap: NodeMap;
   }>('onCommitFiberRoot'),
 };
