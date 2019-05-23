@@ -1,6 +1,7 @@
 import { Workspace } from '#/models/Editor';
 import { FiberRoot, OnCommitFiberRootPayload, Renderer } from '#/models/React';
 import { fromEvent } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 
 export const Events = {
   onClientBuild: (() => {
@@ -10,7 +11,7 @@ export const Events = {
       subscriberBuilder: (doc: Document) =>
         fromEvent<{
           detail: Workspace;
-        }>(doc, eventName),
+        }>(doc, eventName).pipe(pluck('detail')),
     };
   })(),
   onCommitFiberRoot: (() => {
@@ -24,7 +25,7 @@ export const Events = {
             renderer: Renderer;
             fiberRoot: FiberRoot;
           };
-        }>(doc, eventName),
+        }>(doc, eventName).pipe(pluck('detail')),
       emit: (doc: Document, payload: OnCommitFiberRootPayload) => {
         const event = new CustomEvent(eventName, {
           detail: payload,

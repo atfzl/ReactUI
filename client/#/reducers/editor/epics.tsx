@@ -19,7 +19,9 @@ const epics: Epic[] = [
         executeScript('http://localhost:9889/app.js', doc);
 
         return merge(
-          onClientBuild$.pipe(map(e => actions.setWorkspace(e.detail))),
+          onClientBuild$.pipe(
+            map(workspace => actions.setWorkspace(workspace)),
+          ),
           onCommitFiberRoot$.pipe(switchMap(() => EMPTY)),
         );
       }),
