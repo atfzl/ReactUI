@@ -4,23 +4,23 @@ interface Props {
   children: HTMLElement;
 }
 
-interface State {
-  style: React.CSSProperties;
-}
-
 class Overlay extends React.Component<Props> {
-  public state: State = { style: {} };
-
-  public componentDidMount() {
+  public render() {
     const element = this.props.children;
 
     const rect = element.getBoundingClientRect();
 
-    this.setState({ style: { ...rect, border: '1px solid blue' } });
-  }
+    const style: React.CSSProperties = {
+      left: rect.left + 'px',
+      right: rect.right + 'px',
+      top: rect.top + 'px',
+      bottom: rect.bottom + 'px',
+      height: rect.height + 'px',
+      width: rect.width + 'px',
+      border: '1px solid blue',
+    };
 
-  public render() {
-    return <div style={this.state.style} />;
+    return <div style={style} />;
   }
 }
 
