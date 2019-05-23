@@ -1,5 +1,5 @@
 import { Workspace } from '#/models/Editor';
-import { OnCommitFiberRootPayload } from '#/models/React';
+import { FiberNode, Renderer } from '#/models/React';
 import actionCreatorFactory from 'typescript-fsa';
 import { NodeMap } from './interfaces';
 
@@ -13,9 +13,11 @@ const actions = {
   }>('setCanvasDomInternals'),
   increaseZoom: actionCreator('increaseZoom'),
   decreaseZoom: actionCreator('decreaseZoom'),
-  onCommitFiberRoot: actionCreator<
-    OnCommitFiberRootPayload & { nodeMap: NodeMap }
-  >('onCommitFiberRoot'),
+  onCommitFiberRoot: actionCreator<{
+    renderer: Renderer;
+    fiberNode: FiberNode;
+    nodeMap: NodeMap;
+  }>('onCommitFiberRoot'),
 };
 
 export default actions;

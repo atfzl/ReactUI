@@ -7,7 +7,7 @@ import { filter, map, switchMap } from 'rxjs/operators';
 import actions from './actions';
 
 const epics: Epic[] = [
-  action$ =>
+  (action$, state$) =>
     action$.pipe(
       filter(actions.setCanvasDomInternals.match),
       switchMap(({ payload: { doc } }) => {
@@ -26,7 +26,16 @@ const epics: Epic[] = [
           ),
           onCommitFiberRoot$.pipe(
             map(payload => {
-              return actions.onCommitFiberRoot({ ...payload, nodeMap: {} });
+              const { element } = state$.value.editor.canvas!;
+              const fiberNode = payload.renderer.findFiberByHostInstance(
+                element,
+              );
+
+              return actions.onCommitFiberRoot({
+                fiberNode: fiberNode.child,
+                nodeMap: {},
+                renderer: payload.renderer,
+              });
             }),
           ),
         );

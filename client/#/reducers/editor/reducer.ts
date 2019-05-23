@@ -1,9 +1,10 @@
 import { EditorConstants } from '#/constants/Editor';
 import { Workspace } from '#/models/Editor';
+import { FiberNode, Renderer } from '#/models/React';
 import { immerCase } from '#/utils';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import actions from './actions';
-import { NodeMap, ReactInternals } from './interfaces';
+import { NodeMap } from './interfaces';
 
 export interface ReducerState {
   canvas?: {
@@ -12,7 +13,8 @@ export interface ReducerState {
   };
   workspace?: Workspace;
   zoomLevel: number;
-  reactInternals?: ReactInternals;
+  renderer?: Renderer;
+  fiberNode?: FiberNode;
   nodeMap: NodeMap;
 }
 
@@ -46,16 +48,13 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
       state.zoomLevel = +(state.zoomLevel - EditorConstants.STEP).toFixed(1);
     }),
   )
-  .case(actions.onCommitFiberRoot, (state, payload) => {
-    return {
-      ...state,
-      reactInternals: {
-        renderer: payload.renderer,
-        fiberRoot: payload.fiberRoot,
-      },
-      nodeMap: payload.nodeMap,
-    };
-  })
+  .withHandling(
+    immerCase(actions.onCommitFiberRoot, (state, payload) => {
+      state.renderer = payload.renderer;
+      state.nodeMap = payload.nodeMap;
+      state.fiberNode = payload.fiberNode;
+    }),
+  )
   .build();
 
 export default reducer;

@@ -1,9 +1,4 @@
-import { FiberNode, FiberRoot, Renderer } from '#/models/React';
-
-export interface ReactInternals {
-  renderer: Renderer;
-  fiberRoot: FiberRoot;
-}
+import { FiberNode } from '#/models/React';
 
 export type NodeMap = Record<
   string,
