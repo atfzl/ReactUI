@@ -46,6 +46,16 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
       state.zoomLevel = +(state.zoomLevel - EditorConstants.STEP).toFixed(1);
     }),
   )
+  .case(actions.onCommitFiberRoot, (state, payload) => {
+    return {
+      ...state,
+      reactInternals: {
+        renderer: payload.renderer,
+        fiberRoot: payload.fiberRoot,
+      },
+      nodeMap: payload.nodeMap,
+    };
+  })
   .build();
 
 export default reducer;

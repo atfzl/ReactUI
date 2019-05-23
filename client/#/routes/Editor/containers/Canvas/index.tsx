@@ -17,23 +17,11 @@ interface Props extends DispatchProps, StateProps {}
 
 class Canvas extends React.PureComponent<Props> {
   public render() {
-    const {
-      zoomLevel,
-      setCanvasDomInternals,
-      workspace,
-      selectedComponent,
-    } = this.props;
-
-    const element =
-      workspace &&
-      workspace.components[selectedComponent[0]].instances[selectedComponent[1]]
-        .element;
+    const { zoomLevel, setCanvasDomInternals } = this.props;
 
     return (
       <Wrapper style={{ transform: `scale(${zoomLevel})` }}>
-        <Isolate onReady={setCanvasDomInternals}>
-          <>{element}</>
-        </Isolate>
+        <Isolate onReady={setCanvasDomInternals} />
       </Wrapper>
     );
   }
@@ -41,8 +29,6 @@ class Canvas extends React.PureComponent<Props> {
 
 const mapStateToProps = (state: RootState) => ({
   zoomLevel: state.editor.zoomLevel,
-  workspace: state.editor.workspace,
-  selectedComponent: state.gallery.selectedComponent,
 });
 
 const mapDispatchToProps = {
