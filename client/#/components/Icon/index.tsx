@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import * as React from 'react';
 
-type IProps = JSX.IntrinsicElements['div'];
+type IProps = JSX.IntrinsicElements['i'];
 
 interface Props extends IProps {}
 
