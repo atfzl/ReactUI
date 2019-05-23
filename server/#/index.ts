@@ -11,7 +11,7 @@ function createWindow() {
   // and load the index.html of the app.
   mainWindow.loadURL('http://localhost:7979');
 
-  mainWindow.setTitle('Beragi');
+  mainWindow.setTitle('ellipsoid');
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
