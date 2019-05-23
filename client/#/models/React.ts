@@ -1,6 +1,6 @@
 export interface FiberNode {
   alternate: FiberNode;
-  child: FiberNode;
+  child?: FiberNode;
   effectTag: number;
   expirationTime: number;
   firstEffect: FiberNode;
