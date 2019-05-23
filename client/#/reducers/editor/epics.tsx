@@ -3,7 +3,7 @@ import { Epic } from '#/reducers';
 import { executeScript } from '#/utils';
 import { combineEpics } from 'redux-observable';
 import { EMPTY, merge } from 'rxjs';
-import { filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import actions from './actions';
 
 const epics: Epic[] = [
@@ -11,18 +11,16 @@ const epics: Epic[] = [
     action$.pipe(
       filter(actions.setCanvasDomInternals.match),
       switchMap(({ payload: { doc } }) => {
-        const onClientBuild$ = Events.onClientBuild.builder(doc);
-        const onCommitFiberRoot$ = Events.onCommitFiberRoot.builder(document);
+        const onClientBuild$ = Events.onClientBuild.subscriberBuilder(doc);
+        const onCommitFiberRoot$ = Events.onCommitFiberRoot.subscriberBuilder(
+          document,
+        );
 
         executeScript('http://localhost:9889/app.js', doc);
 
         return merge(
           onClientBuild$.pipe(map(e => actions.setWorkspace(e.detail))),
-          onCommitFiberRoot$.pipe(
-            // tslint:disable-next-line:no-console
-            tap(console.log),
-            mergeMap(() => EMPTY),
-          ),
+          onCommitFiberRoot$.pipe(switchMap(() => EMPTY)),
         );
       }),
     ),

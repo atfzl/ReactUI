@@ -51,3 +51,9 @@ export interface Renderer {
   rendererPackageName: 'react-dom';
   version: string;
 }
+
+export interface OnCommitFiberRootPayload {
+  rendererId: string;
+  renderer: Renderer;
+  fiberRoot: FiberRoot;
+}

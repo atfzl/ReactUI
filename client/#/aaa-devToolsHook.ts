@@ -18,15 +18,11 @@ const renderers: Record<string, Renderer> = {};
   onCommitFiberRoot: (rendererId: string, fiberRoot: FiberRoot) => {
     const renderer = renderers[rendererId];
 
-    const event = new CustomEvent(Events.onCommitFiberRoot.name, {
-      detail: {
-        rendererId,
-        renderer,
-        fiberRoot,
-      },
+    Events.onCommitFiberRoot.emit(document, {
+      rendererId,
+      renderer,
+      fiberRoot,
     });
-
-    document.dispatchEvent(event);
   },
   onCommitFiberUnmount: () => null,
 };

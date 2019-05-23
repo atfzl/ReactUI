@@ -11,7 +11,7 @@ const epics: Epic[] = [
     action$.pipe(
       filter(actions.setCanvasInternals.match),
       switchMap(({ payload: { doc } }) => {
-        const onClientBuild$ = Events.onClientBuild.builder(doc);
+        const onClientBuild$ = Events.onClientBuild.subscriberBuilder(doc);
 
         executeScript('http://localhost:9889/app.js', doc);
 
