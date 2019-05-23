@@ -104,7 +104,9 @@ class RightPanel extends React.PureComponent<Props, State> {
                               selectedComponent[1] === j
                                 ? '2px solid blue'
                                 : '2px solid transparent',
+                            cursor: 'pointer',
                           }}
+                          onClick={() => setSelectedComponent([i, j])}
                         >
                           {instance.title}
                         </div>
@@ -119,9 +121,8 @@ class RightPanel extends React.PureComponent<Props, State> {
                               display: 'inline-block',
                               border: '1px solid rgba(0, 0, 0, 0.3)',
                               userSelect: 'none',
-                              cursor: 'pointer',
+                              cursor: 'move',
                             }}
-                            onClick={() => setSelectedComponent([i, j])}
                             dangerouslySetInnerHTML={{
                               __html: ReactDOMServer.renderToStaticMarkup(
                                 instance.element,

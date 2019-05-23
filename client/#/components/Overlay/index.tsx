@@ -2,6 +2,7 @@ import styled from '#/styled';
 import * as React from 'react';
 
 const Container = styled.div`
+  cursor: move;
   border: 1px solid blue;
 
   &:hover {
