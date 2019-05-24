@@ -2,8 +2,11 @@ import styled from '#/styled';
 import * as React from 'react';
 
 const Container = styled.div<{ selected?: boolean; hovered?: boolean }>`
-  position: absolute;
+  padding: 4px;
+  font-size: 14px;
+  cursor: pointer;
 
+  border: 1px solid transparent;
   ${props =>
     props.selected && `border: 1px solid ${props.theme.colors.primary};`}
   ${props =>
@@ -11,15 +14,15 @@ const Container = styled.div<{ selected?: boolean; hovered?: boolean }>`
 `;
 
 interface Props {
-  id: string;
-  children: HTMLElement;
   selected?: boolean;
   hovered?: boolean;
+  depth: number;
+  id: string;
   onClick: (id?: string) => void;
   onHover: (id?: string) => void;
 }
 
-class Overlay extends React.Component<Props> {
+class TreeRow extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
@@ -28,43 +31,34 @@ class Overlay extends React.Component<Props> {
     this.onClick = this.onClick.bind(this);
   }
 
-  public onMouseOver() {
+  private onMouseOver() {
     this.props.onHover(this.props.id);
   }
 
-  public onMouseOut() {
-    this.props.onHover(undefined);
+  private onMouseOut() {
+    this.props.onHover();
   }
 
-  public onClick() {
+  private onClick() {
     this.props.onClick(this.props.id);
   }
 
   public render() {
-    const { children, selected, hovered } = this.props;
-
-    const rect = children.getBoundingClientRect();
-
-    const style: React.CSSProperties = {
-      left: rect.left,
-      right: rect.right,
-      top: rect.top,
-      bottom: rect.bottom,
-      height: rect.height,
-      width: rect.width,
-    };
+    const { selected, hovered, depth } = this.props;
 
     return (
       <Container
-        onClick={this.onClick}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
+        onClick={this.onClick}
         selected={selected}
         hovered={hovered}
-        style={style}
-      />
+        style={{ marginLeft: depth * 3 }}
+      >
+        {this.props.children}
+      </Container>
     );
   }
 }
 
-export default Overlay;
+export default TreeRow;
