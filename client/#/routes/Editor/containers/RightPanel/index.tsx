@@ -90,7 +90,7 @@ class RightPanel extends React.PureComponent<Props, State> {
                       fontFamily: 'IBM Plex Sans, sans-serif',
                       fontSize: 16,
                       marginLeft: -8,
-                      fontWeight: 700,
+                      fontWeight: 600,
                     }}
                   >
                     {component.title}
