@@ -27,12 +27,14 @@ const ZoomPanel: React.SFC<Props> = props => (
     <ZoomIcon
       onClick={() => props.increaseZoom()}
       disabled={props.zoomInDisabled}
+      title="Zoom In"
     >
       zoom_in
     </ZoomIcon>
     <ZoomIcon
       onClick={() => props.decreaseZoom()}
       disabled={props.zoomOutDisabled}
+      title="Zoom Out"
     >
       zoom_out
     </ZoomIcon>
