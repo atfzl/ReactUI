@@ -49,8 +49,19 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = {
-  setSelectedOverlay: actions.setSelectedOverlay,
-  setHoveredOverlay: actions.setHoveredOverlay,
+  setSelectedOverlay: (id: string | undefined) => {
+    if (id === undefined) {
+      return actions.setSelectedOverlay(undefined);
+    }
+
+    return actions.setSelectedOverlay({ id, source: 'canvas' });
+  },
+  setHoveredOverlay: (id: string | undefined) => {
+    if (id === undefined) {
+      return actions.setHoveredOverlay(undefined);
+    }
+    return actions.setHoveredOverlay({ id, source: 'canvas' });
+  },
 };
 
 export default connect(

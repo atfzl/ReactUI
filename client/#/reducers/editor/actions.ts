@@ -1,7 +1,7 @@
 import { Workspace } from '#/models/Editor';
 import { FiberNode, Renderer } from '#/models/React';
 import actionCreatorFactory from 'typescript-fsa';
-import { NodeMap } from './interfaces';
+import { NodeMap, OverlayEventSource } from './interfaces';
 
 const actionCreator = actionCreatorFactory('EDITOR');
 
@@ -18,8 +18,12 @@ const actions = {
     rootFiberNode: FiberNode;
     nodeMap: NodeMap;
   }>('onCommitFiberRoot'),
-  setSelectedOverlay: actionCreator<string | undefined>('setSelectedOverlay'),
-  setHoveredOverlay: actionCreator<string | undefined>('setHoveredOverlay'),
+  setSelectedOverlay: actionCreator<
+    { id: string; source: OverlayEventSource } | undefined
+  >('setSelectedOverlay'),
+  setHoveredOverlay: actionCreator<
+    { id: string; source: OverlayEventSource } | undefined
+  >('setHoveredOverlay'),
 };
 
 export default actions;

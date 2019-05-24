@@ -8,3 +8,5 @@ export type NodeMap = Record<
     depth: number;
   }
 >;
+
+export type OverlayEventSource = 'canvas' | 'tree';

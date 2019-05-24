@@ -20,6 +20,7 @@ interface Props {
   id: string;
   onClick: (id?: string) => void;
   onHover: (id?: string) => void;
+  scrollIntoViewOnHover: boolean;
 }
 
 class TreeRow extends React.Component<Props> {
@@ -30,6 +31,8 @@ class TreeRow extends React.Component<Props> {
     this.onMouseOut = this.onMouseOut.bind(this);
     this.onClick = this.onClick.bind(this);
   }
+
+  private ref = React.createRef<HTMLDivElement>();
 
   private onMouseOver() {
     this.props.onHover(this.props.id);
@@ -43,11 +46,18 @@ class TreeRow extends React.Component<Props> {
     this.props.onClick(this.props.id);
   }
 
+  public componentDidUpdate() {
+    if (this.props.hovered && this.props.scrollIntoViewOnHover) {
+      this.ref.current!.scrollIntoView({ block: 'center' });
+    }
+  }
+
   public render() {
     const { selected, hovered, depth } = this.props;
 
     return (
       <Container
+        ref={this.ref}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         onClick={this.onClick}

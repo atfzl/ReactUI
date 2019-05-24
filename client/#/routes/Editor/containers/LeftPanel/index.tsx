@@ -2,7 +2,6 @@ import { RootState } from '#/reducers';
 import actions from '#/reducers/editor/actions';
 import TreeRow from '#/routes/Editor/components/TreeRow';
 import styled from '#/styled';
-import { getTitle } from '#/utils/fiberNode';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
@@ -26,6 +25,7 @@ class LeftPanel extends React.Component<Props> {
       hoveredOverlay,
       setSelectedOverlay,
       setHoveredOverlay,
+      hoverOverlaySource,
     } = this.props;
 
     return (
@@ -39,17 +39,16 @@ class LeftPanel extends React.Component<Props> {
             return null;
           }
 
-          const title = getTitle(fiberNode);
-
           return (
             <TreeRow
-              selected={title === selectedOverlay}
-              hovered={title === hoveredOverlay}
+              selected={id === selectedOverlay}
+              hovered={id === hoveredOverlay}
               depth={depth}
               key={id}
               id={id}
               onClick={setSelectedOverlay}
               onHover={setHoveredOverlay}
+              scrollIntoViewOnHover={hoverOverlaySource === 'canvas'}
             >
               {source.tagName}
             </TreeRow>
@@ -64,11 +63,22 @@ const mapStateToProps = (state: RootState) => ({
   nodeMap: state.editor.nodeMap,
   selectedOverlay: state.editor.overlay.selected,
   hoveredOverlay: state.editor.overlay.hovered,
+  hoverOverlaySource: state.editor.overlay.hoverSource,
 });
 
 const mapDispatchToProps = {
-  setSelectedOverlay: actions.setSelectedOverlay,
-  setHoveredOverlay: actions.setHoveredOverlay,
+  setSelectedOverlay: (id: string | undefined) => {
+    if (id === undefined) {
+      return actions.setSelectedOverlay(undefined);
+    }
+    return actions.setSelectedOverlay({ id, source: 'tree' });
+  },
+  setHoveredOverlay: (id: string | undefined) => {
+    if (id === undefined) {
+      return actions.setHoveredOverlay(undefined);
+    }
+    return actions.setHoveredOverlay({ id, source: 'tree' });
+  },
 };
 
 export default connect(

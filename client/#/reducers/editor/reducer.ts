@@ -4,7 +4,7 @@ import { FiberNode, Renderer } from '#/models/React';
 import { immerCase } from '#/utils';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import actions from './actions';
-import { NodeMap } from './interfaces';
+import { NodeMap, OverlayEventSource } from './interfaces';
 
 export interface ReducerState {
   canvas?: {
@@ -18,7 +18,9 @@ export interface ReducerState {
   nodeMap: NodeMap;
   overlay: {
     selected?: string;
+    selectSource?: OverlayEventSource;
     hovered?: string;
+    hoverSource?: OverlayEventSource;
   };
 }
 
@@ -62,12 +64,14 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
   )
   .withHandling(
     immerCase(actions.setSelectedOverlay, (state, payload) => {
-      state.overlay.selected = payload;
+      state.overlay.selected = payload && payload.id;
+      state.overlay.selectSource = payload && payload.source;
     }),
   )
   .withHandling(
     immerCase(actions.setHoveredOverlay, (state, payload) => {
-      state.overlay.hovered = payload;
+      state.overlay.hovered = payload && payload.id;
+      state.overlay.hoverSource = payload && payload.source;
     }),
   )
   .build();
