@@ -1,9 +1,10 @@
 import styled from '#/styled';
 import * as React from 'react';
 
-const Container = styled.div`
+const Container = styled.div<{ active?: boolean }>`
+  position: absolute;
   cursor: move;
-  border: 1px solid blue;
+  ${props => props.active && 'border: 1px solid blue;'}
 
   &:hover {
     border: 1px dashed #f400b5;
@@ -12,25 +13,25 @@ const Container = styled.div`
 
 interface Props {
   children: HTMLElement;
+  active?: boolean;
 }
 
 class Overlay extends React.Component<Props> {
   public render() {
-    const { children: element } = this.props;
+    const { children: element, active = true } = this.props;
 
     const rect = element.getBoundingClientRect();
 
     const style: React.CSSProperties = {
-      position: 'absolute',
-      left: rect.left + 'px',
-      right: rect.right + 'px',
-      top: rect.top + 'px',
-      bottom: rect.bottom + 'px',
-      height: rect.height + 'px',
-      width: rect.width + 'px',
+      left: rect.left,
+      right: rect.right,
+      top: rect.top,
+      bottom: rect.bottom,
+      height: rect.height,
+      width: rect.width,
     };
 
-    return <Container style={style} />;
+    return <Container active={active} style={style} />;
   }
 }
 
