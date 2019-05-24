@@ -16,11 +16,16 @@ export interface ReducerState {
   renderer?: Renderer;
   rootFiberNode?: FiberNode;
   nodeMap: NodeMap;
+  overlay: {
+    selected?: string;
+    hovered?: string;
+  };
 }
 
 const InitialState: ReducerState = {
   zoomLevel: EditorConstants.DEFAULT_ZOOM,
   nodeMap: {},
+  overlay: {},
 };
 
 const reducer = reducerWithInitialState<ReducerState>(InitialState)
@@ -53,6 +58,16 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
       state.renderer = payload.renderer;
       state.nodeMap = payload.nodeMap;
       state.rootFiberNode = payload.rootFiberNode;
+    }),
+  )
+  .withHandling(
+    immerCase(actions.setSelectedOverlay, (state, payload) => {
+      state.overlay.selected = payload;
+    }),
+  )
+  .withHandling(
+    immerCase(actions.setHoveredOverlay, (state, payload) => {
+      state.overlay.hovered = payload;
     }),
   )
   .build();

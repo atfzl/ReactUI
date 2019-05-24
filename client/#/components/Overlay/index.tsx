@@ -1,26 +1,44 @@
 import styled from '#/styled';
 import * as React from 'react';
 
-const Container = styled.div<{ active?: boolean }>`
+const Container = styled.div<{ selected?: boolean; hovered?: boolean }>`
   position: absolute;
-  cursor: move;
-  ${props => props.active && 'border: 1px solid blue;'}
+  ${props => props.selected && 'border: 1px solid blue;'}
 
   &:hover {
-    border: 1px dashed #f400b5;
+    ${props => props.hovered && 'outline: 1px dashed #f400b5;'}
   }
 `;
 
 interface Props {
+  id: string;
   children: HTMLElement;
-  active?: boolean;
+  selected?: boolean;
+  hovered?: boolean;
+  onClick: (id?: string) => void;
+  onHover: (id?: string) => void;
 }
 
 class Overlay extends React.Component<Props> {
-  public render() {
-    const { children: element, active = true } = this.props;
+  constructor(props: Props) {
+    super(props);
 
-    const rect = element.getBoundingClientRect();
+    this.onMouseOver = this.onMouseOver.bind(this);
+    this.onMouseOut = this.onMouseOut.bind(this);
+  }
+
+  public onMouseOver() {
+    this.props.onHover(this.props.id);
+  }
+
+  public onMouseOut() {
+    this.props.onHover(undefined);
+  }
+
+  public render() {
+    const { id, children, selected, hovered, onClick } = this.props;
+
+    const rect = children.getBoundingClientRect();
 
     const style: React.CSSProperties = {
       left: rect.left,
@@ -31,7 +49,16 @@ class Overlay extends React.Component<Props> {
       width: rect.width,
     };
 
-    return <Container active={active} style={style} />;
+    return (
+      <Container
+        onClick={() => onClick(id)}
+        onMouseOver={this.onMouseOver}
+        onMouseOut={this.onMouseOut}
+        selected={selected}
+        hovered={hovered}
+        style={style}
+      />
+    );
   }
 }
 

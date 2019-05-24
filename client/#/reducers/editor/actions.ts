@@ -18,6 +18,8 @@ const actions = {
     rootFiberNode: FiberNode;
     nodeMap: NodeMap;
   }>('onCommitFiberRoot'),
+  setSelectedOverlay: actionCreator<string | undefined>('setSelectedOverlay'),
+  setHoveredOverlay: actionCreator<string | undefined>('setHoveredOverlay'),
 };
 
 export default actions;
