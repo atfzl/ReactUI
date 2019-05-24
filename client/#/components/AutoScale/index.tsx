@@ -11,7 +11,7 @@ interface IState {
 }
 
 class AutoScale extends React.Component<IProps, IState> {
-  private componentRef?: React.RefObject<any> = React.createRef();
+  private componentRef = React.createRef<any>();
 
   public state: IState = {};
 
