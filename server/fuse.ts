@@ -21,7 +21,7 @@ fuse
   .bundle('server')
   .target('electron')
   .instructions(' > [#/index.ts]')
-  .watch('**')
+  .watch('#/**')
   .completed(() => {
     if (electronProcess && electronProcess.pid) {
       process.kill(-electronProcess.pid, 'SIGKILL');

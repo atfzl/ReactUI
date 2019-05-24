@@ -17,6 +17,6 @@ fuse
   .bundle('client')
   .instructions('> #/index.tsx')
   .hmr()
-  .watch();
+  .watch('#/**');
 
 fuse.run();
