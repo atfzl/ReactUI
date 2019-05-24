@@ -77,6 +77,9 @@ class RightPanel extends React.PureComponent<Props, State> {
             paddingLeft: ONE_SIDE_PADDING,
             paddingRight: ONE_SIDE_PADDING,
           }}
+          injectCSS={
+            "@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600&display=swap');"
+          }
         >
           {workspace && this.state.containerRect && (
             <div>
@@ -84,7 +87,7 @@ class RightPanel extends React.PureComponent<Props, State> {
                 <div style={{ marginTop: 20, marginBottom: 32 }} key={i}>
                   <div
                     style={{
-                      fontFamily: 'sans-serif',
+                      fontFamily: 'IBM Plex Sans, sans-serif',
                       fontSize: 16,
                       marginLeft: -8,
                       fontWeight: 700,
@@ -105,7 +108,7 @@ class RightPanel extends React.PureComponent<Props, State> {
                       >
                         <div
                           style={{
-                            fontFamily: 'sans-serif',
+                            fontFamily: 'IBM Plex Sans, sans-serif',
                             fontSize: 16,
                             marginBottom: 5,
                             alignSelf: 'flex-end',

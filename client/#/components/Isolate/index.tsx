@@ -5,6 +5,7 @@ interface Props {
   onReady: (p: { doc: Document; element: HTMLDivElement }) => void;
   style?: React.CSSProperties;
   wrapperStyle?: React.CSSProperties;
+  injectCSS?: string;
 }
 
 interface State {
@@ -47,18 +48,32 @@ class Isolate extends React.Component<Props, State> {
   public render() {
     const { refRect } = this.state;
 
+    const frameProps: Record<string, any> = {
+      style: {
+        width: refRect ? refRect.width : '100%',
+        height: refRect ? refRect.height : '100%',
+        border: 'none',
+        display: 'block',
+        ...this.props.style,
+      },
+    };
+
+    frameProps.initialContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+        <style type="text/css">
+        ${this.props.injectCSS || ''}
+        </style>
+        </head>
+        <body>
+          <div></div>
+        </body>
+      </html>
+    `;
+
     return (
-      <Frame
-        style={{
-          ...{
-            width: refRect ? refRect.width : '100%',
-            height: refRect ? refRect.height : '100%',
-            border: 'none',
-            display: 'block',
-          },
-          ...this.props.style,
-        }}
-      >
+      <Frame {...frameProps}>
         {(() => {
           if (!this.window) {
             return (
