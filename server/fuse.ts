@@ -6,12 +6,12 @@ import { ChildProcess, spawn } from 'child_process';
 import { FuseBox } from 'fuse-box';
 
 const fuse = FuseBox.init({
-  homeDir: '#/',
+  homeDir: '.',
   output: 'dist/$name.js',
   sourceMaps: true,
   automaticAlias: false,
   alias: {
-    '#': '.',
+    '#': '~/#',
   },
 });
 
@@ -20,7 +20,7 @@ let electronProcess: ChildProcess;
 fuse
   .bundle('server')
   .target('electron')
-  .instructions(' > [index.ts]')
+  .instructions(' > [#/index.ts]')
   .watch('**')
   .completed(() => {
     if (electronProcess && electronProcess.pid) {
