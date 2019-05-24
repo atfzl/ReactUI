@@ -3,9 +3,12 @@ import Isolate from '#/components/Isolate';
 import { RootState } from '#/reducers';
 import actions from '#/reducers/gallery/actions';
 import styled from '#/styled';
+import { Theme } from '#/styled/theme';
+import { withTheme } from 'emotion-theming';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { connect } from 'react-redux';
+import { pipe } from 'rxjs';
 import { oc } from 'ts-optchain';
 
 const ONE_SIDE_PADDING = 24;
@@ -18,7 +21,9 @@ const Container = styled.div`
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-interface Props extends StateProps, DispatchProps {}
+interface Props extends StateProps, DispatchProps {
+  theme: Theme;
+}
 
 interface State {
   containerRect?: ClientRect;
@@ -53,7 +58,12 @@ class RightPanel extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { workspace, selectedComponent, setSelectedComponent } = this.props;
+    const {
+      workspace,
+      selectedComponent,
+      setSelectedComponent,
+      theme,
+    } = this.props;
 
     return (
       <Container ref={this.containerRef}>
@@ -102,7 +112,7 @@ class RightPanel extends React.PureComponent<Props, State> {
                             borderBottom:
                               selectedComponent[0] === i &&
                               selectedComponent[1] === j
-                                ? '2px solid blue'
+                                ? `2px solid ${theme.colors.primary}`
                                 : '2px solid transparent',
                             cursor: 'pointer',
                           }}
@@ -154,7 +164,10 @@ const mapDispatchToProps = {
   setSelectedComponent: actions.setSelectedComponent,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default pipe(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withTheme,
 )(RightPanel);

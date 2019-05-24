@@ -3,10 +3,12 @@ import * as React from 'react';
 
 const Container = styled.div<{ selected?: boolean; hovered?: boolean }>`
   position: absolute;
-  ${props => props.selected && 'border: 1px solid blue;'}
+  ${props =>
+    props.selected && `border: 1px solid ${props.theme.colors.primary};`}
 
   &:hover {
-    ${props => props.hovered && 'outline: 1px dashed #f400b5;'}
+    ${props =>
+      props.hovered && `outline: 1px dashed ${props.theme.colors.accent}`}
   }
 `;
 
