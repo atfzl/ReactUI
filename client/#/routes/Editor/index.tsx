@@ -33,12 +33,6 @@ const Center = styled.div`
   background-color: ${props => props.theme.colors.background.main};
 `;
 
-const CenterBodyWrapper = styled.div`
-  overflow: auto;
-  padding: 32px;
-  text-align: center;
-`;
-
 const Right = styled.div`
   flex: 0 0 240px;
   display: flex;
@@ -63,9 +57,7 @@ class Editor extends React.Component {
         </Left>
         <Center>
           <Header />
-          <CenterBodyWrapper>
-            <Canvas />
-          </CenterBodyWrapper>
+          <Canvas />
         </Center>
         <Right>
           <RightBodyWrapper>
