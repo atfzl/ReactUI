@@ -10,9 +10,6 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
 
-(window as any).React = React;
-(window as any).ReactDOM = ReactDOM;
-
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <Global styles={globalCss} />
@@ -24,7 +21,3 @@ ReactDOM.render(
   </ThemeProvider>,
   document.getElementById('app'),
 );
-
-if (module.hot) {
-  module.hot.accept();
-}

@@ -33,15 +33,6 @@ export function configureStore(initialState?: RootState) {
 
   epicMiddleware.run(hotReloadingEpic as any);
 
-  if (module.hot) {
-    module.hot.accept('#/reducers', () => {
-      const nextRootReducer = require('#/reducers').rootReducer;
-      store.replaceReducer(nextRootReducer);
-      const nextRootEpic = require('#/reducers').rootEpic;
-      epic$.next(nextRootEpic);
-    });
-  }
-
   return store;
 }
 
