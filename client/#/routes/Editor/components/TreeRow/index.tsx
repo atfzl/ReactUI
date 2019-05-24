@@ -48,7 +48,7 @@ class TreeRow extends React.Component<Props> {
 
   public componentDidUpdate() {
     if (this.props.hovered && this.props.scrollIntoViewOnHover) {
-      this.ref.current!.scrollIntoView({ block: 'center' });
+      this.ref.current!.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
   }
 
