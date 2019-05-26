@@ -15,7 +15,7 @@ fuse.dev({ port: 9889 });
 
 fuse
   .bundle('app')
-  .instructions('> icarus.tsx')
+  .instructions('> ellipsoid.tsx')
   .hmr()
   .watch('src/**');
 
