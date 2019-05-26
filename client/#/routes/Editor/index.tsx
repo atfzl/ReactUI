@@ -1,10 +1,9 @@
-import LaunchEditorApi from '#/common/api/LaunchEditor';
 import Header from '#/routes/Editor/components/Header';
 import Canvas from '#/routes/Editor/containers/Canvas';
+import LeftPanel from '#/routes/Editor/containers/LeftPanel';
 import RightPanel from '#/routes/Editor/containers/RightPanel';
 import styled from '#/styled';
 import * as React from 'react';
-import LeftPanel from './containers/LeftPanel';
 
 const Container = styled.div`
   min-width: 1024px;
@@ -48,15 +47,6 @@ const RightBodyWrapper = styled.div`
 `;
 
 class Editor extends React.Component {
-  public componentDidMount() {
-    LaunchEditorApi.callMain({
-      fileName:
-        '/Users/I0459/scratch/personal/ellipsoid/showcase/src/components/Page/index.tsx',
-      lineNumber: 143,
-      columnNumber: 13,
-    });
-  }
-
   public render() {
     return (
       <Container>
