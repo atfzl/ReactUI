@@ -18,3 +18,8 @@ declare module 'electron-better-ipc' {
   };
   export = x;
 }
+
+declare module 'react-dev-utils/launchEditor' {
+  const x: any;
+  export = x;
+}

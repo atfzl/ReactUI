@@ -31,6 +31,7 @@
     "electron-better-ipc": "^0.2.0",
     "lodash": "^4.17.11",
     "ramda": "^0.26.1",
+    "react-dev-utils": "^9.0.1",
     "resolve": "^1.10.0",
     "rxjs": "^6.5.1",
     "serialize-error": "^4.0.0",

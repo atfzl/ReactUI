@@ -1,14 +1,29 @@
 import * as Electron from 'electron';
-import * as ipc from 'electron-better-ipc';
+import { from, Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import serializeError from 'serialize-error';
 
+const ipcMain = (() => {
+  if (process.type !== 'renderer') {
+    return require('electron-better-ipc/source/main');
+  }
+})();
+
+const ipcRenderer = (() => {
+  if (process.type === 'renderer') {
+    return require('electron-better-ipc/source/renderer');
+  }
+})();
+
 export function mainToRendererRequest<T, P>(channel: string) {
-  const callRenderer = (win: Electron.BrowserWindow, arg: T) =>
-    ipc.callRenderer && ipc.callRenderer(win, channel, arg);
-  const answerMain = (cb: (arg: T) => Promise<P>) =>
-    ipc.answerMain &&
-    ipc.answerMain(channel, (a: T) =>
-      cb(a).catch(err => Promise.reject(serializeError(err))),
+  const callRenderer = (win: Electron.BrowserWindow, data: T) =>
+    ipcMain && from(ipcMain.callRenderer(win, channel, data) as Promise<P>);
+  const answerMain = (cb: (data: T) => Observable<P>) =>
+    ipcRenderer &&
+    ipcRenderer.answerMain(channel, (data: T) =>
+      cb(data)
+        .pipe(catchError(err => throwError(serializeError(err))))
+        .toPromise(),
     );
 
   return {
@@ -18,11 +33,14 @@ export function mainToRendererRequest<T, P>(channel: string) {
 }
 
 export function rendererToMainRequest<T, P>(channel: string) {
-  const callMain = (arg: T) => ipc.callMain && ipc.callMain<T, P>(channel, arg);
-  const answerRenderer = (cb: (arg: T) => Promise<P>) =>
-    ipc.answerRenderer &&
-    ipc.answerRenderer(channel, (a: T) =>
-      cb(a).catch(err => Promise.reject(serializeError(err))),
+  const callMain = (data: T) =>
+    ipcRenderer && from(ipcRenderer.callMain(channel, data) as Promise<P>);
+  const answerRenderer = (cb: (data: T) => Observable<P>) =>
+    ipcMain &&
+    ipcMain.answerRenderer(channel, (data: T) =>
+      cb(data)
+        .pipe(catchError(err => throwError(serializeError(err))))
+        .toPromise(),
     );
 
   return {

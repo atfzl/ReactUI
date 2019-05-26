@@ -54,7 +54,9 @@ class RightPanel extends React.PureComponent<Props, State> {
   };
 
   public componentWillUnmount() {
-    this.resizeObserver.disconnect();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   public render() {

@@ -1,3 +1,4 @@
+import '#/routes';
 import * as electron from 'electron';
 
 let mainWindow: electron.BrowserWindow | null;
@@ -6,6 +7,9 @@ function createWindow() {
   mainWindow = new electron.BrowserWindow({
     width: 1280,
     height: 800,
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
   // and load the index.html of the app.

@@ -26,7 +26,7 @@
     "@emotion/styled": "^10.0.11",
     "classnames": "^2.2.6",
     "electron": "^5.0.1",
-    "electron-better-ipc": "^0.2.0",
+    "electron-better-ipc": "^0.3.0",
     "emotion-theming": "^10.0.10",
     "immer": "^3.1.2",
     "nanoid": "^2.0.2",
