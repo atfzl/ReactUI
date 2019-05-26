@@ -1,3 +1,4 @@
+import { TagCursor } from '#/common/models/file';
 import { Workspace } from '#/models/Editor';
 import { FiberNode, Renderer } from '#/models/React';
 import actionCreatorFactory from 'typescript-fsa';
@@ -24,6 +25,7 @@ const actions = {
   setHoveredOverlay: actionCreator<
     { id: string; source: OverlayEventSource } | undefined
   >('setHoveredOverlay'),
+  launchEditorForCursor: actionCreator<TagCursor>('launchEditorForCursor'),
 };
 
 export default actions;

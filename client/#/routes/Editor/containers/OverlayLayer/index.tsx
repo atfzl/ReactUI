@@ -17,6 +17,7 @@ class OverlayLayer extends React.Component<Props> {
       hoveredOverlay,
       setSelectedOverlay,
       setHoveredOverlay,
+      launchEditorForCursor,
     } = this.props;
 
     return Object.keys(nodeMap).map(id => {
@@ -33,6 +34,7 @@ class OverlayLayer extends React.Component<Props> {
           selected={selectedOverlay === id}
           hovered={hoveredOverlay === id}
           onClick={setSelectedOverlay}
+          onDoubleClick={() => launchEditorForCursor(fiberNode._debugSource!)}
           onHover={setHoveredOverlay}
         >
           {nativeNode}
@@ -62,6 +64,7 @@ const mapDispatchToProps = {
     }
     return actions.setHoveredOverlay({ id, source: 'canvas' });
   },
+  launchEditorForCursor: actions.launchEditorForCursor,
 };
 
 export default connect(

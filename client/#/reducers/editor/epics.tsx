@@ -1,3 +1,4 @@
+import LaunchEditorApi from '#/common/api/LaunchEditor';
 import { Events } from '#/models/Events';
 import { Epic } from '#/reducers';
 import { executeScript } from '#/utils';
@@ -69,6 +70,13 @@ const epics: Epic[] = [
           ),
         );
       }),
+    ),
+  action$ =>
+    action$.pipe(
+      filter(actions.launchEditorForCursor.match),
+      switchMap(({ payload }) =>
+        LaunchEditorApi.callMain(payload).pipe(switchMap(() => EMPTY)),
+      ),
     ),
 ];
 

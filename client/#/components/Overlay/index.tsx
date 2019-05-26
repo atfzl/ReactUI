@@ -17,6 +17,7 @@ interface Props {
   hovered?: boolean;
   onClick: (id?: string) => void;
   onHover: (id?: string) => void;
+  onDoubleClick: () => void;
 }
 
 class Overlay extends React.Component<Props> {
@@ -26,6 +27,7 @@ class Overlay extends React.Component<Props> {
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.onDoubleClick = this.onDoubleClick.bind(this);
   }
 
   public onMouseOver() {
@@ -38,6 +40,10 @@ class Overlay extends React.Component<Props> {
 
   public onClick() {
     this.props.onClick(this.props.id);
+  }
+
+  public onDoubleClick() {
+    this.props.onDoubleClick();
   }
 
   public render() {
@@ -57,6 +63,7 @@ class Overlay extends React.Component<Props> {
     return (
       <Container
         onClick={this.onClick}
+        onDoubleClick={this.onDoubleClick}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         selected={selected}
