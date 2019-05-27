@@ -11,6 +11,24 @@ it('deletes child element', done => {
   });
 });
 
+it('deletes self closing element with parent', done => {
+  const fileName = `${__dirname}/__fixtures__/selfClosing1.tsx`;
+
+  deleteElement$({ lineNumber: 6, columnNumber: 7, fileName }).subscribe(x => {
+    expect(x).toMatchSnapshot();
+    done();
+  });
+});
+
+it('deletes self closing element with no parent', done => {
+  const fileName = `${__dirname}/__fixtures__/selfClosing2.tsx`;
+
+  deleteElement$({ lineNumber: 3, columnNumber: 19, fileName }).subscribe(x => {
+    expect(x).toMatchSnapshot();
+    done();
+  });
+});
+
 it('deletes element with no parent', done => {
   const fileName = `${__dirname}/__fixtures__/replaceWithNull1.tsx`;
 

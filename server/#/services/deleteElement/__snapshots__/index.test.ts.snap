@@ -22,6 +22,30 @@ export default Component;
 "
 `;
 
+exports[`deletes self closing element with no parent 1`] = `
+"import * as React from 'react';
+
+const Container = null;
+
+export default Container;
+"
+`;
+
+exports[`deletes self closing element with parent 1`] = `
+"import * as React from 'react';
+
+const Container = () => {
+  return (
+    <div>
+      
+    </div>
+  );
+};
+
+export default Container;
+"
+`;
+
 exports[`throws Fault if element at cursor is not found 1`] = `
 Object {
   "data": Object {
