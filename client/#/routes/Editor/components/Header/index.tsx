@@ -4,8 +4,8 @@ import styled from '#/styled';
 import * as React from 'react';
 
 const Container = styled.div`
-  background-color: #fdf9f3;
-  border-bottom: 1px solid ${props => props.theme.colors.border.main};
+  background-color: ${props => props.theme.colors.header};
+  border-bottom: 1px solid ${props => props.theme.colors.border[50]};
   flex: 0 0 32px;
   display: flex;
   align-items: center;

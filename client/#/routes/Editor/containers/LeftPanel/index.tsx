@@ -6,7 +6,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 const Container = styled.div`
-  background-color: ${props => props.theme.colors.background.dark};
+  background-color: ${props => props.theme.colors.background[100]};
   display: flex;
   flex-direction: column;
   padding: 12px 18px;

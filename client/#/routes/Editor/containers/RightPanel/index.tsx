@@ -14,7 +14,7 @@ import { oc } from 'ts-optchain';
 const ONE_SIDE_PADDING = 24;
 
 const Container = styled.div`
-  background-color: ${props => props.theme.colors.background.dark};
+  background-color: ${props => props.theme.colors.background[100]};
   height: 100vh;
 `;
 

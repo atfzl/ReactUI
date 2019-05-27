@@ -16,7 +16,7 @@ const Left = styled.div`
   flex: 0 0 240px;
   display: flex;
   overflow: hidden;
-  border-right: 1px solid ${props => props.theme.colors.border.main};
+  border-right: 1px solid ${props => props.theme.colors.border[50]};
 `;
 
 const LeftBodyWrapper = styled.div`
@@ -30,7 +30,7 @@ const Center = styled.div`
   height: 100%;
   flex-direction: column;
   overflow: hidden;
-  background-color: ${props => props.theme.colors.background.main};
+  background-color: ${props => props.theme.colors.background[50]};
 `;
 
 const Right = styled.div`
@@ -38,7 +38,7 @@ const Right = styled.div`
   display: flex;
   overflow: hidden;
   height: 100vh;
-  border-left: 1px solid ${props => props.theme.colors.border.main};
+  border-left: 1px solid ${props => props.theme.colors.border[50]};
 `;
 
 const RightBodyWrapper = styled.div`

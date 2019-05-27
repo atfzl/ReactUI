@@ -8,6 +8,7 @@
     "start": "ts-node fuse.ts"
   },
   "devDependencies": {
+    "@types/carbon__colors": "^0.0.0",
     "@types/classnames": "^2.2.7",
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
@@ -22,6 +23,7 @@
     "typescript": "^3.4.5"
   },
   "dependencies": {
+    "@carbon/colors": "^10.2.0",
     "@emotion/core": "^10.0.10",
     "@emotion/styled": "^10.0.11",
     "classnames": "^2.2.6",

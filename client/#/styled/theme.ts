@@ -1,27 +1,20 @@
-export const theme = (() => {
-  const palette = {
-    blue: {
-      main: 'blue',
-    },
-    pink: {
-      main: '#f400b5',
-    },
-  };
+import * as palette from '@carbon/colors';
 
-  return {
-    colors: {
-      palette,
-      primary: palette.blue.main,
-      accent: palette.pink.main,
-      border: {
-        main: 'rgba(0, 0, 0, 0.5)',
-      },
-      background: {
-        main: '#f9f9f9',
-        dark: '#f2f2f2',
-      },
+export const theme = {
+  palette,
+  colors: {
+    palette,
+    primary: palette.blue[60],
+    accent: palette.magenta[50],
+    border: {
+      50: palette.rgba(palette.black, 0.5),
     },
-  };
-})();
+    background: {
+      50: palette.gray[10],
+      100: palette.rgba(palette.gray[20], 0.7),
+    },
+    header: palette.warmGray[10],
+  },
+};
 
 export type Theme = typeof theme;
