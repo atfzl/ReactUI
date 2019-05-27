@@ -1,15 +1,16 @@
 import Isolate from '#/components/Isolate';
 import { RootState } from '#/reducers';
 import actions from '#/reducers/editor/actions';
+import OverlayLayer from '#/routes/Editor/containers/OverlayLayer';
 import styled from '#/styled';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import OverlayLayer from '../OverlayLayer';
 
 const Container = styled.div`
   overflow: auto;
   padding: 32px;
   text-align: center;
+  position: relative;
 `;
 
 const Wrapper = styled.div`
