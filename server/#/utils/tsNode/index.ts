@@ -104,7 +104,7 @@ export const findNodeAtCursor$ = <T extends ts.Node>(
 
 export const findElementAtCursor$ = findNodeAtCursor$<
   ts.JsxElement | ts.JsxSelfClosingElement
->(ts.isJsxElement);
+>(R.anyPass([ts.isJsxElement, ts.isJsxSelfClosingElement]));
 
 export const findTemplateStringAtCursor$ = findNodeAtCursor$<
   ts.TaggedTemplateExpression

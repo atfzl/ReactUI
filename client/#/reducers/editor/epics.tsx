@@ -1,3 +1,4 @@
+import DeleteElementApi from '#/common/api/DeleteElement';
 import LaunchEditorApi from '#/common/api/LaunchEditor';
 import { Events } from '#/models/Events';
 import { Epic } from '#/reducers';
@@ -5,8 +6,8 @@ import { executeScript } from '#/utils';
 import { getTitle, walkTree } from '#/utils/fiberNode';
 import * as ReactDOM from 'react-dom';
 import { combineEpics } from 'redux-observable';
-import { EMPTY, merge, of } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { EMPTY, fromEvent, merge, of } from 'rxjs';
+import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import actions from './actions';
 import { NodeMap } from './interfaces';
 
@@ -23,6 +24,38 @@ const epics: Epic[] = [
         executeScript('http://localhost:9889/app.js', doc);
 
         return merge(
+          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+            filter(
+              e =>
+                (e.key === 'Delete' || e.key === 'Backspace') &&
+                e.metaKey &&
+                !e.repeat,
+            ),
+            filter(() => {
+              const {
+                editor: {
+                  nodeMap,
+                  overlay: { selected },
+                },
+              } = state$.value;
+
+              return !!selected && !!nodeMap[selected];
+            }),
+            mergeMap(() => {
+              const {
+                editor: {
+                  nodeMap,
+                  overlay: { selected },
+                },
+              } = state$.value;
+
+              const cursor = nodeMap[selected!].fiberNode._debugSource!;
+
+              return DeleteElementApi.callMain(cursor).pipe(
+                switchMap(() => EMPTY),
+              );
+            }),
+          ),
           onClientBuild$.pipe(
             map(workspace => {
               const { selectedComponent } = state$.value.gallery;
