@@ -1,3 +1,5 @@
+import { TagCursor } from '#/common/models/file';
+import Dragify from '#/components/Dragify';
 import styled from '#/styled';
 import * as React from 'react';
 
@@ -21,6 +23,7 @@ interface Props {
   onClick: (id?: string) => void;
   onHover: (id?: string) => void;
   scrollIntoViewOnHover: boolean;
+  cursor: TagCursor;
 }
 
 class TreeRow extends React.Component<Props> {
@@ -53,20 +56,22 @@ class TreeRow extends React.Component<Props> {
   }
 
   public render() {
-    const { selected, hovered, depth } = this.props;
+    const { selected, hovered, depth, cursor } = this.props;
 
     return (
-      <Container
-        ref={this.ref}
-        onMouseOver={this.onMouseOver}
-        onMouseOut={this.onMouseOut}
-        onClick={this.onClick}
-        selected={selected}
-        hovered={hovered}
-        style={{ marginLeft: depth * 3 }}
-      >
-        {this.props.children}
-      </Container>
+      <Dragify cursor={cursor} onDrag={console.log} onDrop={console.log}>
+        <Container
+          ref={this.ref}
+          onMouseOver={this.onMouseOver}
+          onMouseOut={this.onMouseOut}
+          onClick={this.onClick}
+          selected={selected}
+          hovered={hovered}
+          style={{ marginLeft: depth * 3 }}
+        >
+          {this.props.children}
+        </Container>
+      </Dragify>
     );
   }
 }

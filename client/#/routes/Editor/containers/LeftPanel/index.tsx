@@ -41,6 +41,7 @@ class LeftPanel extends React.Component<Props> {
 
           return (
             <TreeRow
+              cursor={source}
               selected={id === selectedOverlay}
               hovered={id === hoveredOverlay}
               depth={depth}
