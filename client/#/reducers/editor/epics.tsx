@@ -6,7 +6,7 @@ import LaunchEditorApi from '#/common/api/LaunchEditor';
 import { Events } from '#/models/Events';
 import { Epic } from '#/reducers';
 import { executeScript } from '#/utils';
-import { getTitle, walkTree } from '#/utils/fiberNode';
+import { getIdFromCursor, getTitle, walkTree } from '#/utils/fiberNode';
 import * as _ from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -136,10 +136,12 @@ const epics: Epic[] = [
         return value;
       };
 
-      GetRuntimeProps.answerMain(id => {
+      GetRuntimeProps.answerMain(cursor => {
         const {
           editor: { nodeMap },
         } = state$.value;
+
+        const id = getIdFromCursor(cursor);
 
         if (!nodeMap[id]) {
           return of({});

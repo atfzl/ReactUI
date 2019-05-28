@@ -1,9 +1,15 @@
+import { TagCursor } from '#/common/models/file';
 import { FiberNode } from '#/models/React';
 
-export const getTitle = (node: FiberNode) => {
-  const d = node._debugSource;
+export const getIdFromCursor = (cursor: TagCursor) =>
+  [cursor.fileName, cursor.lineNumber, cursor.columnNumber, cursor.tagName]
+    .filter(x => !!x)
+    .join(',');
 
-  return d && [d.fileName, d.lineNumber, d.columnNumber, d.tagName].join(',');
+export const getTitle = (node: FiberNode) => {
+  const cursor = node._debugSource;
+
+  return cursor && getIdFromCursor(cursor);
 };
 
 export function walkTree(

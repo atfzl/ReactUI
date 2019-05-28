@@ -46,6 +46,7 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
                   rb,
                   sourceFileDeclarationIdentifiers,
                   incrementIdentifierName,
+                  sourceCursor,
                 ),
               ),
               map(({ node, definition }) => {

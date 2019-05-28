@@ -130,6 +130,9 @@ export const getTagName = (node: ts.JsxElement | ts.JsxSelfClosingElement) => {
   return [node.tagName];
 };
 
+export const getAttributes = (node: ts.JsxElement | ts.JsxSelfClosingElement) =>
+  ts.isJsxElement(node) ? node.openingElement.attributes : node.attributes;
+
 export const traverseElement = (
   element: ts.JsxElement | ts.JsxSelfClosingElement,
 ) =>

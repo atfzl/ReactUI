@@ -1,13 +1,10 @@
+import { TagCursor } from '../models/file';
 import { mainToRendererRequest } from '../utils/ipcCreator';
 
 export const isReactElementIdentifier = '$$__ELLIPSOID__IS_REACT_ELEMENT';
 
-type Payload = string;
+interface Payload extends TagCursor {}
 
-type Result =
-  | {
-      [isReactElementIdentifier]: boolean;
-    }
-  | Record<string, any>;
+type Result = Record<string, any>;
 
 export default mainToRendererRequest<Payload, Result>('GetRuntimeProps');
