@@ -15,6 +15,7 @@
     "@types/react-redux": "^7.0.9",
     "@types/react-router-dom": "^4.3.3",
     "fuse-box": "^3.7.1",
+    "fuse-box-typechecker": "^2.12.0",
     "prettier": "^1.16.4",
     "redux-logger": "^3.0.6",
     "ts-node": "^8.0.3",

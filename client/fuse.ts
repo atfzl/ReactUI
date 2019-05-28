@@ -1,4 +1,16 @@
 import { FuseBox, WebIndexPlugin } from 'fuse-box';
+import { TypeChecker } from 'fuse-box-typechecker';
+
+const isProd = process.env.NODE_ENV === 'production';
+
+if (!isProd) {
+  const typechecker = TypeChecker({
+    tsConfig: './tsconfig.json',
+    basePath: '.',
+  });
+
+  typechecker.runWatch('./#');
+}
 
 const fuse = FuseBox.init({
   homeDir: '.',

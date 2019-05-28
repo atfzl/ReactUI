@@ -8,14 +8,14 @@ const Container = styled.div`
   top: 0;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid ${props => props.theme.colors.border.main};
+  border-bottom: 1px solid ${props => props.theme.colors.border[50]};
 `;
 
 const IconWrapper = styled.div`
-  border-top: 1px solid ${props => props.theme.colors.border.main};
-  border-left: 2px solid ${props => props.theme.colors.border.main};
-  border-right: 1px solid ${props => props.theme.colors.border.main};
-  border-bottom: 1px solid ${props => props.theme.colors.border.main};
+  border-top: 1px solid ${props => props.theme.colors.border[50]};
+  border-left: 2px solid ${props => props.theme.colors.border[50]};
+  border-right: 1px solid ${props => props.theme.colors.border[50]};
+  border-bottom: 1px solid ${props => props.theme.colors.border[50]};
   display: flex;
   cursor: pointer;
 `;
