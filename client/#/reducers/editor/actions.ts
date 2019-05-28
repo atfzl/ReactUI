@@ -26,6 +26,9 @@ const actions = {
     { id: string; source: OverlayEventSource } | undefined
   >('setHoveredOverlay'),
   launchEditorForCursor: actionCreator<TagCursor>('launchEditorForCursor'),
+  handleDrop: actionCreator<{ source: TagCursor; target: TagCursor }>(
+    'handleDrop',
+  ),
 };
 
 export default actions;

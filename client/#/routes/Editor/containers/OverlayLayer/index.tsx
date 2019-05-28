@@ -19,22 +19,20 @@ class OverlayLayer extends React.Component<Props> {
       setSelectedOverlay,
       setHoveredOverlay,
       launchEditorForCursor,
+      handleDrop,
     } = this.props;
 
     return Object.keys(nodeMap).map(id => {
       const { nativeNode, fiberNode } = nodeMap[id];
 
-      if (!nativeNode || !fiberNode._debugSource) {
+      const { _debugSource: source } = fiberNode;
+
+      if (!nativeNode || !source) {
         return null;
       }
 
       return (
-        <Dragify
-          key={id}
-          cursor={fiberNode._debugSource}
-          onDrag={console.log}
-          onDrop={console.log}
-        >
+        <Dragify key={id} cursor={source} onDrop={handleDrop}>
           <Overlay
             id={id}
             selected={selectedOverlay === id}
@@ -72,6 +70,7 @@ const mapDispatchToProps = {
     return actions.setHoveredOverlay({ id, source: 'canvas' });
   },
   launchEditorForCursor: actions.launchEditorForCursor,
+  handleDrop: actions.handleDrop,
 };
 
 export default connect(

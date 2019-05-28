@@ -111,6 +111,15 @@ const epics: Epic[] = [
         LaunchEditorApi.callMain(payload).pipe(switchMap(() => EMPTY)),
       ),
     ),
+  action$ =>
+    action$.pipe(
+      filter(actions.handleDrop.match),
+      switchMap(({ payload }) => {
+        console.log('drag drop api call', payload);
+
+        return EMPTY;
+      }),
+    ),
 ];
 
 export default combineEpics(...epics);

@@ -4,6 +4,7 @@ import * as React from 'react';
 import {
   DragSource,
   DragSourceConnector,
+  DragSourceMonitor,
   DropTarget,
   DropTargetConnector,
 } from 'react-dnd';
@@ -11,18 +12,21 @@ import { findDOMNode } from 'react-dom';
 
 const dragSource = {
   beginDrag(props: Props) {
-    props.onDrag(props.cursor);
-    return {};
+    return { cursor: props.cursor };
   },
 };
 
-const dragCollect = (connect: DragSourceConnector) => ({
+const dragCollect = (
+  connect: DragSourceConnector,
+  monitor: DragSourceMonitor,
+) => ({
   connectDragSource: connect.dragSource(),
+  sourceItem: monitor.getItem(),
 });
 
 const dropTarget = {
   drop(props: Props) {
-    props.onDrop(props.cursor);
+    props.onDrop({ source: props.sourceItem.cursor, target: props.cursor });
   },
 };
 
@@ -35,8 +39,7 @@ type DropCollectProps = ReturnType<typeof dropCollect>;
 
 interface Props extends DragCollectProps, DropCollectProps {
   cursor: TagCursor;
-  onDrag: (cursor?: TagCursor) => void;
-  onDrop: (cursor?: TagCursor) => void;
+  onDrop: (p: { source: TagCursor; target: TagCursor }) => void;
 }
 
 class Dragify extends React.PureComponent<Props> {

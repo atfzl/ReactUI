@@ -27,6 +27,7 @@ class LeftPanel extends React.Component<Props> {
       setSelectedOverlay,
       setHoveredOverlay,
       hoverOverlaySource,
+      handleDrop,
     } = this.props;
 
     return (
@@ -41,12 +42,7 @@ class LeftPanel extends React.Component<Props> {
           }
 
           return (
-            <Dragify
-              key={id}
-              cursor={source}
-              onDrag={console.log}
-              onDrop={console.log}
-            >
+            <Dragify key={id} cursor={source} onDrop={handleDrop}>
               <TreeRow
                 selected={id === selectedOverlay}
                 hovered={id === hoveredOverlay}
@@ -86,6 +82,7 @@ const mapDispatchToProps = {
     }
     return actions.setHoveredOverlay({ id, source: 'tree' });
   },
+  handleDrop: actions.handleDrop,
 };
 
 export default connect(
