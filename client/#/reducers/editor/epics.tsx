@@ -1,9 +1,14 @@
 import DeleteElementApi from '#/common/api/DeleteElement';
+import GetRuntimeProps, {
+  isReactElementIdentifier,
+} from '#/common/api/GetRuntimeProps';
 import LaunchEditorApi from '#/common/api/LaunchEditor';
 import { Events } from '#/models/Events';
 import { Epic } from '#/reducers';
 import { executeScript } from '#/utils';
 import { getTitle, walkTree } from '#/utils/fiberNode';
+import * as _ from 'lodash';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { combineEpics } from 'redux-observable';
 import { EMPTY, fromEvent, merge, of } from 'rxjs';
@@ -115,11 +120,46 @@ const epics: Epic[] = [
     action$.pipe(
       filter(actions.handleDrop.match),
       switchMap(({ payload }) => {
+        // tslint:disable-next-line:no-console
         console.log('drag drop api call', payload);
 
         return EMPTY;
       }),
     ),
+  (action$, state$) =>
+    action$.pipe(() => {
+      const mapPropValue = (value: React.ReactElement | any) => {
+        if (React.isValidElement(value)) {
+          return isReactElementIdentifier;
+        }
+
+        return value;
+      };
+
+      GetRuntimeProps.answerMain(id => {
+        const {
+          editor: { nodeMap },
+        } = state$.value;
+
+        if (!nodeMap[id]) {
+          return of({});
+        }
+
+        const props = nodeMap[id].fiberNode.memoizedProps;
+
+        return of(
+          _.mapValues(props, value => {
+            if (_.isArray(value)) {
+              return value.map(mapPropValue);
+            }
+
+            return mapPropValue(value);
+          }),
+        );
+      });
+
+      return EMPTY;
+    }),
 ];
 
 export default combineEpics(...epics);
