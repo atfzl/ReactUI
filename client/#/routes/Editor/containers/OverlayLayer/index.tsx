@@ -1,3 +1,4 @@
+import Dragify from '#/components/Dragify';
 import Overlay from '#/components/Overlay';
 import { RootState } from '#/reducers';
 import actions from '#/reducers/editor/actions';
@@ -28,17 +29,23 @@ class OverlayLayer extends React.Component<Props> {
       }
 
       return (
-        <Overlay
+        <Dragify
           key={id}
-          id={id}
-          selected={selectedOverlay === id}
-          hovered={hoveredOverlay === id}
-          onClick={setSelectedOverlay}
-          onDoubleClick={() => launchEditorForCursor(fiberNode._debugSource!)}
-          onHover={setHoveredOverlay}
+          cursor={fiberNode._debugSource}
+          onDrag={console.log}
+          onDrop={console.log}
         >
-          {nativeNode}
-        </Overlay>
+          <Overlay
+            id={id}
+            selected={selectedOverlay === id}
+            hovered={hoveredOverlay === id}
+            onClick={setSelectedOverlay}
+            onDoubleClick={() => launchEditorForCursor(fiberNode._debugSource!)}
+            onHover={setHoveredOverlay}
+          >
+            {nativeNode}
+          </Overlay>
+        </Dragify>
       );
     });
   }

@@ -1,3 +1,4 @@
+import Dragify from '#/components/Dragify';
 import { RootState } from '#/reducers';
 import actions from '#/reducers/editor/actions';
 import TreeRow from '#/routes/Editor/components/TreeRow';
@@ -40,19 +41,24 @@ class LeftPanel extends React.Component<Props> {
           }
 
           return (
-            <TreeRow
-              cursor={source}
-              selected={id === selectedOverlay}
-              hovered={id === hoveredOverlay}
-              depth={depth}
+            <Dragify
               key={id}
-              id={id}
-              onClick={setSelectedOverlay}
-              onHover={setHoveredOverlay}
-              scrollIntoViewOnHover={hoverOverlaySource === 'canvas'}
+              cursor={source}
+              onDrag={console.log}
+              onDrop={console.log}
             >
-              {source.tagName}
-            </TreeRow>
+              <TreeRow
+                selected={id === selectedOverlay}
+                hovered={id === hoveredOverlay}
+                depth={depth}
+                id={id}
+                onClick={setSelectedOverlay}
+                onHover={setHoveredOverlay}
+                scrollIntoViewOnHover={hoverOverlaySource === 'canvas'}
+              >
+                {source.tagName}
+              </TreeRow>
+            </Dragify>
           );
         })}
       </Container>
