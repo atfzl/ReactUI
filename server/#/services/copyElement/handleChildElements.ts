@@ -10,17 +10,41 @@ import {
   traverseNodeReferences,
 } from '#/utils/tsNode';
 import * as electron from 'electron';
+import * as _ from 'lodash';
 import { EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import * as ts from 'typescript';
 
+const getChildRuntimeValue = (value: any) => {
+  let newValue = '';
+  switch (true) {
+    case value === isReactElementIdentifier:
+      newValue = '{null}';
+      break;
+    case typeof value === 'string':
+      newValue = `"${value}"`;
+      break;
+    case typeof value === 'number':
+      newValue = `{${value}}`;
+      break;
+    default:
+      newValue = `{${JSON.stringify(value)}}`;
+      break;
+  }
+  return newValue;
+};
 const handleChildElements = (
   rb: ReplacementBuilder,
   sourceFileDeclarationIdentifiers: ts.BindingName[],
   incrementIdentifierName: (s: string) => string,
   cursor: TagCursor,
-) => (elementNode: ts.JsxChild) => {
-  // TODO: handle else
+) => ({
+  element: elementNode,
+  index,
+}: {
+  element: ts.JsxChild;
+  index: number;
+}) => {
   if (ts.isJsxElement(elementNode) || ts.isJsxSelfClosingElement(elementNode)) {
     const tags = getTagName(elementNode);
     const openingTag = tags[0];
@@ -30,9 +54,10 @@ const handleChildElements = (
         rb.replaceNodeWithText(tag, incrementIdentifierName(tag.getText()));
       });
 
-      const win = electron.BrowserWindow.getFocusedWindow()!;
-
-      return GetRuntimeProps.callRenderer(win, cursor).pipe(
+      return GetRuntimeProps.callRenderer(
+        electron.BrowserWindow.getFocusedWindow()!,
+        cursor,
+      ).pipe(
         switchMap(props => {
           const newProps: string[] = [];
 
@@ -43,21 +68,7 @@ const handleChildElements = (
               return;
             }
 
-            let newValue = '';
-            switch (true) {
-              case value === isReactElementIdentifier:
-                newValue = '{null}';
-                break;
-              case typeof value === 'string':
-                newValue = `"${value}"`;
-                break;
-              case typeof value === 'number':
-                newValue = `{${value}}`;
-                break;
-              default:
-                newValue = `{${JSON.stringify(value)}}`;
-                break;
-            }
+            const newValue = getChildRuntimeValue(value);
 
             newProps.push(` ${prop}=${newValue}`);
           });
@@ -77,6 +88,33 @@ const handleChildElements = (
         }),
       );
     }
+  }
+
+  const parent = elementNode.parent;
+
+  if (ts.isJsxElement(parent) || ts.isJsxSelfClosingElement(parent)) {
+    return GetRuntimeProps.callRenderer(
+      electron.BrowserWindow.getFocusedWindow()!,
+      cursor,
+    ).pipe(
+      switchMap(props => {
+        if (_.isArray(props.children)) {
+          if (props.children[index]) {
+            rb.replaceNodeWithText(
+              elementNode,
+              getChildRuntimeValue(props.children[index]),
+            );
+          }
+        } else {
+          rb.replaceNodeWithText(
+            elementNode,
+            getChildRuntimeValue(props.children),
+          );
+        }
+
+        return EMPTY;
+      }),
+    );
   }
 
   return EMPTY;

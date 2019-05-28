@@ -136,12 +136,14 @@ export const getAttributes = (node: ts.JsxElement | ts.JsxSelfClosingElement) =>
 export const traverseElement = (
   element: ts.JsxElement | ts.JsxSelfClosingElement,
 ) =>
-  of([element]).pipe(
+  of([{ element }]).pipe(
     expand(elementNodes =>
       from(elementNodes).pipe(
-        map(elementNode => {
-          if (ts.isJsxElement(elementNode)) {
-            return from(elementNode.children);
+        map(({ element: childElement }) => {
+          if (ts.isJsxElement(childElement)) {
+            return from(childElement.children).pipe(
+              map((child, index) => ({ element: child, index })),
+            );
           }
 
           return EMPTY;

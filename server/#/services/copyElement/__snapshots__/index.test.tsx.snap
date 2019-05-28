@@ -1,5 +1,58 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`copies runtime props 1`] = `
+Object {
+  "insertions": Object {
+    "declarations": Array [
+      "const Foo_$ = styled_$.div\`\`;",
+    ],
+    "imports": Array [
+      "import styled_$ from 'styled-components';",
+    ],
+  },
+  "jsx": "<Foo_$ style={{\\"backgroundColor\\":\\"red\\"}}
+ date={1559042696688}
+ value=\\"fopobar\\"
+ content={null}>foobar</Foo_$>",
+}
+`;
+
+exports[`copies runtime props with multiple children 1`] = `
+Object {
+  "insertions": Object {
+    "declarations": Array [
+      "const Foo_$ = styled_$.div\`\`;",
+    ],
+    "imports": Array [
+      "import styled_$ from 'styled-components';",
+    ],
+  },
+  "jsx": "<Foo_$ style={{\\"backgroundColor\\":\\"red\\"}}
+ date={1559042696688}
+ value=\\"fopobar\\"
+ content={null}>
+        \\"foobaring\\"{1}
+      </Foo_$>",
+}
+`;
+
+exports[`copies runtime props with single children 1`] = `
+Object {
+  "insertions": Object {
+    "declarations": Array [
+      "const Foo_$ = styled_$.div\`\`;",
+    ],
+    "imports": Array [
+      "import styled_$ from 'styled-components';",
+    ],
+  },
+  "jsx": "<Foo_$ style={{\\"backgroundColor\\":\\"red\\"}}
+ date={1559042696688}
+ value=\\"fopobar\\"
+ content={null}>{2}</Foo_$>",
+}
+`;
+
 exports[`handle imports path 1`] = `
 Object {
   "insertions": Object {
@@ -30,23 +83,6 @@ Object {
     ],
   },
   "jsx": "<Button_$>Click Me</Button_$>",
-}
-`;
-
-exports[`props 1`] = `
-Object {
-  "insertions": Object {
-    "declarations": Array [
-      "const Foo_$ = styled_$.div\`\`;",
-    ],
-    "imports": Array [
-      "import styled_$ from 'styled-components';",
-    ],
-  },
-  "jsx": "<Foo_$ style={{\\"backgroundColor\\":\\"red\\"}}
- date={1559042696688}
- value=\\"fopobar\\"
- content={null}>foobar</Foo_$>",
 }
 `;
 

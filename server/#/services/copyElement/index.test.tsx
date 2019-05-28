@@ -58,7 +58,7 @@ it('handle imports path', done => {
   });
 });
 
-it('props', done => {
+it('copies runtime props', done => {
   const { callRenderer } = require('electron-better-ipc/source/main');
 
   callRenderer.setMock({
@@ -66,9 +66,62 @@ it('props', done => {
     date: 1559042696688,
     value: 'fopobar',
     content: isReactElementIdentifier,
+    children: isReactElementIdentifier,
   });
 
   const sourceFile = fixtureFile(__dirname, 'props/source1.tsx');
+  const targetFile = fixtureFile(__dirname, 'props/target1.tsx');
+
+  copyElement$(
+    { fileName: sourceFile, lineNumber: 9, columnNumber: 7 },
+    { fileName: targetFile, lineNumber: 4, columnNumber: 10 },
+  ).subscribe(result => {
+    expect(result).toMatchSnapshot();
+
+    callRenderer.removeMock();
+
+    done();
+  });
+});
+
+it('copies runtime props with multiple children', done => {
+  const { callRenderer } = require('electron-better-ipc/source/main');
+
+  callRenderer.setMock({
+    style: { backgroundColor: 'red' },
+    date: 1559042696688,
+    value: 'fopobar',
+    content: isReactElementIdentifier,
+    children: ['foobaring', 1],
+  });
+
+  const sourceFile = fixtureFile(__dirname, 'props/source2.tsx');
+  const targetFile = fixtureFile(__dirname, 'props/target1.tsx');
+
+  copyElement$(
+    { fileName: sourceFile, lineNumber: 9, columnNumber: 7 },
+    { fileName: targetFile, lineNumber: 4, columnNumber: 10 },
+  ).subscribe(result => {
+    expect(result).toMatchSnapshot();
+
+    callRenderer.removeMock();
+
+    done();
+  });
+});
+
+it.only('copies runtime props with single children', done => {
+  const { callRenderer } = require('electron-better-ipc/source/main');
+
+  callRenderer.setMock({
+    style: { backgroundColor: 'red' },
+    date: 1559042696688,
+    value: 'fopobar',
+    content: isReactElementIdentifier,
+    children: 2,
+  });
+
+  const sourceFile = fixtureFile(__dirname, 'props/source3.tsx');
   const targetFile = fixtureFile(__dirname, 'props/target1.tsx');
 
   copyElement$(
