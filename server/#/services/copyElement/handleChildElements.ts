@@ -50,45 +50,51 @@ const handleChildElements = (
     const tags = getTagName(elementNode);
     const openingTag = tags[0];
 
-    if (!isInterinsicTag(openingTag.getText())) {
+    const interinsicTag = isInterinsicTag(openingTag.getText());
+
+    if (!interinsicTag) {
       tags.forEach(tag => {
         rb.replaceNodeWithText(tag, incrementIdentifierName(tag.getText()));
       });
+    }
 
-      return GetRuntimeProps.callRenderer(
-        electron.BrowserWindow.getFocusedWindow()!,
-        cursor,
-      ).pipe(
-        switchMap(props => {
-          const newProps: string[] = [];
+    return GetRuntimeProps.callRenderer(
+      electron.BrowserWindow.getFocusedWindow()!,
+      cursor,
+    ).pipe(
+      switchMap(props => {
+        const newProps: string[] = [];
 
-          Object.keys(props).forEach(prop => {
-            const value = props[prop];
+        Object.keys(props).forEach(prop => {
+          const value = props[prop];
 
-            if (prop === 'children') {
-              return;
-            }
-
-            const newValue = getChildRuntimeValue(value);
-
-            newProps.push(` ${prop}=${newValue}`);
-          });
-
-          if (newProps.length) {
-            const newPropsText = newProps.join('\n');
-
-            const attributes = getAttributes(elementNode);
-
-            rb.replaceNodeWithText(attributes, newPropsText);
+          if (prop === 'children') {
+            return;
           }
 
+          const newValue = getChildRuntimeValue(value);
+
+          newProps.push(` ${prop}=${newValue}`);
+        });
+
+        if (newProps.length) {
+          const newPropsText = newProps.join('\n');
+
+          const attributes = getAttributes(elementNode);
+
+          rb.replaceNodeWithText(attributes, newPropsText);
+        }
+
+        if (!interinsicTag) {
           return traverseNodeReferences(
             openingTag,
             sourceFileDeclarationIdentifiers,
           );
-        }),
-      );
-    }
+        }
+
+        return EMPTY;
+      }),
+    );
   }
 
   const parent = elementNode.parent;
