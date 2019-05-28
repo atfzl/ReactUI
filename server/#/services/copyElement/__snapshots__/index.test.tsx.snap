@@ -33,6 +33,23 @@ Object {
 }
 `;
 
+exports[`props 1`] = `
+Object {
+  "insertions": Object {
+    "declarations": Array [
+      "const Foo_$ = styled_$.div\`\`;",
+    ],
+    "imports": Array [
+      "import styled_$ from 'styled-components';",
+    ],
+  },
+  "jsx": "<Foo_$ style={{\\"backgroundColor\\":\\"red\\"}}
+ date={1559042696688}
+ value=\\"fopobar\\"
+ content={null}>foobar</Foo_$>",
+}
+`;
+
 exports[`should work 1`] = `
 Object {
   "insertions": Object {

@@ -1,3 +1,4 @@
+import { isReactElementIdentifier } from '#/common/api/GetRuntimeProps';
 import { fixtureFile } from '#/utils/test';
 import copyElement$ from './index';
 
@@ -52,6 +53,31 @@ it('handle imports path', done => {
     { fileName: targetFile, lineNumber: 4, columnNumber: 3 },
   ).subscribe(result => {
     expect(result).toMatchSnapshot();
+
+    done();
+  });
+});
+
+it('props', done => {
+  const { callRenderer } = require('electron-better-ipc/source/main');
+
+  callRenderer.setMock({
+    style: { backgroundColor: 'red' },
+    date: 1559042696688,
+    value: 'fopobar',
+    content: isReactElementIdentifier,
+  });
+
+  const sourceFile = fixtureFile(__dirname, 'props/source1.tsx');
+  const targetFile = fixtureFile(__dirname, 'props/target1.tsx');
+
+  copyElement$(
+    { fileName: sourceFile, lineNumber: 9, columnNumber: 7 },
+    { fileName: targetFile, lineNumber: 4, columnNumber: 10 },
+  ).subscribe(result => {
+    expect(result).toMatchSnapshot();
+
+    callRenderer.removeMock();
 
     done();
   });

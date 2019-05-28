@@ -23,3 +23,8 @@ declare module 'react-dev-utils/launchEditor' {
   const x: any;
   export = x;
 }
+
+declare module 'electron-better-ipc*' {
+  const x: any;
+  export = x;
+}

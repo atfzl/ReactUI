@@ -55,10 +55,11 @@ const handleChildElements = (
                 newValue = `{${value}}`;
                 break;
               default:
-                newValue = JSON.stringify(value);
+                newValue = `{${JSON.stringify(value)}}`;
+                break;
             }
 
-            newProps.push(`${prop}=${newValue}`);
+            newProps.push(` ${prop}=${newValue}`);
           });
 
           if (newProps.length) {
