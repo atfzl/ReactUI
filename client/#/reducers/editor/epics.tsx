@@ -1,3 +1,4 @@
+import CopyElementApi from '#/common/api/CopyElement';
 import DeleteElementApi from '#/common/api/DeleteElement';
 import GetRuntimeProps, {
   isReactElementIdentifier,
@@ -119,12 +120,9 @@ const epics: Epic[] = [
   action$ =>
     action$.pipe(
       filter(actions.handleDrop.match),
-      switchMap(({ payload }) => {
-        // tslint:disable-next-line:no-console
-        console.log('drag drop api call', payload);
-
-        return EMPTY;
-      }),
+      switchMap(({ payload }) =>
+        CopyElementApi.callMain(payload).pipe(switchMap(() => EMPTY)),
+      ),
     ),
   (action$, state$) =>
     action$.pipe(() => {
