@@ -66,7 +66,7 @@ it('copies runtime props', done => {
     date: 1559042696688,
     value: 'fopobar',
     content: isReactElementIdentifier,
-    children: isReactElementIdentifier,
+    children: 'foobar',
   });
 
   const sourceFile = fixtureFile(__dirname, 'props/source1.tsx');
@@ -110,7 +110,7 @@ it('copies runtime props with multiple children', done => {
   });
 });
 
-it.only('copies runtime props with single children', done => {
+it('copies runtime props with single children', done => {
   const { callRenderer } = require('electron-better-ipc/source/main');
 
   callRenderer.setMock({

@@ -22,7 +22,7 @@ const getChildRuntimeValue = (value: any) => {
       newValue = '{null}';
       break;
     case typeof value === 'string':
-      newValue = `"${value}"`;
+      newValue = `{"${value}"}`;
       break;
     case typeof value === 'number':
       newValue = `{${value}}`;
@@ -33,6 +33,7 @@ const getChildRuntimeValue = (value: any) => {
   }
   return newValue;
 };
+
 const handleChildElements = (
   rb: ReplacementBuilder,
   sourceFileDeclarationIdentifiers: ts.BindingName[],
@@ -98,6 +99,10 @@ const handleChildElements = (
       cursor,
     ).pipe(
       switchMap(props => {
+        if (!props.children) {
+          return EMPTY;
+        }
+
         if (_.isArray(props.children)) {
           if (props.children[index]) {
             rb.replaceNodeWithText(

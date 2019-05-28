@@ -12,8 +12,8 @@ Object {
   },
   "jsx": "<Foo_$ style={{\\"backgroundColor\\":\\"red\\"}}
  date={1559042696688}
- value=\\"fopobar\\"
- content={null}>foobar</Foo_$>",
+ value={\\"fopobar\\"}
+ content={null}>{\\"foobar\\"}</Foo_$>",
 }
 `;
 
@@ -29,9 +29,9 @@ Object {
   },
   "jsx": "<Foo_$ style={{\\"backgroundColor\\":\\"red\\"}}
  date={1559042696688}
- value=\\"fopobar\\"
+ value={\\"fopobar\\"}
  content={null}>
-        \\"foobaring\\"{1}
+        {\\"foobaring\\"}{1}
       </Foo_$>",
 }
 `;
@@ -48,7 +48,7 @@ Object {
   },
   "jsx": "<Foo_$ style={{\\"backgroundColor\\":\\"red\\"}}
  date={1559042696688}
- value=\\"fopobar\\"
+ value={\\"fopobar\\"}
  content={null}>{2}</Foo_$>",
 }
 `;
