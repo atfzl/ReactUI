@@ -86,6 +86,26 @@ Object {
 }
 `;
 
+exports[`recursive references common reference 1`] = `
+Object {
+  "insertions": Object {
+    "declarations": Array [
+      "const BIcon_$ = styled_$(Icon_$)\`\`;",
+      "const AIcon_$ = styled_$(Icon_$)\`\`;",
+    ],
+    "imports": Array [
+      "import Icon_$ from './components/Icon.tsx';",
+      "import styled_$ from 'styled-components';",
+      "import Container_$ from './components/Container.tsx';",
+    ],
+  },
+  "jsx": "<Container_$>
+      <AIcon_$ />
+      <BIcon_$ />
+    </Container_$>",
+}
+`;
+
 exports[`should work 1`] = `
 Object {
   "insertions": Object {

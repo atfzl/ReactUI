@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as stable from 'stable';
 
 export class Replacement {
@@ -12,7 +13,9 @@ export class Replacement {
   public static applyReplacements(source: string, replacements: Replacement[]) {
     replacements = stable(replacements, (r1, r2) => r2.start - r1.start);
 
-    for (const replacement of replacements) {
+    const uniqueReplacements = _.uniqWith(replacements, _.isEqual);
+
+    for (const replacement of uniqueReplacements) {
       source =
         source.slice(0, replacement.start) +
         replacement.text +
