@@ -4,7 +4,7 @@ import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as ts from 'typescript';
 
-const deleteElement$ = pipe(
+const deleteElement = pipe(
   findElementAtCursor$,
   map(cursorNode => {
     const replacementBuilder = new ReplacementBuilder(
@@ -23,4 +23,4 @@ const deleteElement$ = pipe(
   }),
 );
 
-export default deleteElement$;
+export default deleteElement;

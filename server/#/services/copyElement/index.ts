@@ -15,7 +15,7 @@ import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
 import handleChildElements from './handleChildElements';
 import handleRecursiveDefinitions from './handleRecursiveDefinitions';
 
-const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
+const copyElement = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
   forkJoin(
     findElementAtCursor$(sourceCursor),
     findElementAtCursor$(targetCursor),
@@ -89,4 +89,4 @@ const copyElement$ = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
     ),
   );
 
-export default copyElement$;
+export default copyElement;

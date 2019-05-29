@@ -15,7 +15,7 @@ const stringifyStyles = (styleObject: StyleObject) => {
   )(styleObject);
 };
 
-const flushStyles$ = (styleObject: StyleObject) =>
+const flushStyles = (styleObject: StyleObject) =>
   pipe(
     findTemplateStringAtCursor$,
     map(cursorNode => {
@@ -63,4 +63,4 @@ const flushStyles$ = (styleObject: StyleObject) =>
     }),
   );
 
-export default flushStyles$;
+export default flushStyles;
