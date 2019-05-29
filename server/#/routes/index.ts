@@ -4,8 +4,8 @@ import LaunchEditorApi from '#/common/api/LaunchEditor';
 import CopyElementService from '#/services/copyElement';
 import DeleteElementService from '#/services/deleteElement';
 import LaunchEditorService from '#/services/launchEditor';
+import PasteElementService from '#/services/pasteElement';
 import { writeFile } from '#/utils/fs';
-import { EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 LaunchEditorApi.answerRenderer(LaunchEditorService);
@@ -16,9 +16,7 @@ DeleteElementApi.answerRenderer(data =>
 );
 CopyElementApi.answerRenderer(payload =>
   CopyElementService(payload.source, payload.target).pipe(
-    switchMap(text => {
-      console.log(text);
-      return EMPTY;
-    }),
+    switchMap(PasteElementService),
+    switchMap(text => writeFile(payload.target.fileName, text)),
   ),
 );

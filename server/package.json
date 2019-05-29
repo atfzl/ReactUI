@@ -37,6 +37,7 @@
     "resolve": "^1.10.0",
     "rxjs": "^6.5.1",
     "serialize-error": "^4.0.0",
-    "stable": "^0.1.8"
+    "stable": "^0.1.8",
+    "upath": "^1.1.2"
   }
 }

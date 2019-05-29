@@ -34,6 +34,25 @@ export const getCursor = (node: ts.Node): TagCursor => {
   };
 };
 
+export const findAllNodes = <T extends ts.Node>(
+  rootNode: ts.Node,
+  predicate: (node: ts.Node) => boolean,
+): T[] => {
+  const resolvedNodes: T[] = [];
+
+  function _traverse(node: ts.Node) {
+    if (predicate(node)) {
+      resolvedNodes.push(node as T);
+    }
+
+    ts.forEachChild(node, _traverse);
+  }
+
+  _traverse(rootNode);
+
+  return resolvedNodes;
+};
+
 export const findAllNodes$ = <T extends ts.Node>(
   predicate: (node: ts.Node) => boolean,
 ) => (rootNode: ts.Node): Observable<T> => {

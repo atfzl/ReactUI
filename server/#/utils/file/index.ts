@@ -1,10 +1,10 @@
 import { Fault } from '#/common/models/Fault';
 import { readFile, writeFile } from 'fs';
-import * as path from 'path';
 import * as R from 'ramda';
 import * as resolve from 'resolve';
 import { bindNodeCallback, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import * as path from 'upath';
 
 export const readFile$ = bindNodeCallback(readFile);
 export const writeFile$ = bindNodeCallback(writeFile);
@@ -45,10 +45,12 @@ export const getPathRelativeToTarget = (
           resolvedSourceComponentPath!,
         );
 
+        const resultPath = path.trimExt(pathFromTargetToSource);
+
         if (pathFromTargetToSource.charAt(0) !== '.') {
-          observer.next(`./${pathFromTargetToSource}`);
+          observer.next(`./${resultPath}`);
         } else {
-          observer.next(pathFromTargetToSource);
+          observer.next(resultPath);
         }
 
         observer.complete();

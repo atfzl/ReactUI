@@ -80,6 +80,8 @@ const copyElement = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
                     a => (a.startsWith('import') ? 'imports' : 'declarations'),
                     insertions,
                   ),
+                  targetFileNode: targetCursorNode.getSourceFile(),
+                  targetCursorNode,
                 };
               }),
             );
