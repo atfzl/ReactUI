@@ -62,8 +62,13 @@ class Overlay extends React.Component<Props> {
 
     return (
       <Container
-        onClick={this.onClick}
-        onDoubleClick={this.onDoubleClick}
+        onClick={e => {
+          if (e.metaKey) {
+            this.onDoubleClick();
+          }
+
+          this.onClick();
+        }}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         selected={selected}
