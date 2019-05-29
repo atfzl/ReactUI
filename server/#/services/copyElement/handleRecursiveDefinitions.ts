@@ -75,7 +75,7 @@ const handleRecursiveDefinitions = (
             .get(definitionDeclaration)!
             .replaceNodeWithText(
               definitionDeclaration.moduleSpecifier,
-              relativePathToTarget,
+              `'${relativePathToTarget}'`,
             );
         }),
       );
