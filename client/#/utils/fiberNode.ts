@@ -2,7 +2,7 @@ import { TagCursor } from '#/common/models/file';
 import { FiberNode } from '#/models/React';
 
 export const getIdFromCursor = (cursor: TagCursor) =>
-  [cursor.fileName, cursor.lineNumber, cursor.columnNumber, cursor.tagName]
+  [cursor.fileName, cursor.lineNumber, cursor.columnNumber]
     .filter(x => !!x)
     .join(',');
 
