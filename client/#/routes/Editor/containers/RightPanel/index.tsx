@@ -136,9 +136,7 @@ class RightPanel extends React.PureComponent<Props, State> {
                               display: 'inline-block',
                               border: '1px solid rgba(0, 0, 0, 0.3)',
                               userSelect: 'none',
-                              cursor: 'pointer',
                             }}
-                            onClick={() => setSelectedComponent([i, j])}
                             dangerouslySetInnerHTML={{
                               __html: ReactDOMServer.renderToStaticMarkup(
                                 instance.element,
