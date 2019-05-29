@@ -50,12 +50,11 @@ const handleRecursiveDefinitions = (
    * handle definition
    */
   {
-    if (!insertionsMap.has(definitionDeclaration)) {
-      insertionsMap.set(
-        definitionDeclaration,
-        new ReplacementBuilder(definitionDeclaration),
-      );
-    }
+    insertionsMap.delete(definitionDeclaration);
+    insertionsMap.set(
+      definitionDeclaration,
+      new ReplacementBuilder(definitionDeclaration),
+    );
 
     let pip$ = of('');
 
