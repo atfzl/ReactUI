@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getPathRelativeToTarget should resolve .. paths 1`] = `"../../../index.ts"`;
+exports[`getPathRelativeToTarget should resolve .. paths 1`] = `"../../../index"`;
 
-exports[`getPathRelativeToTarget should resolve ./ paths 1`] = `"./target1.ts"`;
+exports[`getPathRelativeToTarget should resolve ./ paths 1`] = `"./target1"`;
 
 exports[`getPathRelativeToTarget should throw for invalid paths 1`] = `
 Object {

@@ -1,7 +1,6 @@
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import { findAllNodes } from '#/utils/tsNode';
 import * as _ from 'lodash';
-import * as R from 'ramda';
 import { of } from 'rxjs';
 import * as ts from 'typescript';
 
@@ -42,7 +41,7 @@ const pasteElement = (opts: {
     if (lastImportNode) {
       rb.insert(
         lastImportNode.getEnd(),
-        R.reverse(insertions.declarations).join('\n') + '\n',
+        insertions.declarations.join('\n') + '\n',
       );
     }
   }

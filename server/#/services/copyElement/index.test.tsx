@@ -137,12 +137,26 @@ it('copies runtime props with single children', done => {
 });
 
 describe('recursive references', () => {
-  it.only('common reference', done => {
+  it('common reference', done => {
     const sourceFile = fixtureFile(__dirname, 'recursive/source1.tsx');
     const targetFile = fixtureFile(__dirname, 'recursive/target1.tsx');
 
     copyElement$(
       { fileName: sourceFile, lineNumber: 12, columnNumber: 5 },
+      { fileName: targetFile, lineNumber: 5, columnNumber: 5 },
+    ).subscribe(result => {
+      expect(result).toMatchSnapshot();
+
+      done();
+    });
+  });
+
+  it('check order of reference', done => {
+    const sourceFile = fixtureFile(__dirname, 'recursive/source2.tsx');
+    const targetFile = fixtureFile(__dirname, 'recursive/target2.tsx');
+
+    copyElement$(
+      { fileName: sourceFile, lineNumber: 12, columnNumber: 3 },
       { fileName: targetFile, lineNumber: 5, columnNumber: 5 },
     ).subscribe(result => {
       expect(result).toMatchSnapshot();
