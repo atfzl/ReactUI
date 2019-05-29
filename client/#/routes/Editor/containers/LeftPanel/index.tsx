@@ -28,6 +28,7 @@ class LeftPanel extends React.Component<Props> {
       setHoveredOverlay,
       hoverOverlaySource,
       handleDrop,
+      launchEditorForCursor,
     } = this.props;
 
     return (
@@ -48,7 +49,8 @@ class LeftPanel extends React.Component<Props> {
                 hovered={id === hoveredOverlay}
                 depth={depth}
                 id={id}
-                onClick={setSelectedOverlay}
+                onPrimaryClick={setSelectedOverlay}
+                onSecondaryClick={() => launchEditorForCursor(source)}
                 onHover={setHoveredOverlay}
                 scrollIntoViewOnHover={hoverOverlaySource === 'canvas'}
               >
@@ -83,6 +85,7 @@ const mapDispatchToProps = {
     return actions.setHoveredOverlay({ id, source: 'tree' });
   },
   handleDrop: actions.handleDrop,
+  launchEditorForCursor: actions.launchEditorForCursor,
 };
 
 export default connect(

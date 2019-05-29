@@ -4,7 +4,6 @@ import * as React from 'react';
 const Container = styled.div<{ selected?: boolean; hovered?: boolean }>`
   padding: 4px;
   font-size: 14px;
-  cursor: pointer;
 
   border: 1px solid transparent;
   ${props =>
@@ -18,7 +17,8 @@ interface Props {
   hovered?: boolean;
   depth: number;
   id: string;
-  onClick: (id?: string) => void;
+  onPrimaryClick: (id?: string) => void;
+  onSecondaryClick: () => void;
   onHover: (id?: string) => void;
   scrollIntoViewOnHover: boolean;
 }
@@ -42,8 +42,12 @@ class TreeRow extends React.Component<Props> {
     this.props.onHover();
   }
 
-  private onClick() {
-    this.props.onClick(this.props.id);
+  private onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    if (e.metaKey) {
+      this.props.onSecondaryClick();
+    }
+
+    this.props.onPrimaryClick(this.props.id);
   }
 
   public componentDidUpdate() {

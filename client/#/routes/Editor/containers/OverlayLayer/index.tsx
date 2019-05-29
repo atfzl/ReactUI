@@ -37,8 +37,10 @@ class OverlayLayer extends React.Component<Props> {
             id={id}
             selected={selectedOverlay === id}
             hovered={hoveredOverlay === id}
-            onClick={setSelectedOverlay}
-            onDoubleClick={() => launchEditorForCursor(fiberNode._debugSource!)}
+            onPrimaryClick={setSelectedOverlay}
+            onSecondaryClick={() =>
+              launchEditorForCursor(fiberNode._debugSource!)
+            }
             onHover={setHoveredOverlay}
           >
             {nativeNode}
