@@ -1,11 +1,11 @@
 import GetRuntimeProps, {
   isReactElementIdentifier,
 } from '#/common/api/GetRuntimeProps';
-import { TagCursor } from '#/common/models/file';
 import { isInterinsicTag } from '#/common/utils';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import {
   getAttributes,
+  getCursor,
   getTagName,
   traverseNodeReferences,
 } from '#/utils/tsNode';
@@ -38,7 +38,6 @@ const handleChildElements = (
   rb: ReplacementBuilder,
   sourceFileDeclarationIdentifiers: ts.BindingName[],
   incrementIdentifierName: (s: string) => string,
-  cursor: TagCursor,
 ) => ({
   element: elementNode,
   index,
@@ -60,13 +59,17 @@ const handleChildElements = (
 
     return GetRuntimeProps.callRenderer(
       electron.BrowserWindow.getFocusedWindow()!,
-      cursor,
+      getCursor(elementNode),
     ).pipe(
       switchMap(props => {
         const newProps: string[] = [];
 
         Object.keys(props).forEach(prop => {
           const value = props[prop];
+
+          if (prop === isReactElementIdentifier) {
+            return;
+          }
 
           if (prop === 'children') {
             return;
@@ -102,7 +105,7 @@ const handleChildElements = (
   if (ts.isJsxElement(parent) || ts.isJsxSelfClosingElement(parent)) {
     return GetRuntimeProps.callRenderer(
       electron.BrowserWindow.getFocusedWindow()!,
-      cursor,
+      getCursor(parent),
     ).pipe(
       switchMap(props => {
         if (!props.children) {
