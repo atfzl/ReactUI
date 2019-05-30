@@ -1,3 +1,4 @@
+import AlbumArt_$ from '../AlbumArt/index';
 import * as React from 'react';
 import styled from 'styled-components';
 import AlbumArt from '../AlbumArt';

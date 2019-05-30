@@ -9,6 +9,7 @@ import {
   DropTargetConnector,
 } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
+import * as voidElements from 'void-elements';
 
 const dragSource = {
   beginDrag(props: Props) {
@@ -26,7 +27,9 @@ const dragCollect = (
 
 const dropTarget = {
   drop(props: Props) {
-    props.onDrop({ source: props.sourceItem.cursor, target: props.cursor });
+    if (!voidElements[props.nativeNode.tagName.toLowerCase()]) {
+      props.onDrop({ source: props.sourceItem.cursor, target: props.cursor });
+    }
   },
 };
 
@@ -39,6 +42,7 @@ type DropCollectProps = ReturnType<typeof dropCollect>;
 
 interface Props extends DragCollectProps, DropCollectProps {
   cursor: TagCursor;
+  nativeNode: HTMLElement;
   onDrop: (p: { source: TagCursor; target: TagCursor }) => void;
 }
 

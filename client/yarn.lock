@@ -229,6 +229,11 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/void-elements@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/void-elements/-/void-elements-3.1.0.tgz#049c29f185dfbb1c0b6197c92844e7df81c27a39"
+  integrity sha512-tHZfzIuFFNwudf2/OP7ZaKQg+l7GxVQYtr0cT9zpk8k9Nj0ejrLSaW/m4zu09L0i0fwpkwCZ0e1uASEy7wP4Yw==
+
 "@types/watch@^1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/watch/-/watch-1.0.1.tgz#958340cfdbe3cfca85410e238beb05183947fd19"
@@ -4084,6 +4089,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+void-elements@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
+  integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
 
 watch@^1.0.1, watch@^1.0.2:
   version "1.0.2"

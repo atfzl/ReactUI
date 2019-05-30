@@ -15,6 +15,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-redux": "^7.0.9",
     "@types/react-router-dom": "^4.3.3",
+    "@types/void-elements": "^3.1.0",
     "fuse-box": "^3.7.1",
     "fuse-box-typechecker": "^2.12.0",
     "prettier": "^1.16.4",
@@ -50,6 +51,7 @@
     "ts-optchain": "^0.1.7",
     "typesafe-actions": "^4.3.0",
     "typescript-fsa": "^3.0.0-beta-2",
-    "typescript-fsa-reducers": "^1.2.1"
+    "typescript-fsa-reducers": "^1.2.1",
+    "void-elements": "^3.1.0"
   }
 }

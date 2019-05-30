@@ -34,7 +34,7 @@ class LeftPanel extends React.Component<Props> {
     return (
       <Container>
         {Object.keys(nodeMap).map(id => {
-          const { fiberNode, depth } = nodeMap[id];
+          const { fiberNode, depth, nativeNode } = nodeMap[id];
 
           const { _debugSource: source } = fiberNode;
 
@@ -43,7 +43,12 @@ class LeftPanel extends React.Component<Props> {
           }
 
           return (
-            <Dragify key={id} cursor={source} onDrop={handleDrop}>
+            <Dragify
+              key={id}
+              nativeNode={nativeNode}
+              cursor={source}
+              onDrop={handleDrop}
+            >
               <TreeRow
                 selected={id === selectedOverlay}
                 hovered={id === hoveredOverlay}

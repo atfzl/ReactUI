@@ -32,7 +32,12 @@ class OverlayLayer extends React.Component<Props> {
       }
 
       return (
-        <Dragify key={id} cursor={source} onDrop={handleDrop}>
+        <Dragify
+          key={id}
+          nativeNode={nativeNode}
+          cursor={source}
+          onDrop={handleDrop}
+        >
           <Overlay
             id={id}
             selected={selectedOverlay === id}
