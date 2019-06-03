@@ -53,10 +53,11 @@ class AutoScale extends React.Component<IProps, IState> {
   }
 
   public render() {
-    if (this.state.style) {
-      return <div style={this.state.style}>{this.props.children}</div>;
-    }
-    return <Ref ref={this.componentRef}>{this.props.children}</Ref>;
+    return (
+      <Ref ref={this.componentRef} style={this.state.style}>
+        {this.props.children}
+      </Ref>
+    );
   }
 }
 

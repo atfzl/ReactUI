@@ -1,8 +1,10 @@
 import * as React from 'react';
 
-class Ref extends React.Component {
+type Props = JSX.IntrinsicElements['div'];
+
+class Ref extends React.Component<Props> {
   public render() {
-    return this.props.children;
+    return <div {...this.props}>{this.props.children}</div>;
   }
 }
 
