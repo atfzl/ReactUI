@@ -15,9 +15,9 @@ interface Props {
   children: HTMLElement;
   selected?: boolean;
   hovered?: boolean;
-  onPrimaryClick: (id?: string) => void;
-  onHover: (id?: string) => void;
-  onSecondaryClick: () => void;
+  onPrimaryClick?: (id?: string) => void;
+  onHover?: (id?: string) => void;
+  onSecondaryClick?: () => void;
 }
 
 class Overlay extends React.Component<Props> {
@@ -30,19 +30,27 @@ class Overlay extends React.Component<Props> {
   }
 
   private onMouseOver() {
-    this.props.onHover(this.props.id);
+    if (this.props.onHover) {
+      this.props.onHover(this.props.id);
+    }
   }
 
   private onMouseOut() {
-    this.props.onHover(undefined);
+    if (this.props.onHover) {
+      this.props.onHover(undefined);
+    }
   }
 
   private onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (e.metaKey) {
-      this.props.onSecondaryClick();
+      if (this.props.onSecondaryClick) {
+        this.props.onSecondaryClick();
+      }
     }
 
-    this.props.onPrimaryClick(this.props.id);
+    if (this.props.onPrimaryClick) {
+      this.props.onPrimaryClick(this.props.id);
+    }
   }
 
   public render() {

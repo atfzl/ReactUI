@@ -1,7 +1,7 @@
 import Header from '#/routes/Editor/components/Header';
+import RightPanel from '#/routes/Editor/components/RightPanel';
 import Canvas from '#/routes/Editor/containers/Canvas';
 import LeftPanel from '#/routes/Editor/containers/LeftPanel';
-import RightPanel from '#/routes/Editor/containers/RightPanel';
 import styled from '#/styled';
 import * as React from 'react';
 

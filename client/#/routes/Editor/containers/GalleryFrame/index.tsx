@@ -3,6 +3,7 @@ import Isolate from '#/components/Isolate';
 import { RootState } from '#/reducers';
 import actions from '#/reducers/gallery/actions';
 import { Theme } from '#/styled/theme';
+import { getIdFromCursor } from '#/utils/fiberNode';
 import { withTheme } from 'emotion-theming';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
@@ -37,7 +38,10 @@ class GalleryFrame extends React.PureComponent<Props> {
       setSelectedComponent,
       theme,
       width,
+      setInstanceWrapper,
     } = this.props;
+
+    let index = 0;
 
     return (
       <Isolate
@@ -97,7 +101,15 @@ class GalleryFrame extends React.PureComponent<Props> {
                       </div>
                       <AutoScale
                         maxWidth={width - ONE_SIDE_PADDING * 2}
-                        childRef={console.log}
+                        childRef={element =>
+                          setInstanceWrapper({
+                            index: index++,
+                            element,
+                            id: getIdFromCursor(
+                              (instance.element as any)._source,
+                            ),
+                          })
+                        }
                       >
                         <div
                           style={{
@@ -132,6 +144,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = {
   setCanvasInternals: actions.setCanvasInternals,
   setSelectedComponent: actions.setSelectedComponent,
+  setInstanceWrapper: actions.setInstanceWrapper,
 };
 
 export default pipe(

@@ -1,3 +1,7 @@
+import styled_$1 from 'styled-components';
+import Icon_$ from '../Icon/index';
+import styled_$ from 'styled-components';
+import AlbumArt_$1 from '../AlbumArt/index';
 import AlbumArt_$ from '../AlbumArt/index';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -5,7 +9,15 @@ import AlbumArt from '../AlbumArt';
 import StatusBar from '../StatusBar';
 import PlayControl from '../PlayControl';
 import Seeker from '../Seeker';
-import Icon from '../Icon';
+import Icon from '../Icon';const SongArtist_$ = styled_$1.div`
+  font-size: 12px;
+  color: grey;
+`;
+const NextPrevIcon_$ = styled_$(Icon_$)`
+  font-size: 28px;
+  color: grey;
+`;
+
 
 const Container = styled.div`
   height: 600px;

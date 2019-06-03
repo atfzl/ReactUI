@@ -9,6 +9,11 @@ const actions = {
     'setCanvasInternals',
   ),
   setSelectedComponent: actionCreator<[number, number]>('setSelectedComponent'),
+  setInstanceWrapper: actionCreator<{
+    index: number;
+    id: string;
+    element: HTMLElement | null | undefined;
+  }>('setInstanceWrapper'),
 };
 
 export default actions;

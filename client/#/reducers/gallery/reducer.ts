@@ -10,11 +10,16 @@ export interface ReducerState {
   };
   workspace?: Workspace;
   selectedComponent: [number, number]; // first index is component, second is instance
+  instanceWrappers: Array<{
+    element: HTMLElement | null | undefined;
+    id: string;
+  }>;
 }
 
 const InitialState: ReducerState = {
   canvas: {},
   selectedComponent: [0, 0],
+  instanceWrappers: [],
 };
 
 const reducer = reducerWithInitialState<ReducerState>(InitialState)
@@ -32,6 +37,14 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
   .withHandling(
     immerCase(actions.setSelectedComponent, (state, payload) => {
       state.selectedComponent = payload;
+    }),
+  )
+  .withHandling(
+    immerCase(actions.setInstanceWrapper, (state, payload) => {
+      state.instanceWrappers[payload.index] = {
+        element: payload.element,
+        id: payload.id,
+      };
     }),
   )
   .build();
