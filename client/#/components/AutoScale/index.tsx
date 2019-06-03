@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom';
 interface Props {
   maxWidth: number;
   children?: React.ReactNode;
+  childRef?: (element: HTMLElement | null) => void;
 }
 
 interface State {
@@ -30,23 +31,40 @@ class AutoScale extends React.PureComponent<Props, State> {
 
       const scale = this.props.maxWidth / width;
 
+      const setChildRef = () => {
+        if (this.props.childRef) {
+          this.props.childRef(element.children[0] as HTMLElement | null);
+        }
+      };
+
       if (scale < 1) {
         const newHeight = scale * height;
 
-        this.setState({
-          style: {
-            transformOrigin: '0px 0px 0px',
-            transform: `scale(${scale})`,
-            maxWidth: scale * width,
-            height: newHeight,
+        this.setState(
+          {
+            style: {
+              transformOrigin: '0px 0px 0px',
+              transform: `scale(${scale})`,
+              maxWidth: scale * width,
+              height: newHeight,
+            },
           },
-        });
+          setChildRef,
+        );
+      } else {
+        setChildRef();
       }
     }
   }
 
   public componentDidMount() {
     this.recalculate();
+  }
+
+  public componentWillUnmount() {
+    if (this.props.childRef) {
+      this.props.childRef(null);
+    }
   }
 
   public componentDidUpdate(prevProps: Props, prevState: State) {

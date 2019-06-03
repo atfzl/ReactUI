@@ -50,7 +50,7 @@ class Dragify extends React.PureComponent<Props> {
   public render() {
     return (
       <Ref
-        ref={instance => {
+        ref={(instance: any) => {
           const node = findDOMNode(instance);
           this.props.connectDragSource(node as any);
           this.props.connectDropTarget(node as any);

@@ -95,7 +95,10 @@ class GalleryFrame extends React.PureComponent<Props> {
                       >
                         {instance.title}
                       </div>
-                      <AutoScale maxWidth={width - ONE_SIDE_PADDING * 2}>
+                      <AutoScale
+                        maxWidth={width - ONE_SIDE_PADDING * 2}
+                        childRef={console.log}
+                      >
                         <div
                           style={{
                             display: 'inline-block',
