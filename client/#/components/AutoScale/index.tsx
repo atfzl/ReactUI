@@ -2,18 +2,19 @@ import Ref from '#/components/Ref';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-interface IProps {
+interface Props {
   maxWidth: number;
+  children?: React.ReactNode;
 }
 
-interface IState {
+interface State {
   style?: React.CSSProperties;
 }
 
-class AutoScale extends React.Component<IProps, IState> {
+class AutoScale extends React.PureComponent<Props, State> {
   private componentRef = React.createRef<any>();
 
-  public state: IState = {};
+  public state: State = {};
 
   private recalculate() {
     if (this.componentRef) {
@@ -48,8 +49,15 @@ class AutoScale extends React.Component<IProps, IState> {
     this.recalculate();
   }
 
-  public componentDidUpdate() {
-    this.recalculate();
+  public componentDidUpdate(prevProps: Props, prevState: State) {
+    if (
+      this.state.style === prevState.style &&
+      this.props.children !== prevProps.children
+    ) {
+      this.setState({ style: undefined }, () => {
+        this.recalculate();
+      });
+    }
   }
 
   public render() {
