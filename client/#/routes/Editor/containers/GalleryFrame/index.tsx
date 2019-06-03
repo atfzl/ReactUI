@@ -20,8 +20,6 @@ interface Props extends StateProps, DispatchProps {
 }
 
 class GalleryFrame extends React.PureComponent<Props> {
-  private instanceWrappers: HTMLDivElement[] = [];
-
   private onFrameReady = ({
     doc,
     element,
@@ -32,10 +30,6 @@ class GalleryFrame extends React.PureComponent<Props> {
     this.props.setCanvasInternals({ doc, element });
   };
 
-  private collectRef = (index: number) => (element: HTMLDivElement) => {
-    this.instanceWrappers[index] = element;
-  };
-
   public render() {
     const {
       workspace,
@@ -44,8 +38,6 @@ class GalleryFrame extends React.PureComponent<Props> {
       theme,
       width,
     } = this.props;
-
-    let index = 0;
 
     return (
       <Isolate
@@ -111,7 +103,6 @@ class GalleryFrame extends React.PureComponent<Props> {
                             border: '1px solid rgba(0, 0, 0, 0.3)',
                             userSelect: 'none',
                           }}
-                          ref={this.collectRef(index++)}
                           dangerouslySetInnerHTML={{
                             __html: ReactDOMServer.renderToStaticMarkup(
                               instance.element,
