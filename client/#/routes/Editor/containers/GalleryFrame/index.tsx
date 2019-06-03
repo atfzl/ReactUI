@@ -63,7 +63,7 @@ class GalleryFrame extends React.PureComponent<Props> {
               <div style={{ marginTop: 20, marginBottom: 32 }} key={i}>
                 <div
                   style={{
-                    fontFamily: 'IBM Plex Sans, sans-serif',
+                    fontFamily: 'sans-serif',
                     fontSize: 16,
                     marginLeft: -8,
                     fontWeight: 600,
@@ -88,7 +88,7 @@ class GalleryFrame extends React.PureComponent<Props> {
                       >
                         <div
                           style={{
-                            fontFamily: 'IBM Plex Sans, sans-serif',
+                            fontFamily: 'sans-serif',
                             fontSize: 16,
                             marginBottom: 5,
                             alignSelf: 'flex-end',
