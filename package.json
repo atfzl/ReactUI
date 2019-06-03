@@ -7,7 +7,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "concurrently --raw --kill-others 'cd server && yarn start' 'cd client && yarn start' 'cd showcase && yarn start'"
+    "start": "concurrently --raw --kill-others 'cd server && yarn start' 'cd client && yarn start' 'cd showcase && yarn start'",
+    "postinstall": "concurrently --raw 'cd server && yarn' 'cd client && yarn' 'cd showcase && yarn'"
   },
   "devDependencies": {
     "concurrently": "^4.1.0"
