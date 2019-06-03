@@ -1,5 +1,4 @@
 import { TagCursor } from '#/common/models/file';
-import Ref from '#/components/Ref';
 import * as React from 'react';
 import {
   DragSource,
@@ -10,6 +9,12 @@ import {
 } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import * as voidElements from 'void-elements';
+
+class EmptyRef extends React.Component {
+  public render() {
+    return this.props.children;
+  }
+}
 
 const dragSource = {
   beginDrag(props: Props) {
@@ -27,7 +32,7 @@ const dragCollect = (
 
 const dropTarget = {
   drop(props: Props) {
-    if (!voidElements[props.nativeNode.tagName.toLowerCase()]) {
+    if (!voidElements[props.tagName.toLowerCase()]) {
       props.onDrop({ source: props.sourceItem.cursor, target: props.cursor });
     }
   },
@@ -42,22 +47,24 @@ type DropCollectProps = ReturnType<typeof dropCollect>;
 
 interface Props extends DragCollectProps, DropCollectProps {
   cursor: TagCursor;
-  nativeNode: HTMLElement;
+  tagName: string;
   onDrop: (p: { source: TagCursor; target: TagCursor }) => void;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 class Dragify extends React.PureComponent<Props> {
   public render() {
     return (
-      <Ref
+      <EmptyRef
         ref={(instance: any) => {
           const node = findDOMNode(instance);
+
           this.props.connectDragSource(node as any);
           this.props.connectDropTarget(node as any);
         }}
       >
         {this.props.children}
-      </Ref>
+      </EmptyRef>
     );
   }
 }

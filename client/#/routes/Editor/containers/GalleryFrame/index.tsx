@@ -72,60 +72,64 @@ class GalleryFrame extends React.PureComponent<Props> {
                   {component.title}
                 </div>
                 <div>
-                  {component.instances.map((instance, j) => (
-                    <div
-                      style={{
-                        marginBottom: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-start',
-                      }}
-                      key={j}
-                    >
+                  {component.instances.map((instance, j) => {
+                    const cursor = (instance.element as any)._source;
+                    const id = getIdFromCursor(cursor);
+
+                    return (
                       <div
                         style={{
-                          fontFamily: 'IBM Plex Sans, sans-serif',
-                          fontSize: 16,
-                          marginBottom: 5,
-                          alignSelf: 'flex-end',
-                          borderBottom:
-                            selectedComponent[0] === i &&
-                            selectedComponent[1] === j
-                              ? `2px solid ${theme.colors.primary}`
-                              : '2px solid transparent',
-                          cursor: 'pointer',
+                          marginBottom: 8,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
                         }}
-                        onClick={() => setSelectedComponent([i, j])}
-                      >
-                        {instance.title}
-                      </div>
-                      <AutoScale
-                        maxWidth={width - ONE_SIDE_PADDING * 2}
-                        childRef={element =>
-                          setInstanceWrapper({
-                            index: index++,
-                            element,
-                            id: getIdFromCursor(
-                              (instance.element as any)._source,
-                            ),
-                          })
-                        }
+                        key={j}
                       >
                         <div
                           style={{
-                            display: 'inline-block',
-                            border: '1px solid rgba(0, 0, 0, 0.3)',
-                            userSelect: 'none',
+                            fontFamily: 'IBM Plex Sans, sans-serif',
+                            fontSize: 16,
+                            marginBottom: 5,
+                            alignSelf: 'flex-end',
+                            borderBottom:
+                              selectedComponent[0] === i &&
+                              selectedComponent[1] === j
+                                ? `2px solid ${theme.colors.primary}`
+                                : '2px solid transparent',
+                            cursor: 'pointer',
                           }}
-                          dangerouslySetInnerHTML={{
-                            __html: ReactDOMServer.renderToStaticMarkup(
-                              instance.element,
-                            ),
-                          }}
-                        />
-                      </AutoScale>
-                    </div>
-                  ))}
+                          onClick={() => setSelectedComponent([i, j])}
+                        >
+                          {instance.title}
+                        </div>
+                        <AutoScale
+                          maxWidth={width - ONE_SIDE_PADDING * 2}
+                          childRef={element =>
+                            setInstanceWrapper({
+                              index: index++,
+                              element,
+                              id,
+                              cursor,
+                            })
+                          }
+                        >
+                          <div
+                            style={{
+                              display: 'inline-block',
+                              border: '1px solid rgba(0, 0, 0, 0.3)',
+                              userSelect: 'none',
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: ReactDOMServer.renderToStaticMarkup(
+                                instance.element,
+                              ),
+                            }}
+                          />
+                        </AutoScale>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ))}

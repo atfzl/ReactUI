@@ -45,7 +45,7 @@ class LeftPanel extends React.Component<Props> {
           return (
             <Dragify
               key={id}
-              nativeNode={nativeNode}
+              tagName={nativeNode.tagName}
               cursor={source}
               onDrop={handleDrop}
             >

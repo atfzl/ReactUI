@@ -1,3 +1,4 @@
+import { TagCursor } from '#/common/models/file';
 import { Workspace } from '#/models/Editor';
 import { immerCase } from '#/utils';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
@@ -13,6 +14,7 @@ export interface ReducerState {
   instanceWrappers: Array<{
     element: HTMLElement | null | undefined;
     id: string;
+    cursor: TagCursor;
   }>;
 }
 
@@ -44,6 +46,7 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
       state.instanceWrappers[payload.index] = {
         element: payload.element,
         id: payload.id,
+        cursor: payload.cursor,
       };
     }),
   )
