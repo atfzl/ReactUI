@@ -36,8 +36,6 @@ class Isolate extends React.Component<Props, State> {
     resizeObserver.observe(element);
 
     this.props.onReady({ doc: this.document!, element });
-
-    this.document!.body.style.margin = '0';
   };
 
   private onFrameLoad(window: Window, document: Document) {
@@ -66,7 +64,7 @@ class Isolate extends React.Component<Props, State> {
         ${this.props.injectCSS || ''}
         </style>
         </head>
-        <body>
+        <body style="margin:0;">
           <div></div>
         </body>
       </html>
