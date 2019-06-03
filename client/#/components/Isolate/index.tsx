@@ -3,7 +3,7 @@ import Frame, { FrameContextConsumer } from 'react-frame-component';
 
 interface Props {
   onReady: (p: { doc: Document; element: HTMLDivElement }) => void;
-  style?: React.CSSProperties;
+  frameStyle?: React.CSSProperties;
   wrapperStyle?: React.CSSProperties;
   injectCSS?: string;
 }
@@ -13,7 +13,7 @@ interface State {
 }
 
 class Isolate extends React.Component<Props, State> {
-  public static defaultProps = { style: {}, wrapperStyle: {} };
+  public static defaultProps = { frameStyle: {}, wrapperStyle: {} };
 
   public state: State = {};
 
@@ -52,7 +52,8 @@ class Isolate extends React.Component<Props, State> {
         height: refRect ? refRect.height : '100%',
         border: 'none',
         display: 'block',
-        ...this.props.style,
+        overflow: 'hidden',
+        ...this.props.frameStyle,
       },
     };
 
@@ -64,7 +65,7 @@ class Isolate extends React.Component<Props, State> {
         ${this.props.injectCSS || ''}
         </style>
         </head>
-        <body style="margin:0;">
+        <body style="margin:0; overflow:hidden;">
           <div></div>
         </body>
       </html>
@@ -93,9 +94,7 @@ class Isolate extends React.Component<Props, State> {
         })()}
         <div
           style={{
-            ...{
-              display: 'table',
-            },
+            display: 'table',
             ...this.props.wrapperStyle,
           }}
           ref={this.getElementRef}

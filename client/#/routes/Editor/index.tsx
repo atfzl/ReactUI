@@ -42,7 +42,7 @@ const Right = styled.div`
 `;
 
 const RightBodyWrapper = styled.div`
-  overflow-y: auto;
+  overflow-y: hidden;
   flex: 1;
 `;
 

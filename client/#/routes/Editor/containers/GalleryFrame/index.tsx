@@ -42,8 +42,7 @@ class GalleryFrame extends React.PureComponent<Props> {
     return (
       <Isolate
         onReady={this.onFrameReady}
-        style={{
-          height: '100%',
+        frameStyle={{
           width,
         }}
         wrapperStyle={{

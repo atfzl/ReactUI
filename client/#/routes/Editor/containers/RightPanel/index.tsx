@@ -5,6 +5,7 @@ import * as React from 'react';
 const Container = styled.div`
   background-color: ${props => props.theme.colors.background[100]};
   height: 100vh;
+  overflow-y: auto;
 `;
 
 interface State {
