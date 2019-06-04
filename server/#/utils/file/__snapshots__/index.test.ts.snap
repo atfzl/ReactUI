@@ -6,7 +6,7 @@ exports[`getPathRelativeToTarget should resolve ./ paths 1`] = `"./target1"`;
 
 exports[`getPathRelativeToTarget should throw for invalid paths 1`] = `
 Object {
-  "data": [Error: Cannot find module './targe1' from '/Users/I0459/scratch/personal/ellipsoid/server/#/utils/file/__fixtures__'],
+  "data": [Error: Cannot find module './targe1' from '/Users/I0459/scratch/personal/reactui/server/#/utils/file/__fixtures__'],
   "level": 0,
   "message": "Could not get path relative to target",
   "stack": undefined,
@@ -17,7 +17,7 @@ exports[`readFileToString$ should not work with something which is not a file 1`
 Object {
   "data": Object {
     "error": "{\\"errno\\":-21,\\"code\\":\\"EISDIR\\",\\"syscall\\":\\"read\\"}",
-    "fileName": "/Users/I0459/scratch/personal/ellipsoid/server/#/utils/file",
+    "fileName": "/Users/I0459/scratch/personal/reactui/server/#/utils/file",
   },
   "level": 0,
   "message": "Cannot read file",

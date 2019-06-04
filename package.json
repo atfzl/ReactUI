@@ -1,8 +1,8 @@
 {
-  "name": "ellipsoid",
+  "name": "reactui",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:atfzl/ellipsoid.git",
+  "repository": "git@github.com:atfzl/ReactUI.git",
   "author": "Atif Afzal <atif5801@gmail.com>",
   "license": "MIT",
   "private": true,

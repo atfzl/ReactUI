@@ -1,7 +1,7 @@
 import { TagCursor } from '../models/file';
 import { mainToRendererRequest } from '../utils/ipcCreator';
 
-export const isReactElementIdentifier = '$$__ELLIPSOID__IS_REACT_ELEMENT';
+export const isReactElementIdentifier = '$$__REACTUI__IS_REACT_ELEMENT';
 
 interface Payload extends TagCursor {}
 

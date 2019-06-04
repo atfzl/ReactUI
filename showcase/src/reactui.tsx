@@ -90,7 +90,7 @@ export const components = [
   },
 ];
 
-const event = new CustomEvent('ellipsoid', {
+const event = new CustomEvent('reactui', {
   detail: {
     components,
   },

@@ -51,7 +51,7 @@ Object {
   "data": Object {
     "cursor": Object {
       "columnNumber": 7,
-      "fileName": "/Users/I0459/scratch/personal/ellipsoid/server/#/services/deleteElement/__fixtures__/1.tsx",
+      "fileName": "/Users/I0459/scratch/personal/reactui/server/#/services/deleteElement/__fixtures__/1.tsx",
       "lineNumber": 3,
     },
     "parent": Fault {
@@ -119,7 +119,7 @@ Object {
             "pos": 0,
             "transformFlags": 0,
           },
-          "fileName": "/Users/I0459/scratch/personal/ellipsoid/server/#/services/deleteElement/__fixtures__/1.tsx",
+          "fileName": "/Users/I0459/scratch/personal/reactui/server/#/services/deleteElement/__fixtures__/1.tsx",
           "flags": 0,
           "hasNoDefaultLib": false,
           "identifierCount": 7,

@@ -5,7 +5,7 @@ import { pluck } from 'rxjs/operators';
 
 export const Events = {
   onClientBuild: (() => {
-    const eventName = 'ellipsoid';
+    const eventName = 'reactui';
 
     return {
       subscriberBuilder: (doc: Document) =>
@@ -15,7 +15,7 @@ export const Events = {
     };
   })(),
   onCommitFiberRoot: (() => {
-    const eventName = 'ellipsoid-ON_COMMIT_FIBER_ROOT';
+    const eventName = 'reactui-ON_COMMIT_FIBER_ROOT';
 
     return {
       subscriberBuilder: (doc: Document) =>

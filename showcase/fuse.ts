@@ -15,7 +15,7 @@ fuse.dev({ port: 9889 });
 
 fuse
   .bundle('app')
-  .instructions('> ellipsoid.tsx')
+  .instructions('> reactui.tsx')
   .hmr()
   .watch('src/**');
 

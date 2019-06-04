@@ -1,5 +1,5 @@
 {
-  "name": "ellipsoid-server",
+  "name": "reactui-server",
   "version": "1.0.0",
   "main": "dist/server.js",
   "author": "atif5801@gmail.com",
