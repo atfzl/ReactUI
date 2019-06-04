@@ -70,8 +70,9 @@ const epics: Epic[] = [
 
               const cursor = nodeMap[selected!].fiberNode._debugSource!;
 
-              return DeleteElementApi.callMain(cursor).pipe(
-                switchMap(() => EMPTY),
+              return concat(
+                of(actions.setLoading(true)),
+                DeleteElementApi.callMain(cursor).pipe(switchMap(() => EMPTY)),
               );
             }),
           ),
@@ -118,7 +119,7 @@ const epics: Epic[] = [
             }),
           ),
           onClientBuild$.pipe(
-            map(workspace => {
+            switchMap(workspace => {
               const { selectedComponent } = state$.value.gallery;
 
               const selectedElement =
@@ -128,7 +129,10 @@ const epics: Epic[] = [
 
               ReactDOM.render(selectedElement, element);
 
-              return actions.setWorkspace(workspace);
+              return merge(
+                of(actions.setWorkspace(workspace)),
+                of(actions.setLoading(false)),
+              );
             }),
           ),
           onCommitFiberRoot$.pipe(
@@ -169,14 +173,20 @@ const epics: Epic[] = [
     action$.pipe(
       filter(actions.launchEditorForCursor.match),
       switchMap(({ payload }) =>
-        LaunchEditorApi.callMain(payload).pipe(switchMap(() => EMPTY)),
+        concat(
+          of(actions.setLoading(true)),
+          LaunchEditorApi.callMain(payload).pipe(switchMap(() => EMPTY)),
+        ),
       ),
     ),
   action$ =>
     action$.pipe(
       filter(actions.handleDrop.match),
       switchMap(({ payload }) =>
-        CopyElementApi.callMain(payload).pipe(switchMap(() => EMPTY)),
+        concat(
+          of(actions.setLoading(true)),
+          CopyElementApi.callMain(payload).pipe(switchMap(() => EMPTY)),
+        ),
       ),
     ),
   (action$, state$) =>

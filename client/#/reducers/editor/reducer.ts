@@ -23,12 +23,14 @@ export interface ReducerState {
     hoverSource?: OverlayEventSource;
     copied?: string;
   };
+  loading: boolean;
 }
 
 const InitialState: ReducerState = {
   zoomLevel: EditorConstants.DEFAULT_ZOOM,
   nodeMap: {},
   overlay: {},
+  loading: false,
 };
 
 const reducer = reducerWithInitialState<ReducerState>(InitialState)
@@ -78,6 +80,11 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
   .withHandling(
     immerCase(actions.setCopiedOverlay, (state, payload) => {
       state.overlay.copied = payload;
+    }),
+  )
+  .withHandling(
+    immerCase(actions.setLoading, (state, payload) => {
+      state.loading = !!payload;
     }),
   )
   .build();

@@ -1,6 +1,8 @@
 import * as loadingSVG from '#/images/loading-cylon.svg';
+import { RootState } from '#/reducers';
 import styled from '#/styled';
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 const Container = styled.div`
   display: flex;
@@ -13,8 +15,16 @@ const Loader = styled.img`
   color: ${props => props.theme.palette.gray80};
 `;
 
-class ProgressIndicator extends React.PureComponent {
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+interface Props extends StateProps {}
+
+class ProgressIndicator extends React.PureComponent<Props> {
   public render() {
+    if (!this.props.loading) {
+      return null;
+    }
+
     return (
       <Container>
         <Loader src={loadingSVG} />
@@ -23,4 +33,8 @@ class ProgressIndicator extends React.PureComponent {
   }
 }
 
-export default ProgressIndicator;
+const mapStateToProps = (state: RootState) => ({
+  loading: state.editor.loading,
+});
+
+export default connect(mapStateToProps)(ProgressIndicator);

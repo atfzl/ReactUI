@@ -30,6 +30,7 @@ const actions = {
     'handleDrop',
   ),
   setCopiedOverlay: actionCreator<string | undefined>('setCopiedOverlay'),
+  setLoading: actionCreator<boolean | undefined>('setLoading'),
 };
 
 export default actions;
