@@ -14,6 +14,7 @@ import * as ReactDOM from 'react-dom';
 import { combineEpics, StateObservable } from 'redux-observable';
 import { concat, EMPTY, fromEvent, merge, of } from 'rxjs';
 import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import * as voidElements from 'void-elements';
 import actions from './actions';
 import { NodeMap } from './interfaces';
 
@@ -100,6 +101,12 @@ const epics: Epic[] = [
                   overlay: { selected, copied },
                 },
               } = state$.value;
+
+              const selectedNode = nodeMap[selected!].nativeNode;
+
+              if (voidElements[selectedNode.tagName.toLowerCase()]) {
+                return EMPTY;
+              }
 
               const source = nodeMap[copied!].fiberNode._debugSource!;
               const target = nodeMap[selected!].fiberNode._debugSource!;
