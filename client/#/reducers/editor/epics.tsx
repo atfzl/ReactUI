@@ -5,17 +5,38 @@ import GetRuntimeProps, {
 } from '#/common/api/GetRuntimeProps';
 import LaunchEditorApi from '#/common/api/LaunchEditor';
 import { Events } from '#/models/Events';
-import { Epic } from '#/reducers';
+import { Epic, RootState } from '#/reducers';
 import { executeScript } from '#/utils';
 import { getIdFromCursor, getTitle, walkTree } from '#/utils/fiberNode';
 import * as _ from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { combineEpics } from 'redux-observable';
-import { EMPTY, fromEvent, merge, of } from 'rxjs';
+import { combineEpics, StateObservable } from 'redux-observable';
+import { concat, EMPTY, fromEvent, merge, of } from 'rxjs';
 import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import actions from './actions';
 import { NodeMap } from './interfaces';
+
+const someOverlaySelected = (state$: StateObservable<RootState>) => () => {
+  const {
+    editor: {
+      nodeMap,
+      overlay: { selected },
+    },
+  } = state$.value;
+
+  return !!selected && !!nodeMap[selected];
+};
+
+const someOverlayCopied = (state$: StateObservable<RootState>) => () => {
+  const {
+    editor: {
+      overlay: { copied },
+    },
+  } = state$.value;
+
+  return !!copied;
+};
 
 const epics: Epic[] = [
   (action$, state$) =>
@@ -37,16 +58,7 @@ const epics: Epic[] = [
                 e.metaKey &&
                 !e.repeat,
             ),
-            filter(() => {
-              const {
-                editor: {
-                  nodeMap,
-                  overlay: { selected },
-                },
-              } = state$.value;
-
-              return !!selected && !!nodeMap[selected];
-            }),
+            filter(someOverlaySelected(state$)),
             mergeMap(() => {
               const {
                 editor: {
@@ -59,6 +71,42 @@ const epics: Epic[] = [
 
               return DeleteElementApi.callMain(cursor).pipe(
                 switchMap(() => EMPTY),
+              );
+            }),
+          ),
+          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+            filter(e => e.key === 'c' && e.metaKey && !e.repeat),
+            filter(someOverlaySelected(state$)),
+            map(() => {
+              const {
+                editor: {
+                  overlay: { selected },
+                },
+              } = state$.value;
+
+              return actions.setCopiedOverlay(selected);
+            }),
+          ),
+          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+            filter(e => e.key === 'v' && e.metaKey && !e.repeat),
+            filter(
+              () =>
+                someOverlaySelected(state$)() && someOverlayCopied(state$)(),
+            ),
+            mergeMap(() => {
+              const {
+                editor: {
+                  nodeMap,
+                  overlay: { selected, copied },
+                },
+              } = state$.value;
+
+              const source = nodeMap[copied!].fiberNode._debugSource!;
+              const target = nodeMap[selected!].fiberNode._debugSource!;
+
+              return concat(
+                of(actions.handleDrop({ source, target })),
+                of(actions.setCopiedOverlay(undefined)),
               );
             }),
           ),

@@ -21,6 +21,7 @@ export interface ReducerState {
     selectSource?: OverlayEventSource;
     hovered?: string;
     hoverSource?: OverlayEventSource;
+    copied?: string;
   };
 }
 
@@ -72,6 +73,11 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
     immerCase(actions.setHoveredOverlay, (state, payload) => {
       state.overlay.hovered = payload && payload.id;
       state.overlay.hoverSource = payload && payload.source;
+    }),
+  )
+  .withHandling(
+    immerCase(actions.setCopiedOverlay, (state, payload) => {
+      state.overlay.copied = payload;
     }),
   )
   .build();

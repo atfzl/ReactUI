@@ -1,11 +1,18 @@
 import styled from '#/styled';
 import * as React from 'react';
 
-const Container = styled.div<{ selected?: boolean; hovered?: boolean }>`
+const Container = styled.div<{
+  selected?: boolean;
+  hovered?: boolean;
+  secondarySelected?: boolean;
+}>`
   position: absolute;
 
   ${props =>
     props.selected && `border: 1px solid ${props.theme.colors.primary};`}
+  ${props =>
+    props.secondarySelected &&
+    `border: 1px dashed ${props.theme.colors.accent};`}
   ${props => props.hovered && `outline: 1px solid ${props.theme.colors.accent}`}
 `;
 
@@ -13,6 +20,7 @@ interface Props {
   id: string;
   children: HTMLElement;
   selected?: boolean;
+  secondarySelected?: boolean;
   hovered?: boolean;
   onPrimaryClick?: (id?: string) => void;
   onHover?: (id?: string) => void;
@@ -53,7 +61,7 @@ class Overlay extends React.Component<Props> {
   }
 
   public render() {
-    const { children, selected, hovered } = this.props;
+    const { children, selected, hovered, secondarySelected } = this.props;
 
     const rect = children.getBoundingClientRect();
 
@@ -72,6 +80,7 @@ class Overlay extends React.Component<Props> {
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         selected={selected}
+        secondarySelected={secondarySelected}
         hovered={hovered}
         style={style}
       />

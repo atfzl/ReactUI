@@ -24,6 +24,7 @@ class LeftPanel extends React.Component<Props> {
       nodeMap,
       selectedOverlay,
       hoveredOverlay,
+      copiedOverlay,
       setSelectedOverlay,
       setHoveredOverlay,
       hoverOverlaySource,
@@ -51,6 +52,7 @@ class LeftPanel extends React.Component<Props> {
             >
               <TreeRow
                 selected={id === selectedOverlay}
+                secondarySelected={id === copiedOverlay}
                 hovered={id === hoveredOverlay}
                 depth={depth}
                 id={id}
@@ -73,6 +75,7 @@ const mapStateToProps = (state: RootState) => ({
   nodeMap: state.editor.nodeMap,
   selectedOverlay: state.editor.overlay.selected,
   hoveredOverlay: state.editor.overlay.hovered,
+  copiedOverlay: state.editor.overlay.copied,
   hoverOverlaySource: state.editor.overlay.hoverSource,
 });
 

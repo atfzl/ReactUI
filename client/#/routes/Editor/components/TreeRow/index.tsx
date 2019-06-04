@@ -1,18 +1,26 @@
 import styled from '#/styled';
 import * as React from 'react';
 
-const Container = styled.div<{ selected?: boolean; hovered?: boolean }>`
+const Container = styled.div<{
+  selected?: boolean;
+  hovered?: boolean;
+  secondarySelected?: boolean;
+}>`
   padding: 4px;
   font-size: 14px;
 
   border: 1px solid transparent;
   ${props =>
     props.selected && `border: 1px solid ${props.theme.colors.primary};`}
+  ${props =>
+    props.secondarySelected &&
+    `border: 1px dashed ${props.theme.colors.accent};`}
   ${props => props.hovered && `outline: 1px solid ${props.theme.colors.accent}`}
 `;
 
 interface Props {
   selected?: boolean;
+  secondarySelected?: boolean;
   hovered?: boolean;
   depth: number;
   id: string;
@@ -56,7 +64,7 @@ class TreeRow extends React.Component<Props> {
   }
 
   public render() {
-    const { selected, hovered, depth } = this.props;
+    const { selected, hovered, depth, secondarySelected } = this.props;
 
     return (
       <Container
@@ -65,6 +73,7 @@ class TreeRow extends React.Component<Props> {
         onMouseOut={this.onMouseOut}
         onClick={this.onClick}
         selected={selected}
+        secondarySelected={secondarySelected}
         hovered={hovered}
         style={{ marginLeft: depth * 3 }}
       >

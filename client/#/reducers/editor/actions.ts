@@ -29,6 +29,7 @@ const actions = {
   handleDrop: actionCreator<{ source: TagCursor; target: TagCursor }>(
     'handleDrop',
   ),
+  setCopiedOverlay: actionCreator<string | undefined>('setCopiedOverlay'),
 };
 
 export default actions;

@@ -16,6 +16,7 @@ class OverlayLayer extends React.Component<Props> {
       nodeMap,
       selectedOverlay,
       hoveredOverlay,
+      copiedOverlay,
       setSelectedOverlay,
       setHoveredOverlay,
       launchEditorForCursor,
@@ -41,6 +42,7 @@ class OverlayLayer extends React.Component<Props> {
           <Overlay
             id={id}
             selected={selectedOverlay === id}
+            secondarySelected={copiedOverlay === id}
             hovered={hoveredOverlay === id}
             onPrimaryClick={setSelectedOverlay}
             onSecondaryClick={() =>
@@ -60,6 +62,7 @@ const mapStateToProps = (state: RootState) => ({
   nodeMap: state.editor.nodeMap,
   selectedOverlay: state.editor.overlay.selected,
   hoveredOverlay: state.editor.overlay.hovered,
+  copiedOverlay: state.editor.overlay.copied,
 });
 
 const mapDispatchToProps = {
