@@ -1,4 +1,4 @@
-import { FuseBox, WebIndexPlugin } from 'fuse-box';
+import { FuseBox, SVGPlugin, WebIndexPlugin } from 'fuse-box';
 import { TypeChecker } from 'fuse-box-typechecker';
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -20,7 +20,7 @@ const fuse = FuseBox.init({
   alias: {
     '#': '~/#',
   },
-  plugins: [WebIndexPlugin({ template: './#/index.html' })],
+  plugins: [WebIndexPlugin({ template: './#/index.html' }), SVGPlugin()],
   shim: {
     electron: { exports: "global.require('electron')" },
   },

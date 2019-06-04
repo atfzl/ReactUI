@@ -12,3 +12,8 @@ declare module 'nanoid' {
   const f: (size?: number) => string;
   export = f;
 }
+
+declare module '*.svg' {
+  const x: string;
+  export = x;
+}
