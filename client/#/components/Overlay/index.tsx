@@ -6,8 +6,7 @@ const Container = styled.div<{ selected?: boolean; hovered?: boolean }>`
 
   ${props =>
     props.selected && `border: 1px solid ${props.theme.colors.primary};`}
-  ${props =>
-    props.hovered && `outline: 1px dashed ${props.theme.colors.accent}`}
+  ${props => props.hovered && `outline: 1px solid ${props.theme.colors.accent}`}
 `;
 
 interface Props {
