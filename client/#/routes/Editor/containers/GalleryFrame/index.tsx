@@ -53,9 +53,6 @@ class GalleryFrame extends React.PureComponent<Props> {
           paddingLeft: ONE_SIDE_PADDING,
           paddingRight: ONE_SIDE_PADDING,
         }}
-        injectCSS={
-          "@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600&display=swap');"
-        }
       >
         {workspace && (
           <div>

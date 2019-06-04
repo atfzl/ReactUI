@@ -5,7 +5,7 @@ interface Props {
   onReady: (p: { doc: Document; element: HTMLDivElement }) => void;
   frameStyle?: React.CSSProperties;
   wrapperStyle?: React.CSSProperties;
-  injectCSS?: string;
+  headContent?: string;
 }
 
 interface State {
@@ -61,9 +61,7 @@ class Isolate extends React.Component<Props, State> {
       <!DOCTYPE html>
       <html>
         <head>
-        <style type="text/css">
-        ${this.props.injectCSS || ''}
-        </style>
+        ${this.props.headContent || ''}
         </head>
         <body style="margin:0; overflow:hidden;">
           <div></div>
