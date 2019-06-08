@@ -12,6 +12,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 8px;
+  position: relative;
 `;
 
 const Header = () => (

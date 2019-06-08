@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  left: -16px;
-  position: relative;
+  left: calc(50% - 16px);
+  position: absolute;
 `;
 
 const Loader = styled.img`
