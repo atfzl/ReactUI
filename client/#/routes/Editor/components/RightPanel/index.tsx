@@ -1,7 +1,7 @@
-import GalleryFrame from '#/routes/Editor/containers/GalleryFrame';
-import GalleryOverlayLayer from '#/routes/Editor/containers/GalleryOverlayLayer';
+import Gallery from '#/routes/Editor/components/Gallery';
 import styled from '@emotion/styled';
 import * as React from 'react';
+import { Route } from 'react-router';
 
 const Container = styled.div`
   background-color: ${props => props.theme.colors.background[100]};
@@ -41,8 +41,11 @@ class RightPanel extends React.PureComponent<{}, State> {
       <Container ref={this.containerRef}>
         {this.state.containerRect && (
           <>
-            <GalleryFrame width={this.state.containerRect.width} />
-            <GalleryOverlayLayer />
+            <Route
+              exact
+              path="/"
+              render={() => <Gallery width={this.state.containerRect!.width} />}
+            />
           </>
         )}
       </Container>
