@@ -1,4 +1,5 @@
 import Gallery from '#/routes/Editor/components/Gallery';
+import StyleInspector from '#/routes/Editor/components/StyleInspector';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import { Route } from 'react-router';
@@ -43,9 +44,10 @@ class RightPanel extends React.PureComponent<{}, State> {
           <>
             <Route
               exact
-              path="/"
+              path="/gallery"
               render={() => <Gallery width={this.state.containerRect!.width} />}
             />
+            <Route exact path="/" component={StyleInspector} />
           </>
         )}
       </Container>
