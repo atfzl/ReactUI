@@ -44,10 +44,10 @@ class RightPanel extends React.PureComponent<{}, State> {
           <>
             <Route
               exact
-              path="/gallery"
+              path="/"
               render={() => <Gallery width={this.state.containerRect!.width} />}
             />
-            <Route exact path="/" component={StyleInspector} />
+            <Route exact path="/style" component={StyleInspector} />
           </>
         )}
       </Container>
