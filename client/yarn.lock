@@ -985,6 +985,11 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
+copy-dir@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/copy-dir/-/copy-dir-1.1.0.tgz#856f38609709b4f061a83254c3fb595b8bfb8974"
+  integrity sha512-eqHj1AMmS53QiLr8Xqcz754m6ljmG9eFnrzMhPGA1eKrsNYBGIKLktXz6JnzqNMSH/6Qksxgq8OMKsr0MPjKlw==
+
 core-js@^1.0.0:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"

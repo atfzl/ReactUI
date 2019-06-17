@@ -1,3 +1,5 @@
+// @ts-ignore
+import * as copyDir from 'copy-dir';
 import { FuseBox, SVGPlugin, WebIndexPlugin } from 'fuse-box';
 import { TypeChecker } from 'fuse-box-typechecker';
 
@@ -28,10 +30,18 @@ const fuse = FuseBox.init({
 
 fuse.dev({ port: 7979 });
 
+let runOnce = false;
+
 fuse
   .bundle('client')
   .instructions('> #/index.tsx')
   .hmr()
-  .watch('#/**');
+  .watch('#/**')
+  .completed(() => {
+    if (!runOnce) {
+      copyDir('./#/fonts', './dist/fonts', {}, () => null);
+      runOnce = true;
+    }
+  });
 
 fuse.run();

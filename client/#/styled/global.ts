@@ -1,7 +1,8 @@
 import { css } from '@emotion/core';
+import fontCss from './fonts';
 
 const globalCss = css`
-  @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600&display=swap');
+  ${fontCss}
 
   * {
     box-sizing: border-box;

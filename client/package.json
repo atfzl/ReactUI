@@ -5,7 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "ts-node fuse.ts"
+    "start": "yarn clean && ts-node fuse.ts",
+    "clean": "rm -rf dist && rm -rf .fusebox"
   },
   "devDependencies": {
     "@types/carbon__colors": "^0.0.0",
@@ -16,6 +17,7 @@
     "@types/react-redux": "^7.0.9",
     "@types/react-router-dom": "^4.3.3",
     "@types/void-elements": "^3.1.0",
+    "copy-dir": "^1.1.0",
     "fuse-box": "^3.7.1",
     "fuse-box-typechecker": "^2.12.0",
     "prettier": "^1.16.4",
