@@ -1,5 +1,6 @@
-import Icon from '#/components/Icon';
 import styled from '#/styled';
+import ZoomIn from '@material-ui/icons/ZoomIn';
+import ZoomOut from '@material-ui/icons/ZoomOut';
 import * as React from 'react';
 
 const Container = styled.div`
@@ -7,7 +8,9 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const ZoomIcon = styled(Icon)<{ disabled: boolean }>`
+const IconWrapper = styled.div<{ disabled: boolean }>`
+  display: flex;
+  align-items: center;
   cursor: pointer;
   user-select: none;
   ${props => props.disabled && `opacity: 0.3;`}
@@ -24,20 +27,20 @@ interface Props {
 
 const ZoomPanel: React.SFC<Props> = props => (
   <Container>
-    <ZoomIcon
+    <IconWrapper
       onClick={() => props.increaseZoom()}
       disabled={props.zoomInDisabled}
       title="Zoom In"
     >
-      zoom_in
-    </ZoomIcon>
-    <ZoomIcon
+      <ZoomIn />
+    </IconWrapper>
+    <IconWrapper
       onClick={() => props.decreaseZoom()}
       disabled={props.zoomOutDisabled}
       title="Zoom Out"
     >
-      zoom_out
-    </ZoomIcon>
+      <ZoomOut />
+    </IconWrapper>
   </Container>
 );
 

@@ -1,5 +1,7 @@
-import Icon from '#/components/Icon';
 import styled from '#/styled';
+import PhotoLibrary from '@material-ui/icons/PhotoLibrary';
+import Reorder from '@material-ui/icons/Reorder';
+import Style from '@material-ui/icons/Style';
 import * as React from 'react';
 
 const Container = styled.div`
@@ -20,7 +22,7 @@ const IconWrapper = styled.div`
   cursor: pointer;
 `;
 
-const StyledIcon = styled(Icon)<{ selected?: boolean }>`
+const PhotoLibraryIcon = styled(PhotoLibrary)<{ selected?: boolean }>`
   padding: 2px 2px 3px 2px;
   font-size: 22px;
   background-color: white;
@@ -39,18 +41,21 @@ const StyledIcon = styled(Icon)<{ selected?: boolean }>`
   }
 `;
 
+const StyleIcon = PhotoLibraryIcon.withComponent(Style);
+const ReorderIcon = PhotoLibraryIcon.withComponent(Reorder);
+
 class RightPanelIcons extends React.Component {
   public render() {
     return (
       <Container>
         <IconWrapper>
-          <StyledIcon selected>photo_library</StyledIcon>
+          <PhotoLibraryIcon selected />
         </IconWrapper>
         <IconWrapper>
-          <StyledIcon>style</StyledIcon>
+          <StyleIcon />
         </IconWrapper>
         <IconWrapper>
-          <StyledIcon>reorder</StyledIcon>
+          <ReorderIcon />
         </IconWrapper>
       </Container>
     );

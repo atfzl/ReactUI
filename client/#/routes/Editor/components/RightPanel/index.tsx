@@ -1,5 +1,6 @@
 import Gallery from '#/routes/Editor/components/Gallery';
 import StyleInspector from '#/routes/Editor/components/StyleInspector';
+import RightPanelIcons from '#/routes/Editor/containers/RightPanelIcons';
 import styled from '@emotion/styled';
 import * as React from 'react';
 import { Route } from 'react-router';
@@ -40,6 +41,7 @@ class RightPanel extends React.PureComponent<{}, State> {
   public render() {
     return (
       <Container ref={this.containerRef}>
+        <RightPanelIcons />
         {this.state.containerRect && (
           <>
             <Route
