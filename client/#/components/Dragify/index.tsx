@@ -1,4 +1,7 @@
 import { TagCursor } from '#/common/models/file';
+import { actions } from '#/reducers/editor';
+import store from '#/store';
+import { getIdFromCursor } from '#/utils/fiberNode';
 import * as React from 'react';
 import {
   DragSource,
@@ -6,6 +9,7 @@ import {
   DragSourceMonitor,
   DropTarget,
   DropTargetConnector,
+  DropTargetMonitor,
 } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import * as voidElements from 'void-elements';
@@ -30,11 +34,32 @@ const dragCollect = (
   sourceItem: monitor.getItem(),
 });
 
+const setOverlayDistinctUntilChanged = (() => {
+  let lastCursor: TagCursor | undefined;
+
+  return (cursor?: TagCursor) => {
+    if (lastCursor !== cursor) {
+      store.dispatch(
+        actions.setHoveredOverlay(
+          cursor
+            ? { id: getIdFromCursor(cursor), source: 'canvas' }
+            : undefined,
+        ),
+      );
+    }
+
+    lastCursor = cursor;
+  };
+})();
+
 const dropTarget = {
   drop(props: Props) {
     if (!voidElements[props.tagName.toLowerCase()]) {
       props.onDrop({ source: props.sourceItem.cursor, target: props.cursor });
     }
+  },
+  hover(props: Props, monitor: DropTargetMonitor) {
+    setOverlayDistinctUntilChanged(monitor.isOver() ? props.cursor : undefined);
   },
 };
 
