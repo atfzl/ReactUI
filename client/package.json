@@ -41,6 +41,7 @@
     "lodash": "^4.17.11",
     "nanoid": "^2.0.2",
     "react": "^16.8.6",
+    "react-contenteditable": "^3.2.6",
     "react-dnd": "^7.4.5",
     "react-dnd-html5-backend": "^7.4.4",
     "react-dom": "^16.8.6",

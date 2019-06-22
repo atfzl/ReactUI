@@ -42,12 +42,12 @@ class RightPanel extends React.PureComponent<{}, State> {
       <Container ref={this.containerRef}>
         {this.state.containerRect && (
           <>
+            <Route exact path="/" component={StyleInspector} />
             <Route
               exact
               path="/"
               render={() => <Gallery width={this.state.containerRect!.width} />}
             />
-            <Route exact path="/style" component={StyleInspector} />
           </>
         )}
       </Container>

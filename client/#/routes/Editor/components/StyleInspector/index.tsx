@@ -1,9 +1,27 @@
 import styled from '#/styled';
 import produce from 'immer';
 import * as React from 'react';
+import ContentEditable from 'react-contenteditable';
 
 const Container = styled.div`
-  padding: 8px;
+  font-family: Menlo, monospace;
+  font-size: 11px;
+  border: 1px solid lightgrey;
+  padding: 6px;
+  color: rgb(48, 57, 66);
+  background-color: white;
+`;
+
+const KeyInput = styled(ContentEditable)`
+  background-color: inherit;
+  border: none;
+  color: rgb(200, 0, 0);
+  margin-left: 18px;
+`;
+
+const ValueInput = styled(ContentEditable)`
+  background-color: inherit;
+  border: none;
 `;
 
 interface State {
@@ -28,6 +46,11 @@ class StyleInspector extends React.Component<{}, State> {
       value: React.createRef(),
     },
   ];
+
+  private getSpanRef = (type: 'key' | 'value', index: number) => {
+    return (this.rowsRef[index][type].current as any).el.current;
+  };
+
   private instructions: Array<() => void> = [];
 
   private handleFirstBraceClick = () => {
@@ -45,7 +68,23 @@ class StyleInspector extends React.Component<{}, State> {
           draft.styleRows[index] = { key: '', value: '' };
         }),
       );
+    } else {
+      const keySpan = this.getSpanRef('key', 0);
+
+      keySpan.focus();
     }
+  };
+
+  private handleOnChange = (type: 'key' | 'value', index: number) => (
+    evt: any,
+  ) => {
+    const str = evt.target.value;
+
+    this.setState(
+      produce((draft: State) => {
+        draft.styleRows[index][type] = str;
+      }),
+    );
   };
 
   public componentDidUpdate() {
@@ -56,43 +95,25 @@ class StyleInspector extends React.Component<{}, State> {
   public render() {
     return (
       <Container>
-        <div
-          style={{
-            fontFamily: 'monospace',
-            fontSize: 11,
-            border: '1px solid lightgrey',
-            padding: 6,
-            color: 'rgb(48, 57, 66)',
-          }}
-        >
-          <div onClick={this.handleFirstBraceClick}>styled {`{`}</div>
-          {this.state.styleRows.map((row, i) => (
-            <div key={i}>
-              <input
-                style={{
-                  fontFamily: 'monospace',
-                  backgroundColor: 'inherit',
-                  border: 'none',
-                  width: row.key.length * 7,
-                }}
-                ref={this.rowsRef[i].key}
-                value={row.key}
-              />
-              :
-              <input
-                style={{
-                  fontFamily: 'monospace',
-                  backgroundColor: 'inherit',
-                  border: 'none',
-                  width: row.key.length * 7,
-                }}
-                ref={this.rowsRef[i].value}
-                value={row.value}
-              />
-            </div>
-          ))}
-          <div>{`}`}</div>
-        </div>
+        <div onClick={this.handleFirstBraceClick}>styled {`{`}</div>
+        {this.state.styleRows.map((row, i) => (
+          <div key={i}>
+            <KeyInput
+              tagName="span"
+              html={row.key}
+              onChange={this.handleOnChange('key', i)}
+              {...{ ref: this.rowsRef[i].key } as any}
+            />
+            <span>{': '}</span>
+            <ValueInput
+              tagName="span"
+              html={row.value}
+              onChange={this.handleOnChange('value', i)}
+              {...{ ref: this.rowsRef[i].value } as any}
+            />
+          </div>
+        ))}
+        <div>{`}`}</div>
       </Container>
     );
   }
