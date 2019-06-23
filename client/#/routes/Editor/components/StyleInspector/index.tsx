@@ -96,21 +96,22 @@ class StyleInspector extends React.Component<{}, State> {
     return (
       <Container>
         <div onClick={this.handleFirstBraceClick}>styled {`{`}</div>
-        {this.state.styleRows.map((row, i) => (
+        {this.state.styleRows.map((rowData, i) => (
           <div key={i}>
             <KeyInput
               tagName="span"
-              html={row.key}
+              html={rowData.key}
               onChange={this.handleOnChange('key', i)}
               {...{ ref: this.rowsRef[i].key } as any}
             />
             <span>{': '}</span>
             <ValueInput
               tagName="span"
-              html={row.value}
+              html={rowData.value}
               onChange={this.handleOnChange('value', i)}
               {...{ ref: this.rowsRef[i].value } as any}
             />
+            <span>;</span>
           </div>
         ))}
         <div>{`}`}</div>
