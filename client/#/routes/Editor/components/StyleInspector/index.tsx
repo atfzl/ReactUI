@@ -12,7 +12,17 @@ const Container = styled.div`
   background-color: white;
 `;
 
+const inputStyles = `
+  cursor: text;
+  padding: 1px 2px;
+  &:focus {
+    outline: none;
+    box-shadow: -1px 2px 4px 0px rgba(0,0,0,0.5);
+  }
+`;
+
 const KeyInput = styled(ContentEditable)`
+  ${inputStyles}
   background-color: inherit;
   border: none;
   color: rgb(200, 0, 0);
@@ -20,6 +30,7 @@ const KeyInput = styled(ContentEditable)`
 `;
 
 const ValueInput = styled(ContentEditable)`
+  ${inputStyles}
   background-color: inherit;
   border: none;
 `;
@@ -37,6 +48,7 @@ class StyleInspector extends React.Component<{}, State> {
       },
     ],
   };
+
   private rowsRef: Array<{
     key: React.RefObject<HTMLInputElement>;
     value: React.RefObject<HTMLInputElement>;
@@ -46,6 +58,12 @@ class StyleInspector extends React.Component<{}, State> {
       value: React.createRef(),
     },
   ];
+
+  private onInputFocus = () => {
+    setTimeout(() => {
+      document.execCommand('selectAll');
+    }, 0);
+  };
 
   private getSpanRef = (type: 'key' | 'value', index: number) => {
     return (this.rowsRef[index][type].current as any).el.current;
@@ -102,14 +120,20 @@ class StyleInspector extends React.Component<{}, State> {
               tagName="span"
               html={rowData.key}
               onChange={this.handleOnChange('key', i)}
-              {...{ ref: this.rowsRef[i].key } as any}
+              {...{
+                ref: this.rowsRef[i].key,
+                onFocus: this.onInputFocus,
+              } as any}
             />
             <span>{': '}</span>
             <ValueInput
               tagName="span"
               html={rowData.value}
               onChange={this.handleOnChange('value', i)}
-              {...{ ref: this.rowsRef[i].value } as any}
+              {...{
+                ref: this.rowsRef[i].value,
+                onFocus: this.onInputFocus,
+              } as any}
             />
             <span>;</span>
           </div>
