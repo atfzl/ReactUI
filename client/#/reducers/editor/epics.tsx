@@ -130,7 +130,11 @@ const epics: Epic[] = [
                 },
               } = state$.value;
 
-              const { fiberNode } = nodeMap[selected!];
+              const { fiberNode, nativeNode } = nodeMap[selected!];
+
+              if (voidElements[nativeNode.tagName.toLowerCase()]) {
+                return EMPTY;
+              }
 
               return concat(
                 of(actions.setLoading(true)),
