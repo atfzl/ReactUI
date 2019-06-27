@@ -8,7 +8,7 @@ const appendIntrinsicTag = (tagName: string) =>
     findElementAtCursor$,
     switchMap(cursorNode =>
       pasteElement({
-        jsx: `<${tagName}>Foobar</${tagName}>`,
+        jsx: `<${tagName}># # # #</${tagName}>`,
         insertions: {},
         targetCursorNode: cursorNode,
       }),
