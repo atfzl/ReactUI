@@ -198,7 +198,9 @@ const epics: Epic[] = [
       switchMap(({ payload }) =>
         concat(
           of(actions.setLoading(true)),
-          LaunchEditorApi.callMain(payload).pipe(switchMap(() => EMPTY)),
+          LaunchEditorApi.callMain(payload).pipe(
+            switchMap(() => of(actions.setLoading(false))),
+          ),
         ),
       ),
     ),
