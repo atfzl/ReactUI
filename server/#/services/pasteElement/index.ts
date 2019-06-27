@@ -8,9 +8,9 @@ const pasteElement = (opts: {
   jsx: string;
   insertions: { imports?: string[]; declarations?: string[] };
   targetCursorNode: ts.JsxElement | ts.JsxSelfClosingElement;
-  targetFileNode: ts.SourceFile;
 }) => {
-  const { jsx, insertions, targetCursorNode, targetFileNode } = opts;
+  const { jsx, insertions, targetCursorNode } = opts;
+  const targetFileNode = targetCursorNode.getSourceFile();
 
   const rb = new ReplacementBuilder(targetFileNode);
 

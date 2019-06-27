@@ -1,3 +1,4 @@
+import AppendIntrinsicTagApi from '#/common/api/AppendIntrinsicTag';
 import CopyElementApi from '#/common/api/CopyElement';
 import DeleteElementApi from '#/common/api/DeleteElement';
 import GetRuntimeProps, {
@@ -115,6 +116,28 @@ const epics: Epic[] = [
               return concat(
                 of(actions.handleDrop({ source, target })),
                 of(actions.setCopiedOverlay(undefined)),
+              );
+            }),
+          ),
+          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+            filter(e => e.key === 'Enter' && !e.repeat),
+            filter(someOverlaySelected(state$)),
+            switchMap(() => {
+              const {
+                editor: {
+                  overlay: { selected },
+                  nodeMap,
+                },
+              } = state$.value;
+
+              const { fiberNode } = nodeMap[selected!];
+
+              return concat(
+                of(actions.setLoading(true)),
+                AppendIntrinsicTagApi.callMain({
+                  cursor: fiberNode._debugSource!,
+                  tagName: 'div',
+                }).pipe(switchMap(() => EMPTY)),
               );
             }),
           ),
