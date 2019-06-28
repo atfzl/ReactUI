@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 const Routes = () => {
   return (
     <>
-      <Route exact path="/" component={Editor} />
+      <Route path="/" component={Editor} />
     </>
   );
 };

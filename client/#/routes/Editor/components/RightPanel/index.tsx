@@ -47,8 +47,8 @@ class RightPanel extends React.PureComponent<{}, State> {
               render={p => {
                 if (!p.match.isExact) {
                   return (
-                    <div>
-                      <Gallery width={this.state.containerRect!.width} />;
+                    <div style={{ display: 'none' }}>
+                      <Gallery width={this.state.containerRect!.width} />
                     </div>
                   );
                 }
@@ -56,7 +56,7 @@ class RightPanel extends React.PureComponent<{}, State> {
                 return <Gallery width={this.state.containerRect!.width} />;
               }}
             />
-            <Route exact path="/style" component={StyleInspector} />
+            <Route path="/style" component={StyleInspector} />
           </>
         )}
       </Container>

@@ -1,5 +1,6 @@
 import ComponentInstanceName from '#/routes/Editor/containers/ComponentInstanceName';
 import ProgressIndicator from '#/routes/Editor/containers/ProgressIndicator';
+import RightPanelIcons from '#/routes/Editor/containers/RightPanelIcons';
 import ZoomPanelContainer from '#/routes/Editor/containers/ZoomPanelContainer';
 import styled from '#/styled';
 import * as React from 'react';
@@ -20,6 +21,7 @@ const Header = () => (
     <ComponentInstanceName />
     <ProgressIndicator />
     <ZoomPanelContainer />
+    <RightPanelIcons />
   </Container>
 );
 

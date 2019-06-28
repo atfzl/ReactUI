@@ -1,19 +1,20 @@
 import styled from '#/styled';
 import PhotoLibrary from '@material-ui/icons/PhotoLibrary';
-import Reorder from '@material-ui/icons/Reorder';
 import Style from '@material-ui/icons/Style';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   position: absolute;
   right: 0;
-  top: 0;
+  top: 32px;
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid ${props => props.theme.colors.border[50]};
+  z-index: 1;
 `;
 
-const IconWrapper = styled.div`
+const IconWrapper = styled(Link)`
   border-top: 1px solid ${props => props.theme.colors.border[50]};
   border-left: 2px solid ${props => props.theme.colors.border[50]};
   border-right: 1px solid ${props => props.theme.colors.border[50]};
@@ -42,20 +43,18 @@ const PhotoLibraryIcon = styled(PhotoLibrary)<{ selected?: boolean }>`
 `;
 
 const StyleIcon = PhotoLibraryIcon.withComponent(Style);
-const ReorderIcon = PhotoLibraryIcon.withComponent(Reorder);
 
 class RightPanelIcons extends React.Component {
   public render() {
+    const locationHash = window.location.hash;
+
     return (
       <Container>
-        <IconWrapper>
-          <PhotoLibraryIcon selected />
+        <IconWrapper to="/">
+          <PhotoLibraryIcon selected={locationHash === '#/'} />
         </IconWrapper>
-        <IconWrapper>
-          <StyleIcon />
-        </IconWrapper>
-        <IconWrapper>
-          <ReorderIcon />
+        <IconWrapper to="/style">
+          <StyleIcon selected={locationHash === '#/style'} />
         </IconWrapper>
       </Container>
     );
