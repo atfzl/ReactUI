@@ -1,7 +1,7 @@
 import { EditorConstants } from '#/constants/Editor';
 import { Workspace } from '#/models/Editor';
 import { FiberNode, Renderer } from '#/models/React';
-import { immerCase } from '#/utils';
+import { immerCase, parseStyles } from '#/utils';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import actions from './actions';
 import { NodeMap, OverlayEventSource } from './interfaces';
@@ -24,6 +24,7 @@ export interface ReducerState {
     copied?: string;
   };
   loading: boolean;
+  selectedStyle: Array<{ key: string; value: string }>;
 }
 
 const InitialState: ReducerState = {
@@ -31,6 +32,7 @@ const InitialState: ReducerState = {
   nodeMap: {},
   overlay: {},
   loading: false,
+  selectedStyle: [],
 };
 
 const reducer = reducerWithInitialState<ReducerState>(InitialState)
@@ -69,6 +71,18 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
     immerCase(actions.setSelectedOverlay, (state, payload) => {
       state.overlay.selected = payload && payload.id;
       state.overlay.selectSource = payload && payload.source;
+
+      if (payload) {
+        const { fiberNode } = state.nodeMap[payload.id];
+
+        const { rules } = (fiberNode as any).type.componentStyle;
+
+        const style = rules.join('');
+
+        state.selectedStyle = parseStyles(style);
+      } else {
+        state.selectedStyle = [];
+      }
     }),
   )
   .withHandling(

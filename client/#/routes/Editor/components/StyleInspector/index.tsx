@@ -1,8 +1,10 @@
+import { RootState } from '#/reducers';
 import styled from '#/styled';
 import { css } from 'emotion';
 import produce from 'immer';
 import * as React from 'react';
 import ContentEditable from 'react-contenteditable';
+import { connect } from 'react-redux';
 
 const Container = styled.div`
   font-family: Menlo, monospace;
@@ -36,11 +38,29 @@ const ValueInputStyle = css`
   border: none;
 `;
 
+interface Props {
+  styles: State['styleRows'];
+}
+
 interface State {
   styleRows: Array<{ key: string; value: string }>;
 }
 
-class StyleInspector extends React.Component<{}, State> {
+class StyleInspector extends React.PureComponent<Props, State> {
+  public componentWillReceiveProps(props: Props) {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < props.styles.length; ++i) {
+      if (!this.rowsRef[i]) {
+        this.rowsRef[i] = {
+          key: React.createRef<HTMLSpanElement>(),
+          value: React.createRef<HTMLSpanElement>(),
+        };
+      }
+    }
+
+    this.setState({ styleRows: props.styles });
+  }
+
   public state: State = {
     styleRows: [
       // {
@@ -55,8 +75,8 @@ class StyleInspector extends React.Component<{}, State> {
   };
 
   private rowsRef: Array<{
-    key: React.RefObject<HTMLInputElement>;
-    value: React.RefObject<HTMLInputElement>;
+    key: React.RefObject<HTMLSpanElement>;
+    value: React.RefObject<HTMLSpanElement>;
   }> = [
     // {
     //   key: React.createRef(),
@@ -75,7 +95,7 @@ class StyleInspector extends React.Component<{}, State> {
   };
 
   private getSpanRef = (type: 'key' | 'value', index: number) => {
-    return (this.rowsRef[index][type].current as any).el.current;
+    return this.rowsRef[index][type].current;
   };
 
   private createRow = (index: number) => {
@@ -101,7 +121,9 @@ class StyleInspector extends React.Component<{}, State> {
     } else {
       const keySpan = this.getSpanRef('key', 0);
 
-      keySpan.focus();
+      if (keySpan) {
+        keySpan.focus();
+      }
     }
   };
 
@@ -167,4 +189,8 @@ class StyleInspector extends React.Component<{}, State> {
   }
 }
 
-export default StyleInspector;
+const mapStateToProps = (state: RootState) => ({
+  styles: state.editor.selectedStyle,
+});
+
+export default connect(mapStateToProps)(StyleInspector);

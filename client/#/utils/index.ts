@@ -17,3 +17,17 @@ export function executeScript(url: string, doc: Document = document) {
   script.src = url;
   doc.body.appendChild(script);
 }
+
+export const parseStyles = (str: string) => {
+  const styleObj: Array<{ key: string; value: string }> = [];
+
+  const styleRegex = /(.*):(.*);/g;
+
+  let x;
+  // tslint:disable-next-line:no-conditional-assignment
+  while ((x = styleRegex.exec(str))) {
+    styleObj.push({ key: x[1].trim(), value: x[2].trim() });
+  }
+
+  return styleObj;
+};
