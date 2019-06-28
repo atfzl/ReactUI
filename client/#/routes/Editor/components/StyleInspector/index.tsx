@@ -1,4 +1,5 @@
 import styled from '#/styled';
+import { css } from 'emotion';
 import produce from 'immer';
 import * as React from 'react';
 import ContentEditable from 'react-contenteditable';
@@ -21,7 +22,7 @@ const inputStyles = `
   }
 `;
 
-const KeyInput = styled(ContentEditable)`
+const KeyInputStyle = css`
   ${inputStyles}
   background-color: inherit;
   border: none;
@@ -29,7 +30,7 @@ const KeyInput = styled(ContentEditable)`
   margin-left: 18px;
 `;
 
-const ValueInput = styled(ContentEditable)`
+const ValueInputStyle = css`
   ${inputStyles}
   background-color: inherit;
   border: none;
@@ -42,10 +43,14 @@ interface State {
 class StyleInspector extends React.Component<{}, State> {
   public state: State = {
     styleRows: [
-      {
-        key: 'display',
-        value: 'flex',
-      },
+      // {
+      //   key: 'display',
+      //   value: 'flex',
+      // },
+      // {
+      //   key: 'background-color',
+      //   value: 'pink',
+      // },
     ],
   };
 
@@ -53,10 +58,14 @@ class StyleInspector extends React.Component<{}, State> {
     key: React.RefObject<HTMLInputElement>;
     value: React.RefObject<HTMLInputElement>;
   }> = [
-    {
-      key: React.createRef(),
-      value: React.createRef(),
-    },
+    // {
+    //   key: React.createRef(),
+    //   value: React.createRef(),
+    // },
+    // {
+    //   key: React.createRef(),
+    //   value: React.createRef(),
+    // },
   ];
 
   private onInputFocus = () => {
@@ -69,27 +78,36 @@ class StyleInspector extends React.Component<{}, State> {
     return (this.rowsRef[index][type].current as any).el.current;
   };
 
+  private createRow = (index: number) => {
+    this.rowsRef[index] = {
+      key: React.createRef(),
+      value: React.createRef(),
+    };
+    this.instructions.push(() => {
+      this.rowsRef[index].key.current!.focus();
+    });
+    this.setState(
+      produce((draft: State) => {
+        draft.styleRows[index] = { key: '', value: '' };
+      }),
+    );
+  };
+
   private instructions: Array<() => void> = [];
 
   private handleFirstBraceClick = () => {
     if (!this.state.styleRows.length) {
-      const index = 0;
-      this.rowsRef[index] = {
-        key: React.createRef(),
-        value: React.createRef(),
-      };
-      this.instructions.push(() => {
-        this.rowsRef[index].key.current!.focus();
-      });
-      this.setState(
-        produce((draft: State) => {
-          draft.styleRows[index] = { key: '', value: '' };
-        }),
-      );
+      this.createRow(0);
     } else {
       const keySpan = this.getSpanRef('key', 0);
 
       keySpan.focus();
+    }
+  };
+
+  private onValueBlur = (index: number) => () => {
+    if (index === this.state.styleRows.length - 1) {
+      this.createRow(index + 1);
     }
   };
 
@@ -116,23 +134,28 @@ class StyleInspector extends React.Component<{}, State> {
         <div onClick={this.handleFirstBraceClick}>styled {`{`}</div>
         {this.state.styleRows.map((rowData, i) => (
           <div key={i}>
-            <KeyInput
+            <ContentEditable
+              className={KeyInputStyle}
               tagName="span"
               html={rowData.key}
               onChange={this.handleOnChange('key', i)}
               {...{
-                ref: this.rowsRef[i].key,
+                tabIndex: 2 * i - 1,
+                innerRef: this.rowsRef[i].key,
                 onFocus: this.onInputFocus,
               } as any}
             />
             <span>{': '}</span>
-            <ValueInput
+            <ContentEditable
+              className={ValueInputStyle}
               tagName="span"
               html={rowData.value}
               onChange={this.handleOnChange('value', i)}
               {...{
-                ref: this.rowsRef[i].value,
+                tabIndex: 2 * i,
+                innerRef: this.rowsRef[i].value,
                 onFocus: this.onInputFocus,
+                onBlur: this.onValueBlur(i),
               } as any}
             />
             <span>;</span>
