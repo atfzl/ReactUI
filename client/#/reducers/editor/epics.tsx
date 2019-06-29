@@ -1,4 +1,4 @@
-import AppendIntrinsicTagApi from '#/common/api/AppendIntrinsicTag';
+import AppendEmptyStyledElementApi from '#/common/api/AppendEmptyStyledElement';
 import CopyElementApi from '#/common/api/CopyElement';
 import DeleteElementApi from '#/common/api/DeleteElement';
 import FlushStylesApi from '#/common/api/FlushStyles';
@@ -206,9 +206,9 @@ const epics: Epic[] = [
 
                 return concat(
                   of(actions.setLoading(true)),
-                  AppendIntrinsicTagApi.callMain({
+                  AppendEmptyStyledElementApi.callMain({
                     cursor: fiberNode._debugSource!,
-                    tagName: 'div',
+                    tagName: 'Div',
                   }).pipe(switchMap(() => EMPTY)),
                 );
               }),
@@ -368,6 +368,7 @@ const epics: Epic[] = [
             styleTag.setAttribute('data-reactui', hash);
             canvas.doc.head.appendChild(styleTag);
             nativeNode.classList.add(className);
+            nativeNode.classList.remove(hash);
           }
 
           styleTag.textContent = styleString;

@@ -1,9 +1,9 @@
-import AppendIntrinsicTagApi from '#/common/api/AppendIntrinsicTag';
+import AppendEmptyStyledElementApi from '#/common/api/AppendEmptyStyledElement';
 import CopyElementApi from '#/common/api/CopyElement';
 import DeleteElementApi from '#/common/api/DeleteElement';
 import FlushStylesApi from '#/common/api/FlushStyles';
 import LaunchEditorApi from '#/common/api/LaunchEditor';
-import AppendIntrinsicTagService from '#/services/appendIntrinsicTag';
+import AppendEmptyStyledElementService from '#/services/appendEmptyStyledElement';
 import CopyElementService from '#/services/copyElement';
 import DeleteElementService from '#/services/deleteElement';
 import FlushStylesService from '#/services/flushStyles';
@@ -24,8 +24,8 @@ CopyElementApi.answerRenderer(payload =>
     switchMap(text => writeFile(payload.target.fileName, text)),
   ),
 );
-AppendIntrinsicTagApi.answerRenderer(data =>
-  AppendIntrinsicTagService(data.tagName)(data.cursor).pipe(
+AppendEmptyStyledElementApi.answerRenderer(data =>
+  AppendEmptyStyledElementService(data.tagName)(data.cursor).pipe(
     switchMap(text => writeFile(data.cursor.fileName, text)),
   ),
 );
