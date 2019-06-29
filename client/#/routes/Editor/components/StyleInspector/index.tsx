@@ -2,6 +2,7 @@ import { StyleObject } from '#/common/models/Style';
 import { RootState } from '#/reducers';
 import actions from '#/reducers/editor/actions';
 import styled from '#/styled';
+import ClearAll from '@material-ui/icons/ClearAll';
 import { css } from 'emotion';
 import produce from 'immer';
 import * as React from 'react';
@@ -77,10 +78,6 @@ class StyleInspector extends React.PureComponent<Props, State> {
     this.props.updatePreviewStyle({ styles: this.state.styleRows });
   };
 
-  private unsetStyles = () => {
-    this.props.updatePreviewStyle({ styles: [{ key: 'all', value: 'unset' }] });
-  };
-
   private onInputFocus = () => {
     setTimeout(() => {
       document.execCommand('selectAll');
@@ -128,8 +125,15 @@ class StyleInspector extends React.PureComponent<Props, State> {
   };
 
   private handleClearClick = () => {
-    this.setState({ styleRows: [] }, this.unsetStyles);
-    this.rowsRef = [];
+    if (!this.state.styleRows.length) {
+      return;
+    }
+
+    this.setState(
+      { styleRows: [{ key: 'all', value: 'unset' }] },
+      this.syncStyles,
+    );
+    this.rowsRef = this.rowsRef.slice(0, 1);
   };
 
   private handleOnChange = (type: 'key' | 'value', index: number) => (
@@ -153,7 +157,7 @@ class StyleInspector extends React.PureComponent<Props, State> {
   public render() {
     return (
       <div>
-        <div onClick={this.handleClearClick}>clear all</div>
+        <ClearAll onClick={this.handleClearClick} />
         <Container>
           <div onClick={this.handleFirstBraceClick}>styled {`{`}</div>
           {this.state.styleRows.map((rowData, i) => (

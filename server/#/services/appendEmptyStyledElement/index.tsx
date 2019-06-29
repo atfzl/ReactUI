@@ -25,7 +25,8 @@ const appendEmptyStyledElement = (tagName: string) =>
                 `const ${generatedTagName} = styled.div\`
                  height: 200px;
                  width: 200px;
-                 background-color: grey;
+                 background-color: lightgrey;
+                 border: 1px solid black;
              \`;
               `,
               ],

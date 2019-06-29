@@ -253,12 +253,25 @@ const epics: Epic[] = [
                 }
               });
 
-              return of(
-                actions.onCommitFiberRoot({
-                  rootFiberNode,
-                  nodeMap,
-                  renderer,
-                }),
+              const {
+                editor: {
+                  overlay: { selected },
+                },
+              } = state$.value;
+
+              const f = selected
+                ? EMPTY
+                : of(actions.setSelectedOverlay(undefined));
+
+              return merge(
+                f,
+                of(
+                  actions.onCommitFiberRoot({
+                    rootFiberNode,
+                    nodeMap,
+                    renderer,
+                  }),
+                ),
               );
             }),
           ),
