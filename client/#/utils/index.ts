@@ -1,3 +1,4 @@
+import { TagCursor } from '#/common/models/file';
 import { StyleObject } from '#/common/models/Style';
 import { produce } from 'immer';
 import { ActionCreator } from 'typescript-fsa';
@@ -31,4 +32,22 @@ export const parseStyles = (str: string) => {
   }
 
   return styleObj;
+};
+
+export const getCursorFromId = (id: string): TagCursor | undefined => {
+  const result = /(.*),(\d+),(\d+)/g.exec(id)!;
+
+  if (result) {
+    const fileName = result[1];
+    const lineNumber = Number(result[2]);
+    const columnNumber = Number(result[3]);
+
+    return {
+      fileName,
+      lineNumber,
+      columnNumber,
+    };
+  }
+
+  return undefined;
 };

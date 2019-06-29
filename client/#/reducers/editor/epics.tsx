@@ -1,13 +1,14 @@
 import AppendIntrinsicTagApi from '#/common/api/AppendIntrinsicTag';
 import CopyElementApi from '#/common/api/CopyElement';
 import DeleteElementApi from '#/common/api/DeleteElement';
+import FlushStylesApi from '#/common/api/FlushStyles';
 import GetRuntimeProps, {
   isReactElementIdentifier,
 } from '#/common/api/GetRuntimeProps';
 import LaunchEditorApi from '#/common/api/LaunchEditor';
 import { Events } from '#/models/Events';
 import { Epic, RootState } from '#/reducers';
-import { executeScript, parseStyles } from '#/utils';
+import { executeScript, getCursorFromId, parseStyles } from '#/utils';
 import { getIdFromCursor, getTitle, walkTree } from '#/utils/fiberNode';
 import * as _ from 'lodash';
 import * as React from 'react';
@@ -115,7 +116,10 @@ const epics: Epic[] = [
                   return EMPTY;
                 }
 
-                const { lastClassName: hash } = fiberNode.type.componentStyle;
+                const {
+                  lastClassName: hash,
+                  componentId,
+                } = fiberNode.type.componentStyle;
 
                 const styleTag = canvas.doc.querySelector(
                   `[data-reactui=${hash}]`,
@@ -132,7 +136,13 @@ const epics: Epic[] = [
 
                 const styleString = styleStringArr.slice(3).join('\n');
 
-                console.log(parseStyles(styleString));
+                const styleObject = parseStyles(styleString);
+
+                const cursor = getCursorFromId(componentId);
+
+                if (cursor) {
+                  FlushStylesApi.callMain({ cursor, style: styleObject });
+                }
 
                 return EMPTY;
               }),
@@ -321,6 +331,10 @@ const epics: Epic[] = [
         } = state$.value;
 
         if (!selected || !canvas) {
+          return EMPTY;
+        }
+
+        if (!nodeMap[selected]) {
           return EMPTY;
         }
 
