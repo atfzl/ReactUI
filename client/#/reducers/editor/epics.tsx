@@ -140,11 +140,16 @@ const epics: Epic[] = [
 
                 const cursor = getCursorFromId(componentId);
 
-                if (cursor) {
-                  FlushStylesApi.callMain({ cursor, style: styleObject });
+                if (!cursor) {
+                  return EMPTY;
                 }
 
-                return EMPTY;
+                return concat(
+                  of(actions.setLoading(true)),
+                  FlushStylesApi.callMain({ cursor, style: styleObject }).pipe(
+                    switchMap(() => EMPTY),
+                  ),
+                );
               }),
             ),
             fromEvent<KeyboardEvent>(document, 'keydown').pipe(
