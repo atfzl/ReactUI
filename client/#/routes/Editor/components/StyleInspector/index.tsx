@@ -62,31 +62,13 @@ class StyleInspector extends React.PureComponent<Props, State> {
   }
 
   public state: State = {
-    styleRows: [
-      // {
-      //   key: 'display',
-      //   value: 'flex',
-      // },
-      // {
-      //   key: 'background-color',
-      //   value: 'pink',
-      // },
-    ],
+    styleRows: [],
   };
 
   private rowsRef: Array<{
     key: React.RefObject<HTMLSpanElement>;
     value: React.RefObject<HTMLSpanElement>;
-  }> = [
-    // {
-    //   key: React.createRef(),
-    //   value: React.createRef(),
-    // },
-    // {
-    //   key: React.createRef(),
-    //   value: React.createRef(),
-    // },
-  ];
+  }> = [];
 
   private onInputFocus = () => {
     setTimeout(() => {
