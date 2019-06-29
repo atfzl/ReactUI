@@ -106,7 +106,10 @@ const epics: Epic[] = [
 
               const selectedNode = nodeMap[selected!].nativeNode;
 
-              if (voidElements[selectedNode.tagName.toLowerCase()]) {
+              if (
+                selectedNode &&
+                voidElements[selectedNode.tagName.toLowerCase()]
+              ) {
                 return EMPTY;
               }
 
@@ -132,7 +135,10 @@ const epics: Epic[] = [
 
               const { fiberNode, nativeNode } = nodeMap[selected!];
 
-              if (voidElements[nativeNode.tagName.toLowerCase()]) {
+              if (
+                nativeNode &&
+                voidElements[nativeNode.tagName.toLowerCase()]
+              ) {
                 return EMPTY;
               }
 

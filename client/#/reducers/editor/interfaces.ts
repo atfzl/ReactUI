@@ -4,7 +4,7 @@ export type NodeMap = Record<
   string,
   {
     fiberNode: FiberNode;
-    nativeNode: HTMLElement;
+    nativeNode?: HTMLElement;
     depth: number;
   }
 >;

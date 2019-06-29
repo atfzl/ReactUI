@@ -39,7 +39,7 @@ class LeftPanel extends React.Component<Props> {
 
           const { _debugSource: source } = fiberNode;
 
-          if (!source) {
+          if (!source || !nativeNode) {
             return null;
           }
 
