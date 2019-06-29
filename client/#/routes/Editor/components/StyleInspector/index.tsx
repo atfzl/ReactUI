@@ -77,6 +77,10 @@ class StyleInspector extends React.PureComponent<Props, State> {
     this.props.updatePreviewStyle({ styles: this.state.styleRows });
   };
 
+  private unsetStyles = () => {
+    this.props.updatePreviewStyle({ styles: [{ key: 'all', value: 'unset' }] });
+  };
+
   private onInputFocus = () => {
     setTimeout(() => {
       document.execCommand('selectAll');
@@ -123,6 +127,11 @@ class StyleInspector extends React.PureComponent<Props, State> {
     }
   };
 
+  private handleClearClick = () => {
+    this.setState({ styleRows: [] }, this.unsetStyles);
+    this.rowsRef = [];
+  };
+
   private handleOnChange = (type: 'key' | 'value', index: number) => (
     evt: any,
   ) => {
@@ -143,39 +152,42 @@ class StyleInspector extends React.PureComponent<Props, State> {
 
   public render() {
     return (
-      <Container>
-        <div onClick={this.handleFirstBraceClick}>styled {`{`}</div>
-        {this.state.styleRows.map((rowData, i) => (
-          <div key={i}>
-            <ContentEditable
-              className={KeyInputStyle}
-              tagName="span"
-              html={rowData.key}
-              onChange={this.handleOnChange('key', i)}
-              {...{
-                tabIndex: 2 * i - 1,
-                innerRef: this.rowsRef[i].key,
-                onFocus: this.onInputFocus,
-              } as any}
-            />
-            <span>{': '}</span>
-            <ContentEditable
-              className={ValueInputStyle}
-              tagName="span"
-              html={rowData.value}
-              onChange={this.handleOnChange('value', i)}
-              {...{
-                tabIndex: 2 * i,
-                innerRef: this.rowsRef[i].value,
-                onFocus: this.onInputFocus,
-                onBlur: this.onValueBlur(i),
-              } as any}
-            />
-            <span>;</span>
-          </div>
-        ))}
-        <div>{`}`}</div>
-      </Container>
+      <div>
+        <div onClick={this.handleClearClick}>clear all</div>
+        <Container>
+          <div onClick={this.handleFirstBraceClick}>styled {`{`}</div>
+          {this.state.styleRows.map((rowData, i) => (
+            <div key={i}>
+              <ContentEditable
+                className={KeyInputStyle}
+                tagName="span"
+                html={rowData.key}
+                onChange={this.handleOnChange('key', i)}
+                {...{
+                  tabIndex: 2 * i - 1,
+                  innerRef: this.rowsRef[i].key,
+                  onFocus: this.onInputFocus,
+                } as any}
+              />
+              <span>{': '}</span>
+              <ContentEditable
+                className={ValueInputStyle}
+                tagName="span"
+                html={rowData.value}
+                onChange={this.handleOnChange('value', i)}
+                {...{
+                  tabIndex: 2 * i,
+                  innerRef: this.rowsRef[i].value,
+                  onFocus: this.onInputFocus,
+                  onBlur: this.onValueBlur(i),
+                } as any}
+              />
+              <span>;</span>
+            </div>
+          ))}
+          <div>{`}`}</div>
+        </Container>
+      </div>
     );
   }
 }

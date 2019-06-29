@@ -81,6 +81,8 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
           const style = rules.join('');
 
           state.selectedStyle = parseStyles(style);
+        } else {
+          state.selectedStyle = [];
         }
       } else {
         state.selectedStyle = [];
