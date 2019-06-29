@@ -1,4 +1,5 @@
 import { TagCursor } from '#/common/models/file';
+import { StyleObject } from '#/common/models/Style';
 import { Workspace } from '#/models/Editor';
 import { FiberNode, Renderer } from '#/models/React';
 import actionCreatorFactory from 'typescript-fsa';
@@ -32,7 +33,7 @@ const actions = {
   setCopiedOverlay: actionCreator<string | undefined>('setCopiedOverlay'),
   setLoading: actionCreator<boolean | undefined>('setLoading'),
   updatePreviewStyle: actionCreator<{
-    styles: Array<{ key: string; value: string }>;
+    styles: StyleObject;
   }>('updatePreviewStyle'),
 };
 

@@ -1,3 +1,4 @@
+import { StyleObject } from '#/common/models/Style';
 import { produce } from 'immer';
 import { ActionCreator } from 'typescript-fsa';
 import { ReducerBuilder } from 'typescript-fsa-reducers';
@@ -19,7 +20,7 @@ export function executeScript(url: string, doc: Document = document) {
 }
 
 export const parseStyles = (str: string) => {
-  const styleObj: Array<{ key: string; value: string }> = [];
+  const styleObj: StyleObject = [];
 
   const styleRegex = /(.*):(.*);/g;
 

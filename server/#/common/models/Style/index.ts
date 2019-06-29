@@ -1,1 +1,1 @@
-export type StyleObject = Record<string, string>;
+export type StyleObject = Array<{ key: string; value: string }>;

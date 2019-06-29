@@ -1,3 +1,4 @@
+import { StyleObject } from '#/common/models/Style';
 import { EditorConstants } from '#/constants/Editor';
 import { Workspace } from '#/models/Editor';
 import { FiberNode, Renderer } from '#/models/React';
@@ -24,7 +25,7 @@ export interface ReducerState {
     copied?: string;
   };
   loading: boolean;
-  selectedStyle: Array<{ key: string; value: string }>;
+  selectedStyle: StyleObject;
 }
 
 const InitialState: ReducerState = {

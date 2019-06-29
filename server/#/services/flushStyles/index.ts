@@ -8,11 +8,7 @@ import { map } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const stringifyStyles = (styleObject: StyleObject) => {
-  return R.pipe(
-    R.keys,
-    R.map(property => `${property}: ${styleObject[property]};`),
-    R.join('\n'),
-  )(styleObject);
+  return styleObject.map(ob => `${ob.key}: ${ob.value};`).join('\n');
 };
 
 const flushStyles = (styleObject: StyleObject) =>

@@ -1,3 +1,4 @@
+import { StyleObject } from '#/common/models/Style';
 import { RootState } from '#/reducers';
 import actions from '#/reducers/editor/actions';
 import styled from '#/styled';
@@ -45,7 +46,7 @@ type DispatchProps = typeof mapDispatchToProps;
 interface Props extends StateProps, DispatchProps {}
 
 interface State {
-  styleRows: Array<{ key: string; value: string }>;
+  styleRows: StyleObject;
 }
 
 class StyleInspector extends React.PureComponent<Props, State> {
