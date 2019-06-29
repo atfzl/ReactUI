@@ -260,6 +260,54 @@ const epics: Epic[] = [
 
       return EMPTY;
     }),
+  (action$, state$) =>
+    action$.pipe(
+      filter(actions.updatePreviewStyle.match),
+      switchMap(({ payload }) => {
+        const {
+          editor: {
+            nodeMap,
+            overlay: { selected },
+            canvas,
+          },
+        } = state$.value;
+
+        if (!selected || !canvas) {
+          return EMPTY;
+        }
+
+        const { fiberNode, nativeNode } = nodeMap[selected];
+
+        if (!nativeNode) {
+          return EMPTY;
+        }
+
+        if (fiberNode.type && fiberNode.type.componentStyle) {
+          const hash = fiberNode.type.componentStyle.lastClassName;
+
+          const className = `reactui-${hash}`;
+
+          const styleString = `
+            .${className} {
+              ${payload.styles.map(ob => `${ob.key}: ${ob.value};`).join('\n')}
+            }
+          `;
+
+          let styleTag = canvas.doc.querySelector(`[data-reactui=${hash}]`);
+
+          if (!styleTag) {
+            styleTag = canvas.doc.createElement('style');
+            styleTag.setAttribute('data-reactui', hash);
+            canvas.doc.head.appendChild(styleTag);
+            nativeNode.classList.add(className);
+          }
+
+          styleTag.textContent = styleString;
+        }
+
+        return EMPTY;
+      }),
+    ),
 ];
 
 export default combineEpics(...epics);

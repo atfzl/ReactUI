@@ -1,4 +1,5 @@
 import { RootState } from '#/reducers';
+import actions from '#/reducers/editor/actions';
 import styled from '#/styled';
 import { css } from 'emotion';
 import produce from 'immer';
@@ -38,9 +39,10 @@ const ValueInputStyle = css`
   border: none;
 `;
 
-interface Props {
-  styles: State['styleRows'];
-}
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+interface Props extends StateProps, DispatchProps {}
 
 interface State {
   styleRows: Array<{ key: string; value: string }>;
@@ -58,7 +60,7 @@ class StyleInspector extends React.PureComponent<Props, State> {
       }
     }
 
-    this.setState({ styleRows: props.styles });
+    this.setState({ styleRows: props.styles }, this.syncStyles);
   }
 
   public state: State = {
@@ -69,6 +71,10 @@ class StyleInspector extends React.PureComponent<Props, State> {
     key: React.RefObject<HTMLSpanElement>;
     value: React.RefObject<HTMLSpanElement>;
   }> = [];
+
+  private syncStyles = () => {
+    this.props.updatePreviewStyle({ styles: this.state.styleRows });
+  };
 
   private onInputFocus = () => {
     setTimeout(() => {
@@ -92,6 +98,7 @@ class StyleInspector extends React.PureComponent<Props, State> {
       produce((draft: State) => {
         draft.styleRows[index] = { key: '', value: '' };
       }),
+      this.syncStyles,
     );
   };
 
@@ -124,6 +131,7 @@ class StyleInspector extends React.PureComponent<Props, State> {
       produce((draft: State) => {
         draft.styleRows[index][type] = str;
       }),
+      this.syncStyles,
     );
   };
 
@@ -175,4 +183,11 @@ const mapStateToProps = (state: RootState) => ({
   styles: state.editor.selectedStyle,
 });
 
-export default connect(mapStateToProps)(StyleInspector);
+const mapDispatchToProps = {
+  updatePreviewStyle: actions.updatePreviewStyle,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(StyleInspector);

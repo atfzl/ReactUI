@@ -31,6 +31,9 @@ const actions = {
   ),
   setCopiedOverlay: actionCreator<string | undefined>('setCopiedOverlay'),
   setLoading: actionCreator<boolean | undefined>('setLoading'),
+  updatePreviewStyle: actionCreator<{
+    styles: Array<{ key: string; value: string }>;
+  }>('updatePreviewStyle'),
 };
 
 export default actions;

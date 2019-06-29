@@ -17,7 +17,14 @@ export interface FiberNode {
   sibling: FiberNode;
   stateNode: FiberRoot;
   tag: number;
-  type: null;
+  type: null | {
+    componentStyle: {
+      rules: string[];
+      isStatic: boolean;
+      componentId: string;
+      lastClassName: string;
+    };
+  };
   updateQueue: null;
   _debugID: number;
   _debugIsCurrentlyTiming: boolean;
