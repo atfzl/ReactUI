@@ -7,7 +7,7 @@ import GetRuntimeProps, {
 import LaunchEditorApi from '#/common/api/LaunchEditor';
 import { Events } from '#/models/Events';
 import { Epic, RootState } from '#/reducers';
-import { executeScript } from '#/utils';
+import { executeScript, parseStyles } from '#/utils';
 import { getIdFromCursor, getTitle, walkTree } from '#/utils/fiberNode';
 import * as _ from 'lodash';
 import * as React from 'react';
@@ -53,103 +53,151 @@ const epics: Epic[] = [
         executeScript('http://localhost:9889/app.js', doc);
 
         return merge(
-          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-            filter(
-              e =>
-                (e.key === 'Delete' || e.key === 'Backspace') &&
-                e.metaKey &&
-                !e.repeat,
+          merge(
+            fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+              filter(
+                e =>
+                  (e.key === 'Delete' || e.key === 'Backspace') &&
+                  e.metaKey &&
+                  !e.repeat,
+              ),
+              filter(someOverlaySelected(state$)),
+              mergeMap(() => {
+                const {
+                  editor: {
+                    nodeMap,
+                    overlay: { selected },
+                  },
+                } = state$.value;
+
+                const cursor = nodeMap[selected!].fiberNode._debugSource!;
+
+                return concat(
+                  of(actions.setLoading(true)),
+                  DeleteElementApi.callMain(cursor).pipe(
+                    switchMap(() => EMPTY),
+                  ),
+                );
+              }),
             ),
-            filter(someOverlaySelected(state$)),
-            mergeMap(() => {
-              const {
-                editor: {
-                  nodeMap,
-                  overlay: { selected },
-                },
-              } = state$.value;
+            fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+              filter(e => e.key === 'c' && e.metaKey && !e.repeat),
+              filter(someOverlaySelected(state$)),
+              map(() => {
+                const {
+                  editor: {
+                    overlay: { selected },
+                  },
+                } = state$.value;
 
-              const cursor = nodeMap[selected!].fiberNode._debugSource!;
-
-              return concat(
-                of(actions.setLoading(true)),
-                DeleteElementApi.callMain(cursor).pipe(switchMap(() => EMPTY)),
-              );
-            }),
-          ),
-          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-            filter(e => e.key === 'c' && e.metaKey && !e.repeat),
-            filter(someOverlaySelected(state$)),
-            map(() => {
-              const {
-                editor: {
-                  overlay: { selected },
-                },
-              } = state$.value;
-
-              return actions.setCopiedOverlay(selected);
-            }),
-          ),
-          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-            filter(e => e.key === 'v' && e.metaKey && !e.repeat),
-            filter(
-              () =>
-                someOverlaySelected(state$)() && someOverlayCopied(state$)(),
+                return actions.setCopiedOverlay(selected);
+              }),
             ),
-            mergeMap(() => {
-              const {
-                editor: {
-                  nodeMap,
-                  overlay: { selected, copied },
-                },
-              } = state$.value;
+            fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+              filter(e => e.key === 's' && e.metaKey && !e.repeat),
+              filter(someOverlaySelected(state$)),
+              switchMap(() => {
+                const {
+                  editor: {
+                    overlay: { selected },
+                    nodeMap,
+                    canvas,
+                  },
+                } = state$.value;
 
-              const selectedNode = nodeMap[selected!].nativeNode;
+                if (!canvas) {
+                  return EMPTY;
+                }
 
-              if (
-                selectedNode &&
-                voidElements[selectedNode.tagName.toLowerCase()]
-              ) {
+                const { fiberNode } = nodeMap[selected!];
+
+                if (!fiberNode.type || !fiberNode.type.componentStyle) {
+                  return EMPTY;
+                }
+
+                const { lastClassName: hash } = fiberNode.type.componentStyle;
+
+                const styleTag = canvas.doc.querySelector(
+                  `[data-reactui=${hash}]`,
+                );
+
+                if (!styleTag) {
+                  return EMPTY;
+                }
+
+                const styleStringArr = styleTag.textContent!.split('\n');
+
+                styleStringArr.pop();
+                styleStringArr.pop();
+
+                const styleString = styleStringArr.slice(3).join('\n');
+
+                console.log(parseStyles(styleString));
+
                 return EMPTY;
-              }
+              }),
+            ),
+            fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+              filter(e => e.key === 'v' && e.metaKey && !e.repeat),
+              filter(
+                () =>
+                  someOverlaySelected(state$)() && someOverlayCopied(state$)(),
+              ),
+              mergeMap(() => {
+                const {
+                  editor: {
+                    nodeMap,
+                    overlay: { selected, copied },
+                  },
+                } = state$.value;
 
-              const source = nodeMap[copied!].fiberNode._debugSource!;
-              const target = nodeMap[selected!].fiberNode._debugSource!;
+                const selectedNode = nodeMap[selected!].nativeNode;
 
-              return concat(
-                of(actions.handleDrop({ source, target })),
-                of(actions.setCopiedOverlay(undefined)),
-              );
-            }),
-          ),
-          fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-            filter(e => e.key === 'Enter' && !e.repeat),
-            filter(someOverlaySelected(state$)),
-            switchMap(() => {
-              const {
-                editor: {
-                  overlay: { selected },
-                  nodeMap,
-                },
-              } = state$.value;
+                if (
+                  selectedNode &&
+                  voidElements[selectedNode.tagName.toLowerCase()]
+                ) {
+                  return EMPTY;
+                }
 
-              const { fiberNode, nativeNode } = nodeMap[selected!];
+                const source = nodeMap[copied!].fiberNode._debugSource!;
+                const target = nodeMap[selected!].fiberNode._debugSource!;
 
-              if (
-                nativeNode &&
-                voidElements[nativeNode.tagName.toLowerCase()]
-              ) {
-                return EMPTY;
-              }
+                return concat(
+                  of(actions.handleDrop({ source, target })),
+                  of(actions.setCopiedOverlay(undefined)),
+                );
+              }),
+            ),
+            fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+              filter(e => e.key === 'Enter' && !e.repeat),
+              filter(someOverlaySelected(state$)),
+              switchMap(() => {
+                const {
+                  editor: {
+                    overlay: { selected },
+                    nodeMap,
+                  },
+                } = state$.value;
 
-              return concat(
-                of(actions.setLoading(true)),
-                AppendIntrinsicTagApi.callMain({
-                  cursor: fiberNode._debugSource!,
-                  tagName: 'div',
-                }).pipe(switchMap(() => EMPTY)),
-              );
-            }),
+                const { fiberNode, nativeNode } = nodeMap[selected!];
+
+                if (
+                  nativeNode &&
+                  voidElements[nativeNode.tagName.toLowerCase()]
+                ) {
+                  return EMPTY;
+                }
+
+                return concat(
+                  of(actions.setLoading(true)),
+                  AppendIntrinsicTagApi.callMain({
+                    cursor: fiberNode._debugSource!,
+                    tagName: 'div',
+                  }).pipe(switchMap(() => EMPTY)),
+                );
+              }),
+            ),
           ),
           onClientBuild$.pipe(
             switchMap(workspace => {
@@ -288,7 +336,8 @@ const epics: Epic[] = [
           const className = `reactui-${hash}`;
 
           const styleString = `
-            .${className} {
+            .${className}
+            {
               ${payload.styles.map(ob => `${ob.key}: ${ob.value};`).join('\n')}
             }
           `;

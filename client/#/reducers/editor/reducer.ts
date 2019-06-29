@@ -75,11 +75,12 @@ const reducer = reducerWithInitialState<ReducerState>(InitialState)
       if (payload) {
         const { fiberNode } = state.nodeMap[payload.id];
 
-        const { rules } = (fiberNode as any).type.componentStyle;
+        if (fiberNode.type && fiberNode.type.componentStyle) {
+          const { rules } = fiberNode.type.componentStyle;
+          const style = rules.join('');
 
-        const style = rules.join('');
-
-        state.selectedStyle = parseStyles(style);
+          state.selectedStyle = parseStyles(style);
+        }
       } else {
         state.selectedStyle = [];
       }
