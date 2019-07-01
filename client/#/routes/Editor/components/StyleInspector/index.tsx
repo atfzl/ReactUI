@@ -155,9 +155,16 @@ class StyleInspector extends React.PureComponent<Props, State> {
   }
 
   public render() {
+    if (!this.props.selected && !this.props.styles.length) {
+      return null;
+    }
+
     return (
       <div>
-        <ClearAll onClick={this.handleClearClick} />
+        <ClearAll
+          style={{ margin: 4, border: '1px solid black', cursor: 'pointer' }}
+          onClick={this.handleClearClick}
+        />
         <Container>
           <div onClick={this.handleFirstBraceClick}>styled {`{`}</div>
           {this.state.styleRows.map((rowData, i) => (
@@ -191,6 +198,7 @@ class StyleInspector extends React.PureComponent<Props, State> {
           ))}
           <div>{`}`}</div>
         </Container>
+        <div style={{ fontSize: 12, padding: 8 }}>CMD + S to save</div>
       </div>
     );
   }
@@ -198,6 +206,7 @@ class StyleInspector extends React.PureComponent<Props, State> {
 
 const mapStateToProps = (state: RootState) => ({
   styles: state.editor.selectedStyle,
+  selected: state.editor.overlay.selected,
 });
 
 const mapDispatchToProps = {
