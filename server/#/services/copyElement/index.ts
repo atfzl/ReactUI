@@ -12,7 +12,7 @@ import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameF
 import * as R from 'ramda';
 import { forkJoin } from 'rxjs';
 import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
-import handleChildElements from './handleChildElements';
+import handleEachChildElement from './handleEachChildElement';
 import handleRecursiveDefinitions from './handleRecursiveDefinitions';
 
 const copyElement = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
@@ -42,7 +42,7 @@ const copyElement = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
 
             return traverseElement(sourceCursorNode).pipe(
               concatMap(
-                handleChildElements(
+                handleEachChildElement(
                   rb,
                   sourceFileDeclarationIdentifiers,
                   incrementIdentifierName,

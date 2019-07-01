@@ -34,7 +34,7 @@ const getChildRuntimeValue = (value: any) => {
   return newValue;
 };
 
-const handleChildElements = (
+const handleEachChildElement = (
   rb: ReplacementBuilder,
   sourceFileDeclarationIdentifiers: ts.BindingName[],
   incrementIdentifierName: (s: string) => string,
@@ -134,4 +134,4 @@ const handleChildElements = (
   return EMPTY;
 };
 
-export default handleChildElements;
+export default handleEachChildElement;
