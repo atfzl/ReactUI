@@ -8,7 +8,6 @@ import {
   traverseElement,
 } from '#/utils/tsNode';
 import { getDeclarationIdentifiersAtSourceFile } from '#/utils/tsNode/getDeclarationIdentifiers';
-import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameFrom';
 import * as R from 'ramda';
 import { forkJoin } from 'rxjs';
 import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
@@ -30,8 +29,8 @@ const copyElement = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
             sourceFileDeclarationIdentifiers,
             targetFileDeclarationIdentifiers,
           ]) => {
-            const incrementIdentifierName = incrementIdentifierNameFrom(
-              targetFileDeclarationIdentifiers.map(x => x.getText()),
+            const targetFileDeclarationIdentifiersText = targetFileDeclarationIdentifiers.map(
+              x => x.getText(),
             );
 
             const rb = new ReplacementBuilder(sourceCursorNode);
@@ -42,11 +41,7 @@ const copyElement = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
 
             return traverseElement(sourceCursorNode).pipe(
               concatMap(
-                handleEachChildElement(
-                  rb,
-                  sourceFileDeclarationIdentifiers,
-                  incrementIdentifierName,
-                ),
+                handleEachChildElement(rb, sourceFileDeclarationIdentifiers),
               ),
               map(({ node, definition }) => {
                 return {
@@ -62,10 +57,11 @@ const copyElement = (sourceCursor: TagCursor, targetCursor: TagCursor) =>
               }),
               concatMap(
                 handleRecursiveDefinitions(
+                  rb,
                   sourceCursor,
                   targetCursor,
                   insertionsMap,
-                  incrementIdentifierName,
+                  targetFileDeclarationIdentifiersText,
                 ),
               ),
               toArray(),

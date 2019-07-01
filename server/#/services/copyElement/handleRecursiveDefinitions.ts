@@ -1,20 +1,24 @@
 import { TagCursor } from '#/common/models/file';
+import { isInterinsicTag } from '#/common/utils';
 import { getPathRelativeToTarget } from '#/utils/file';
 import { ReplacementBuilder } from '#/utils/ReplacementBuilder';
 import {
   DeclarationStatement,
   findAncestorNode,
+  getTagName,
   isJsxLikeElement,
 } from '#/utils/tsNode';
+import incrementIdentifierNameFrom from '#/utils/tsNode/incrementIdentifierNameFrom';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import * as ts from 'typescript';
 
 const handleRecursiveDefinitions = (
+  rb: ReplacementBuilder,
   sourceCursor: TagCursor,
   targetCursor: TagCursor,
   insertionsMap: Map<DeclarationStatement, ReplacementBuilder>,
-  incrementIdentifierName: (s: string) => string,
+  fileDeclarationIdentifiersText: string[],
 ) => ({
   node,
   nodeDeclaration,
@@ -26,7 +30,9 @@ const handleRecursiveDefinitions = (
   definition: ts.BindingName;
   definitionDeclaration: DeclarationStatement;
 }) => {
-  const newIdentifierName = incrementIdentifierName(node.getText());
+  const newIdentifierName = incrementIdentifierNameFrom(
+    fileDeclarationIdentifiersText,
+  )(node.getText());
 
   /**
    * handle node
@@ -43,6 +49,22 @@ const handleRecursiveDefinitions = (
       insertionsMap
         .get(nodeDeclaration)!
         .replaceNodeWithText(node, newIdentifierName);
+    } else {
+      const openingTag = node;
+
+      const parentNode = (isJsxLikeElement(openingTag.parent)
+        ? openingTag.parent
+        : openingTag.parent.parent) as ts.JsxElement | ts.JsxSelfClosingElement;
+
+      const tags = getTagName(parentNode);
+
+      const interinsicTag = isInterinsicTag(openingTag.getText());
+
+      if (!interinsicTag) {
+        tags.forEach(tag => {
+          rb.replaceNodeWithText(tag, newIdentifierName);
+        });
+      }
     }
   }
 
@@ -97,6 +119,10 @@ const handleRecursiveDefinitions = (
           insertionsMap
             .get(definitionDeclaration)!
             .replaceNodeWithText(definition, newIdentifierName);
+        }
+
+        if (!findAncestorNode(ts.isImportDeclaration)(definition)) {
+          fileDeclarationIdentifiersText.push(newIdentifierName);
         }
       }),
     );

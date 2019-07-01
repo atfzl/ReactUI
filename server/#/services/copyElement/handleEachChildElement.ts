@@ -37,7 +37,6 @@ const getChildRuntimeValue = (value: any) => {
 const handleEachChildElement = (
   rb: ReplacementBuilder,
   sourceFileDeclarationIdentifiers: ts.BindingName[],
-  incrementIdentifierName: (s: string) => string,
 ) => ({
   element: elementNode,
   index,
@@ -50,12 +49,6 @@ const handleEachChildElement = (
     const openingTag = tags[0];
 
     const interinsicTag = isInterinsicTag(openingTag.getText());
-
-    if (!interinsicTag) {
-      tags.forEach(tag => {
-        rb.replaceNodeWithText(tag, incrementIdentifierName(tag.getText()));
-      });
-    }
 
     return GetRuntimeProps.callRenderer(
       electron.BrowserWindow.getFocusedWindow()!,
