@@ -16,6 +16,7 @@ ReactUI lets you create React components using an intuitive interface. Use drag 
 - Go to source: CMD + click
 - Delete: CMD + Delete
 - Save style: CMD + S
+- Insert Child Div: CMD + Enter
 
 ## Features
 
