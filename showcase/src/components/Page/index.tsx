@@ -15,11 +15,8 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const albumArtWrapperDimensions = '337.5';
-
 const AlbumArtWrapper = styled.div`
-  width: ${albumArtWrapperDimensions}px;
-  height: ${albumArtWrapperDimensions}px;
+  display: flex;
   padding: 13px;
 `;
 
