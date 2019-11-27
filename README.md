@@ -23,9 +23,9 @@ ReactUI lets you create React components using an intuitive interface. Use drag 
 ### Delete
 ![delete](docs/images/delete.gif)
 
-### Drag and Drop to create components
+### Composing Components
 
-![dragDropMovie](docs/images/dragDropMovie.gif)
+![composingComponents](docs/images/composingComponents.gif)
 
 ### Styling
 
