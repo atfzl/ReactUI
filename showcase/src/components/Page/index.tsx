@@ -1,3 +1,4 @@
+import Icon_$ from '../Icon/index';
 import * as React from 'react';
 import styled from 'styled-components';
 import AlbumArt from '../AlbumArt';
