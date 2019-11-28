@@ -3,6 +3,7 @@
 ReactUI is an interactive React component builder which modifies your original code for you.
 
 ![composingComponents](docs/images/composingComponents.gif)
+![deleteComponent](docs/images/delete.gif)
 
 ## Keyboard Shortcuts
 
