@@ -1,13 +1,8 @@
 # ReactUI
 
-ReactUI lets you create React components using an intuitive interface. Use drag and drop to compose simple components to create complex components.
+ReactUI is an interactive React component builder which modifies your original code for you.
 
-## Setup
-
-`yarn`  
-`yarn start`
-
-![screenshot1](docs/images/screenshot1.png)
+![composingComponents](docs/images/composingComponents.gif)
 
 ## Keyboard Shortcuts
 
@@ -17,20 +12,4 @@ ReactUI lets you create React components using an intuitive interface. Use drag 
 - Delete: CMD + Delete
 - Save style: CMD + S
 - Insert Child Div: CMD + Enter
-
-## Features
-
-### Delete
-![delete](docs/images/delete.gif)
-
-### Composing Components
-
-![composingComponents](docs/images/composingComponents.gif)
-
-### Styling
-
-![style1](docs/images/style1.gif)
-
-### Jump directly to code from ui with (CMD + click)
-
-![style1](docs/images/jumpToCode1.gif)
+- Goto Code: CMD + click
