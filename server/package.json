@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "electron-better-ipc": "^0.2.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "ramda": "^0.26.1",
     "react-dev-utils": "^9.0.1",
     "resolve": "^1.10.0",
