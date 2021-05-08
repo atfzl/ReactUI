@@ -38,7 +38,7 @@
     "electron-better-ipc": "^0.3.0",
     "emotion-theming": "^10.0.10",
     "immer": "^3.1.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "nanoid": "^2.0.2",
     "react": "^16.8.6",
     "react-contenteditable": "^3.2.6",
