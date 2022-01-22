@@ -39,7 +39,7 @@
     "emotion-theming": "^10.0.10",
     "immer": "^3.1.2",
     "lodash": "^4.17.11",
-    "nanoid": "^2.0.2",
+    "nanoid": "^3.1.31",
     "react": "^16.8.6",
     "react-contenteditable": "^3.2.6",
     "react-dnd": "^7.4.5",
